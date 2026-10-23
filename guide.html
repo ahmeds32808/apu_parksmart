@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12305c">
+  <meta name="description" content="Learn how to register, pay, and find available parking with APU ParkSmart.">
+  <title>How it works | APU ParkSmart</title>
+  <link rel="icon" type="image/jpeg" href="assets/Park_smart.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="APU ParkSmart home">
+        <img src="assets/Park_smart.jpg" alt="ParkSmart logo">
+        <span>APU <strong>ParkSmart</strong></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Dashboard</a>
+        <a class="nav-link active" href="guide.html" aria-current="page">Guide</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="guide-hero">
+      <p class="eyebrow"><span class="eyebrow-mark"></span> Your ParkSmart how-to</p>
+      <h1>Parking, made <span>simple.</span></h1>
+      <p>Everything you need to find a spot, check in, and get on with your day.</p>
+    </section>
+
+    <div class="guide-content">
+      <section class="guide-section" aria-labelledby="steps-heading">
+        <div class="section-heading">
+          <div><p class="eyebrow">The quick start</p><h2 id="steps-heading">How to use ParkSmart</h2></div>
+        </div>
+        <div class="guide-cards">
+          <article class="guide-card">
+            <div class="guide-card-top"><span class="step-icon" aria-hidden="true">01</span><span class="guide-icon" aria-hidden="true">↗</span></div>
+            <h3>Register for a space</h3>
+            <ol class="step-list">
+              <li>Enter your student TP number (TP + 6 digits).</li>
+              <li>Add your vehicle plate number.</li>
+              <li>Choose a parking zone and your duration.</li>
+              <li>Check the amount and available slots.</li>
+              <li>Tap <strong>Register &amp; Pay</strong> to continue.</li>
+            </ol>
+          </article>
+          <article class="guide-card">
+            <div class="guide-card-top"><span class="step-icon" aria-hidden="true">02</span><span class="guide-icon" aria-hidden="true">▤</span></div>
+            <h3>Pay with a debit card</h3>
+            <ol class="step-list">
+              <li>Enter the card number, name on card, expiry date, and CVV in the payment window.</li>
+              <li>Review your booking summary before confirming.</li>
+              <li>See your booking reference and head to your selected zone.</li>
+            </ol>
+            <p class="guide-tip security-tip"><strong>Stay safe.</strong> Never share your card PIN. ParkSmart’s demo will not ask for it.</p>
+          </article>
+          <article class="guide-card">
+            <div class="guide-card-top"><span class="step-icon" aria-hidden="true">03</span><span class="guide-icon" aria-hidden="true">⌖</span></div>
+            <h3>Find an available spot</h3>
+            <ol class="step-list">
+              <li>Check the live dashboard for total spaces and each zone’s status.</li>
+              <li>Green means plenty of spaces; amber means filling up; red means almost full.</li>
+              <li>Check “Last updated” so you know how recent the count is.</li>
+              <li>Head to a zone with green status and park in an open bay.</li>
+            </ol>
+            <p class="guide-tip"><strong>Where does the data come from?</strong> Indoor IoT bay sensors and outdoor computer-vision cameras report slot changes to the dashboard.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="benefits-section" aria-labelledby="benefits-heading">
+        <div class="section-heading"><div><p class="eyebrow">A fairer way to park</p><h2 id="benefits-heading">A little more peace of mind</h2></div></div>
+        <div class="benefit-grid">
+          <article class="benefit-card grace-benefit">
+            <span class="benefit-number" aria-hidden="true">10</span>
+            <div><p class="eyebrow">No space? No charge.</p><h3>10-Minute Grace Period</h3>
+              <p>If you enter but can’t find a space, leave within 10 minutes and the gate’s Automated License Plate Recognition (ALPR) system automatically waives your entry charge.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="faq-section" aria-labelledby="faq-heading">
+        <div class="section-heading"><div><p class="eyebrow">Good to know</p><h2 id="faq-heading">Frequently asked questions</h2></div></div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Is this a live APU parking service?</summary>
+            <p>This is a student project demo. Slot counts change to demonstrate the live dashboard; no real parking is reserved and no real payment is taken.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How much does parking cost in this demo?</summary>
+            <p>The demo rate is RM 1.00 per hour, for up to 12 hours. The amount updates automatically when you change your duration.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What happens if my selected zone is full?</summary>
+            <p>You can’t submit a registration for a zone with no available slots. Check the live dashboard and choose a zone with spaces available.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Does the payment demo store my card details?</summary>
+            <p>No. The demo does not send or store payment details and does not process a real transaction. Do not enter real card details.</p>
+          </details>
+        </div>
+      </section>
+      <section class="guide-cta">
+        <div><p class="eyebrow">Ready when you are</p><h2>Find your space.</h2><p>Check availability and try the ParkSmart registration demo.</p></div>
+        <a class="button button-primary" href="index.html#register">Go to dashboard <span aria-hidden="true">→</span></a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand brand-footer" href="index.html">
+          <img src="assets/Park_smart.jpg" alt="" aria-hidden="true">
+          <span>APU <strong>ParkSmart</strong></span>
+        </a>
+        <p>Less circling, less stress. Smart parking for a more sustainable campus.</p>
+        <a class="footer-instagram" href="https://www.instagram.com/apu_smart_parking_system?srtk=enV6MjYwYndrcDVn" target="_blank" rel="noopener noreferrer">Follow us on Instagram <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="footer-project">
+        <span class="sdg-badge"><span class="sdg-icon">9</span> Supporting SDG 9</span>
+        <p>Modernising campus traffic, making parking fair, and getting more from the spaces we have.</p>
+        <span class="team-credit">An 8-member student team · Asia Pacific University</span>
+      </div>
+      <a class="footer-guide" href="index.html">Back to dashboard <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="footer-bottom">A student project demo <span>·</span> APU ParkSmart</div>
+  </footer>
+</body>
+</html>
