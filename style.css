@@ -386,7 +386,15 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .speed-toggle { display: flex; align-items: center; gap: 8px; color: var(--ink); cursor: pointer; font-size: 11px; font-weight: 650; }
 .speed-toggle input { width: 16px; height: 16px; accent-color: var(--teal-dark); }
 .speed-toggle small { color: var(--muted); font-size: 10px; font-weight: 500; }
-.grace-countdown { min-height: 0; margin: 0; color: var(--muted); font-size: 11px; font-weight: 650; text-align: right; }
+.parking-session { min-width: 295px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 14px; padding: 10px 12px; border: 1px solid #dcefea; border-radius: 10px; background: #fff; }
+.parking-session-time span, .parking-session-status span { display: block; color: var(--muted); font-size: 9px; font-weight: 650; }
+.parking-session-time strong { color: var(--navy); font-size: 20px; font-variant-numeric: tabular-nums; letter-spacing: .5px; line-height: 1.2; }
+.parking-session-status { min-width: 0; }
+.parking-session-status span { overflow: hidden; margin-bottom: 4px; text-overflow: ellipsis; white-space: nowrap; }
+.parking-session-status strong { display: block; color: var(--muted); font-size: 10px; line-height: 1.35; }
+.parking-session-status strong.is-grace-active { color: var(--green); }
+.parking-session-status strong.is-grace-ended { color: var(--amber); }
+.grace-countdown { min-height: 0; margin: 0; color: var(--muted); font-size: 10px; font-weight: 600; text-align: right; }
 .grace-countdown:not(:empty) { min-height: 17px; }
 .grace-countdown.is-success { color: #197a50; }
 .button:disabled { transform: none; cursor: not-allowed; opacity: .58; }
@@ -431,6 +439,7 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   .alternative-box .button { width: 100%; }
   .grace-demo { align-items: stretch; flex-direction: column; gap: 17px; padding: 18px; }
   .grace-controls { min-width: 0; justify-items: stretch; }
+  .parking-session { min-width: 0; grid-template-columns: auto 1fr; }
   .speed-toggle { justify-content: flex-start; }
   .grace-controls .button { width: 100%; }
   .grace-countdown { text-align: center; }

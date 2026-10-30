@@ -2,6 +2,7 @@ const SLOT_UPDATE_INTERVAL_MS = 5000;
 const PARKING_RATE_RM_PER_HOUR = 1.00;
 const GRACE_PERIOD_MS = 10 * 60 * 1000;
 const FAST_GRACE_PERIOD_MS = 15 * 1000;
+const ACTIVE_PARKING_SESSION_KEY = "apusmart.activeParkingSession";
 const zones = [
   { id: "zone-a", name: "Zone A", total: 36, available: 13 },
   { id: "zone-b", name: "Zone B", total: 42, available: 17 },
@@ -27,6 +28,9 @@ const paymentError = document.querySelector("#payment-error");
 const bookingSummary = document.querySelector("#booking-summary");
 let pendingBooking = null;
 let fullZoneNoticeVisible = false;
+let activeParkingSession = null;
+let completedParkingSession = null;
+let parkingSessionStorageWarning = "";
 
 function initializeWordmarkAnimations() {
   document.querySelectorAll(".wordmark-animation").forEach((wordmark) => {
@@ -223,6 +227,107 @@ function createBookingReference() {
 
 function closeDialog(dialog) {
   if (dialog.open) dialog.close();
+}
+
+function formatElapsedTime(milliseconds) {
+  const totalSeconds = Math.floor(Math.max(0, milliseconds) / 1000);
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const seconds = String(totalSeconds % 60).padStart(2, "0");
+  return `${hours}:${minutes}:${seconds}`;
+}
+
+function loadActiveParkingSession() {
+  try {
+    const storedSession = localStorage.getItem(ACTIVE_PARKING_SESSION_KEY);
+    if (!storedSession) return null;
+    const session = JSON.parse(storedSession);
+    const validSession = session &&
+      zones.some((zone) => zone.id === session.zoneId) &&
+      Number.isFinite(session.startedAt) &&
+      Number.isFinite(session.gracePeriodMs) &&
+      [GRACE_PERIOD_MS, FAST_GRACE_PERIOD_MS].includes(session.gracePeriodMs) &&
+      typeof session.reference === "string";
+    if (validSession) return session;
+
+    localStorage.removeItem(ACTIVE_PARKING_SESSION_KEY);
+    console.warn("ParkSmart removed an invalid saved demo parking session.");
+    return null;
+  } catch (error) {
+    console.warn("ParkSmart could not restore the saved demo parking session.", error);
+    return null;
+  }
+}
+
+function saveActiveParkingSession() {
+  try {
+    localStorage.setItem(ACTIVE_PARKING_SESSION_KEY, JSON.stringify(activeParkingSession));
+    parkingSessionStorageWarning = "";
+  } catch (error) {
+    console.warn("ParkSmart could not save the demo parking session in this browser.", error);
+    parkingSessionStorageWarning = "Timer tracking will stop if you close or refresh this page.";
+  }
+}
+
+function clearSavedParkingSession() {
+  try {
+    localStorage.removeItem(ACTIVE_PARKING_SESSION_KEY);
+  } catch (error) {
+    console.warn("ParkSmart could not clear the saved demo parking session.", error);
+  }
+}
+
+function renderParkingSession() {
+  const elapsedElement = document.querySelector("#parking-elapsed");
+  const zoneElement = document.querySelector("#parking-session-zone");
+  const graceStatus = document.querySelector("#parking-grace-status");
+  const message = document.querySelector("#grace-countdown");
+  const leaveButton = document.querySelector("#left-without-parking");
+  const speedUpDemo = document.querySelector("#speed-up-demo");
+
+  if (activeParkingSession) {
+    const elapsed = Math.max(0, Date.now() - activeParkingSession.startedAt);
+    const zone = getZone(activeParkingSession.zoneId);
+    elapsedElement.textContent = formatElapsedTime(elapsed);
+    const startedAt = new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit"
+    }).format(new Date(activeParkingSession.startedAt));
+    zoneElement.textContent = `${zone.name} · started ${startedAt}`;
+    leaveButton.disabled = false;
+    speedUpDemo.disabled = true;
+    if (elapsed < activeParkingSession.gracePeriodMs) {
+      const remaining = activeParkingSession.gracePeriodMs - elapsed;
+      graceStatus.textContent = `${formatElapsedTime(remaining)} grace time remaining`;
+      graceStatus.className = "is-grace-active";
+    } else {
+      graceStatus.textContent = "Grace period ended · parking time is still tracked";
+      graceStatus.className = "is-grace-ended";
+    }
+    message.textContent = parkingSessionStorageWarning;
+    return;
+  }
+
+  leaveButton.disabled = true;
+  speedUpDemo.disabled = false;
+  if (completedParkingSession) {
+    elapsedElement.textContent = formatElapsedTime(completedParkingSession.elapsed);
+    zoneElement.textContent = `${completedParkingSession.zoneName} · Session ended`;
+    graceStatus.textContent = completedParkingSession.chargeWaived
+      ? "Left within grace period · entry charge waived"
+      : "Grace period ended · demo booking charge applies";
+    graceStatus.className = completedParkingSession.chargeWaived ? "is-grace-active" : "is-grace-ended";
+    message.textContent = completedParkingSession.chargeWaived
+      ? `Session duration: ${formatElapsedTime(completedParkingSession.elapsed)}. Entry charge waived in this demo.`
+      : `Session duration: ${formatElapsedTime(completedParkingSession.elapsed)}. The simulated booking charge remains in effect.`;
+    return;
+  }
+
+  elapsedElement.textContent = "00:00:00";
+  zoneElement.textContent = "No active parking session";
+  graceStatus.textContent = "Complete a demo booking to start tracking.";
+  graceStatus.className = "";
+  message.textContent = "";
 }
 
 function initializeLegacyCampusScene() {
@@ -574,6 +679,14 @@ document.querySelectorAll(".primary-nav .nav-link").forEach((link) => {
 });
 
 if (registrationForm) {
+  activeParkingSession = loadActiveParkingSession();
+  if (activeParkingSession) {
+    const activeZone = getZone(activeParkingSession.zoneId);
+    activeZone.available = Math.max(0, activeZone.available - 1);
+  }
+  renderParkingSession();
+  window.setInterval(renderParkingSession, 1000);
+
   durationSelect.addEventListener("change", updateAmount);
   zoneSelect.addEventListener("change", () => {
     registrationMessage.textContent = "";
@@ -591,6 +704,10 @@ if (registrationForm) {
   registrationForm.addEventListener("submit", (event) => {
     event.preventDefault();
     registrationMessage.textContent = "";
+    if (activeParkingSession) {
+      registrationMessage.textContent = "End your current parking session before starting another demo booking.";
+      return;
+    }
     const vehicleNumber = document.querySelector("#vehicle-number");
     const platePattern = /^[A-Z]{1,3}\s?\d{1,4}$/;
     if (!registrationForm.reportValidity()) return;
@@ -614,7 +731,10 @@ if (registrationForm) {
       vehicleNumber: vehicleNumber.value.trim().toUpperCase(),
       zoneId: zone.id,
       duration: Number(durationSelect.value),
-      amount: amountInput.value
+      amount: amountInput.value,
+      gracePeriodMs: document.querySelector("#speed-up-demo").checked
+        ? FAST_GRACE_PERIOD_MS
+        : GRACE_PERIOD_MS
     };
     openPayment(pendingBooking);
   });
@@ -651,6 +771,15 @@ if (registrationForm) {
     updateDashboard();
     const reference = createBookingReference();
     document.querySelector("#booking-reference").textContent = reference;
+    activeParkingSession = {
+      zoneId: zone.id,
+      startedAt: Date.now(),
+      gracePeriodMs: booking.gracePeriodMs,
+      reference
+    };
+    completedParkingSession = null;
+    saveActiveParkingSession();
+    renderParkingSession();
     const confirmationDetails = document.querySelector("#confirmation-details");
     confirmationDetails.replaceChildren(
       createSummaryItem("Student TP", booking.tpNumber, "confirmation-item"),
@@ -678,32 +807,21 @@ if (registrationForm) {
   });
 
   const graceButton = document.querySelector("#left-without-parking");
-  const graceCountdown = document.querySelector("#grace-countdown");
-  const speedUpDemo = document.querySelector("#speed-up-demo");
-  let graceInterval = null;
   graceButton.addEventListener("click", () => {
-    if (graceInterval) window.clearInterval(graceInterval);
-    const duration = speedUpDemo.checked ? FAST_GRACE_PERIOD_MS : GRACE_PERIOD_MS;
-    let remaining = Math.ceil(duration / 1000);
-    graceButton.disabled = true;
-    speedUpDemo.disabled = true;
-    graceCountdown.classList.remove("is-success");
-    graceCountdown.textContent = `Time remaining: ${String(Math.floor(remaining / 60)).padStart(2, "0")}:${String(remaining % 60).padStart(2, "0")}`;
-
-    graceInterval = window.setInterval(() => {
-      remaining = Math.max(0, remaining - 1);
-      const minutes = String(Math.floor(remaining / 60)).padStart(2, "0");
-      const seconds = String(remaining % 60).padStart(2, "0");
-      graceCountdown.textContent = `Time remaining: ${minutes}:${seconds}`;
-      if (remaining === 0) {
-        window.clearInterval(graceInterval);
-        graceInterval = null;
-        graceCountdown.textContent = "Charge waived. You left within 10 minutes.";
-        graceCountdown.classList.add("is-success");
-        graceButton.disabled = false;
-        speedUpDemo.disabled = false;
-      }
-    }, 1000);
+    if (!activeParkingSession) return;
+    const elapsed = Math.max(0, Date.now() - activeParkingSession.startedAt);
+    const zoneName = getZone(activeParkingSession.zoneId).name;
+    completedParkingSession = {
+      elapsed,
+      zoneName,
+      chargeWaived: elapsed <= activeParkingSession.gracePeriodMs
+    };
+    const zone = getZone(activeParkingSession.zoneId);
+    zone.available = Math.min(zone.total, zone.available + 1);
+    activeParkingSession = null;
+    clearSavedParkingSession();
+    renderParkingSession();
+    updateDashboard();
   });
 
   updateAmount();

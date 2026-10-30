@@ -106,17 +106,27 @@
 
       <section class="grace-demo" aria-labelledby="grace-title">
         <div>
-          <p class="eyebrow">A fairer way to park</p>
-          <h2 id="grace-title">10-minute grace period</h2>
-          <p>If you enter but cannot find a space and leave within 10 minutes, your entry charge is waived.</p>
+          <p class="eyebrow">Your parking session</p>
+          <h2 id="grace-title">Parking time &amp; 10-minute grace period</h2>
+          <p>Your timer starts when a demo booking is confirmed. Leave within 10 minutes for the entry charge to be waived.</p>
         </div>
         <div class="grace-controls">
           <label class="speed-toggle" for="speed-up-demo">
             <input id="speed-up-demo" type="checkbox">
             <span>Speed up demo <small>(about 15 seconds)</small></span>
           </label>
-          <button class="button button-primary" id="left-without-parking" type="button">I left without parking</button>
+          <div class="parking-session">
+            <div class="parking-session-time">
+              <span>Time parked</span>
+              <strong id="parking-elapsed" role="timer" aria-live="off">00:00:00</strong>
+            </div>
+            <div class="parking-session-status">
+              <span id="parking-session-zone">No active parking session</span>
+              <strong id="parking-grace-status" aria-live="off">Complete a demo booking to start tracking.</strong>
+            </div>
+          </div>
           <p class="grace-countdown" id="grace-countdown" role="status" aria-live="polite"></p>
+          <button class="button button-primary" id="left-without-parking" type="button" disabled>Leave parking</button>
         </div>
       </section>
 
@@ -244,10 +254,10 @@
     <div class="confirmation-mark" aria-hidden="true">✓</div>
     <p class="eyebrow">You're all set</p>
     <h2 id="confirmation-title">Parking registered</h2>
-    <p class="confirmation-intro">Your demo booking is confirmed. Entry charge, waived if you leave within 10 minutes.</p>
+    <p class="confirmation-intro">Your parking timer starts now. Leave within 10 minutes for the entry charge to be waived.</p>
     <div class="confirmation-reference"><span>Booking reference</span><strong id="booking-reference"></strong></div>
     <div class="confirmation-details" id="confirmation-details"></div>
-    <p class="grace-note"><strong>Your 10-minute grace period</strong>If you enter but cannot find a space and leave within 10 minutes, the entry charge is waived.</p>
+    <p class="grace-note"><strong>Your 10-minute grace period</strong>Your session is tracked from booking confirmation. Leave within 10 minutes and the entry charge is waived; use the session tracker on the dashboard to end your demo visit.</p>
     <p class="demo-disclaimer"><span aria-hidden="true">ⓘ</span> Demo only. No real payment was processed.</p>
     <button class="button button-primary button-full" id="confirmation-done" type="button">Done</button>
   </dialog>
