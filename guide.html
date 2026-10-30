@@ -18,8 +18,8 @@
   <header class="site-header">
     <div class="nav-wrap">
       <a class="brand" href="index.html" aria-label="APU ParkSmart home">
-        <img src="assets/Park_smart.jpg" alt="ParkSmart logo">
-        <span>APU <strong>ParkSmart</strong></span>
+        <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="ParkSmart logo"></span>
+        <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
       </a>
       <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav">
         <span></span><span></span><span></span>
@@ -52,7 +52,8 @@
               <li>Add your vehicle plate number.</li>
               <li>Choose a parking zone and your duration.</li>
               <li>Check the amount and available slots.</li>
-              <li>Tap <strong>Register &amp; Pay</strong> to continue.</li>
+              <li>Tap <strong>Register &amp; Continue</strong> to open the demo checkout.</li>
+              <li>Entry charge, waived if you leave within 10 minutes.</li>
             </ol>
           </article>
           <article class="guide-card">
@@ -60,7 +61,7 @@
             <h3>Pay with a debit card</h3>
             <ol class="step-list">
               <li>Enter the card number, name on card, expiry date, and CVV in the payment window.</li>
-              <li>Review your booking summary before confirming.</li>
+              <li>Review your booking summary and the entry charge, waived if you leave within 10 minutes, before confirming.</li>
               <li>See your booking reference and head to your selected zone.</li>
             </ol>
             <p class="guide-tip security-tip"><strong>Stay safe.</strong> Never share your card PIN. ParkSmart’s demo will not ask for it.</p>
@@ -70,11 +71,11 @@
             <h3>Find an available spot</h3>
             <ol class="step-list">
               <li>Check the live dashboard for total spaces and each zone’s status.</li>
-              <li>Green means plenty of spaces; amber means filling up; red means almost full.</li>
+              <li><strong>Available</strong> means more than 30% of spaces are free; <strong>Nearly Full</strong> means 1–30% are free; <strong>Full</strong> means no spaces are free.</li>
               <li>Check “Last updated” so you know how recent the count is.</li>
-              <li>Head to a zone with green status and park in an open bay.</li>
+              <li>Choose an available zone. Full zones cannot be selected in the registration form.</li>
             </ol>
-            <p class="guide-tip"><strong>Where does the data come from?</strong> Indoor IoT bay sensors and outdoor computer-vision cameras report slot changes to the dashboard.</p>
+            <p class="guide-tip"><strong>Demo note.</strong> Slot counts and the 3D bay lights change in your browser. This concept demo does not connect to parking sensors or a live service.</p>
           </article>
         </div>
       </section>
@@ -85,7 +86,7 @@
           <article class="benefit-card grace-benefit">
             <span class="benefit-number" aria-hidden="true">10</span>
             <div><p class="eyebrow">No space? No charge.</p><h3>10-Minute Grace Period</h3>
-              <p>If you enter but can’t find a space, leave within 10 minutes and the gate’s Automated License Plate Recognition (ALPR) system automatically waives your entry charge.</p>
+              <p>Entry charge, waived if you leave within 10 minutes. If you enter but cannot find a space and leave during that time, you will not be charged.</p>
             </div>
           </article>
         </div>
@@ -122,9 +123,9 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a class="brand brand-footer" href="index.html">
-          <img src="assets/Park_smart.jpg" alt="" aria-hidden="true">
-          <span>APU <strong>ParkSmart</strong></span>
+        <a class="brand brand-footer" href="index.html" aria-label="APU ParkSmart home">
+          <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="" aria-hidden="true"></span>
+          <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
         </a>
         <p>Less circling, less stress. Smart parking for a more sustainable campus.</p>
         <a class="footer-instagram" href="https://www.instagram.com/apu_smart_parking_system?srtk=enV6MjYwYndrcDVn" target="_blank" rel="noopener noreferrer">Follow us on Instagram <span aria-hidden="true">↗</span></a>

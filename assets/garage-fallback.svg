@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" role="img" aria-labelledby="title description">
+  <title id="title">APU ParkSmart parking garage</title>
+  <desc id="description">A two-level isometric parking garage with a wood-orange ramp, teal lift tower, lit parking bays, and small cars.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="150%" height="160%">
+      <feDropShadow dx="0" dy="13" stdDeviation="13" flood-color="#201d35" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="1000" height="620" fill="#eff0f8"/>
+  <path d="m93 390 381-205 428 198-383 218z" fill="#292b47"/>
+  <g filter="url(#shadow)">
+    <path d="m229 296 399-208 250 123-397 212z" fill="#c7794b"/>
+    <path d="m229 296 252 126v31L229 326z" fill="#905b46"/>
+    <path d="m481 422 397-211v31L481 453z" fill="#ae704f"/>
+    <path d="m250 292 378-197 226 112-378 198z" fill="#aab4cb"/>
+    <path d="m250 292 226 113v20L250 313z" fill="#8994ae"/>
+    <path d="m476 405 378-198v20L476 425z" fill="#535673"/>
+
+    <g fill="none" stroke="#fff" stroke-width="4" opacity=".95">
+      <path d="m292 270 217 109m-178-129 217 109m-136-131 217 109m-176-131 217 109m-135-131 216 109"/>
+      <path d="m289 267 190-99m-154 117 190-99m-154 117 190-99m-154 117 190-99m-154 117 190-99"/>
+      <path d="m449 344 191-100m-155 117 191-100m-154 117 190-100m-154 117 191-100m-154 117 190-100"/>
+    </g>
+    <g fill="#e35460" stroke="#a7464e" stroke-width="2">
+      <path d="m365 249 35-19 35 18-36 19z"/>
+      <path d="m551 215 35-19 36 18-36 19z"/>
+      <path d="m674 181 35-19 36 18-36 19z"/>
+      <path d="m507 320 35-19 36 18-36 19z"/>
+    </g>
+    <g fill="#438ac1" stroke="#315f8a" stroke-width="2">
+      <path d="m455 225 35-19 36 18-36 19z"/>
+      <path d="m625 268 35-19 36 18-36 19z"/>
+      <path d="m746 218 35-19 36 18-36 19z"/>
+    </g>
+    <g fill="#eeeae4" stroke="#a7a5aa" stroke-width="2">
+      <path d="m398 329 35-19 36 18-36 19z"/>
+      <path d="m712 286 35-19 36 18-36 19z"/>
+    </g>
+
+    <path d="m570 349 180-94 45 21-180 96z" fill="#c7794b"/>
+    <path d="m570 349 45 22v23l-45-22z" fill="#905b46"/>
+    <path d="m615 371 180-95v22l-180 96z" fill="#ae704f"/>
+    <path d="m582 346 166-87 22 11-166 88z" fill="#dedce0"/>
+    <path d="m608 340 9 5-49 27-9-5zm36-19 9 5-22 12-9-5zm36-19 9 5-22 12-9-5z" fill="#fff"/>
+
+    <path d="m236 294 90-47 98 49-91 48z" fill="#c7794b"/>
+    <path d="m236 294 97 50v90l-97-48z" fill="#905b46"/>
+    <path d="m333 344 91-48v91l-91 48z" fill="#ae704f"/>
+    <path d="m253 294 80 41v73l-80-40z" fill="#348e91"/>
+    <path d="m270 301 3 2v73l-3-2zm38 20 3 2v73l-3-2zm-55 12 80 41" fill="none" stroke="#baf0e6" stroke-width="5"/>
+
+    <path d="m784 340 39-21 39 20-40 21z" fill="#246db6"/>
+    <path d="m784 340 38 20v59l-38-20z" fill="#1e5b9e"/>
+    <path d="m822 360 40-21v59l-40 21z" fill="#184b85"/>
+    <text x="822" y="383" fill="#fff" font-family="Arial,sans-serif" font-size="29" font-weight="700" text-anchor="middle">P</text>
+
+    <path d="m355 465 57-30 123 61-57 31z" fill="#d78b50"/>
+    <path d="m355 465 123 62v18l-123-62z" fill="#a56643"/>
+    <path d="m478 527 57-31v18l-57 31z" fill="#bd7747"/>
+    <path d="m372 462 57-30 122 61-57 31z" fill="#e2e0e3"/>
+    <path d="m395 453 5 3-32 17-5-3zm30-16 5 3-20 11-5-3zm30-16 5 3-20 11-5-3z" fill="#fff"/>
+
+    <path d="m175 451 31-17 33 17-32 18z" fill="#e59a50"/>
+    <path d="m184 447 18-9 19 10-19 10z" fill="#b8dbdb"/>
+    <path d="m208 492 31-17 34 17-33 18z" fill="#56aaa5"/>
+    <path d="m217 488 18-9 19 10-19 10z" fill="#b8dbdb"/>
+  </g>
+</svg>

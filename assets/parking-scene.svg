@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 620" role="img" aria-labelledby="title description">
+  <title id="title">APU campus parking</title>
+  <desc id="description">Three low-poly parking zones with green available bays and red occupied bays.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1">
+      <stop stop-color="#d9eef0"/>
+      <stop offset="1" stop-color="#a9c8c1"/>
+    </linearGradient>
+    <linearGradient id="road" x2="0" y2="1">
+      <stop stop-color="#71838b"/>
+      <stop offset="1" stop-color="#4c626e"/>
+    </linearGradient>
+    <linearGradient id="building" x2="0" y2="1">
+      <stop stop-color="#d6e5df"/>
+      <stop offset="1" stop-color="#88aeb2"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#203a4c" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="1100" height="620" fill="url(#sky)"/>
+  <circle cx="912" cy="96" r="44" fill="#fff0bc" opacity=".8"/>
+  <path d="M0 264 252 132l256 123-253 148z" fill="#92bb91"/>
+  <path d="m508 255 261-136 331 142-264 149z" fill="#8bb68e"/>
+  <path d="m24 344 492-249 571 248-490 258z" fill="url(#road)" filter="url(#shadow)"/>
+  <path d="m100 353 416-209 453 195-414 219z" fill="#526975" opacity=".65"/>
+  <g opacity=".95">
+    <path d="m88 334 99-50 67 29-99 51z" fill="#f3f0d7"/>
+    <path d="m104 342 99-51 8 4-99 51z" fill="#4dcc85"/>
+    <path d="m204 290 100-50 67 29-99 51z" fill="#f3f0d7"/>
+    <path d="m221 298 99-51 8 4-99 51z" fill="#ed6969"/>
+    <path d="m320 246 100-50 67 29-99 51z" fill="#f3f0d7"/>
+    <path d="m337 254 99-51 8 4-99 51z" fill="#45ca80"/>
+    <path d="m435 203 100-50 67 29-99 51z" fill="#f3f0d7"/>
+    <path d="m452 211 99-51 8 4-99 51z" fill="#e96565"/>
+    <path d="m549 158 100-50 67 29-99 51z" fill="#f3f0d7"/>
+    <path d="m566 166 99-51 8 4-99 51z" fill="#42c77c"/>
+    <path d="m662 114 100-50 67 29-99 51z" fill="#f3f0d7"/>
+    <path d="m679 122 99-51 8 4-99 51z" fill="#ed6969"/>
+    <path d="m145 431 99-50 68 29-100 51z" fill="#f3f0d7"/>
+    <path d="m162 439 99-51 8 4-99 51z" fill="#42c77c"/>
+    <path d="m262 386 99-50 68 29-100 51z" fill="#f3f0d7"/>
+    <path d="m279 394 99-51 8 4-99 51z" fill="#e96565"/>
+    <path d="m379 341 99-50 68 29-100 51z" fill="#f3f0d7"/>
+    <path d="m396 349 99-51 8 4-99 51z" fill="#42c77c"/>
+    <path d="m496 296 99-50 68 29-100 51z" fill="#f3f0d7"/>
+    <path d="m513 304 99-51 8 4-99 51z" fill="#ed6969"/>
+    <path d="m613 251 99-50 68 29-100 51z" fill="#f3f0d7"/>
+    <path d="m630 259 99-51 8 4-99 51z" fill="#42c77c"/>
+    <path d="m730 206 99-50 68 29-100 51z" fill="#f3f0d7"/>
+    <path d="m747 214 99-51 8 4-99 51z" fill="#e96565"/>
+  </g>
+  <g stroke="#203c4a" stroke-width="2" filter="url(#shadow)">
+    <g transform="translate(260 329) skewY(24)">
+      <path d="M0 0h82l14 18v24H-7V16z" fill="#e5b355"/>
+      <path d="m14 4 54 0 12 13H5z" fill="#b9dbe0"/>
+      <path d="M-5 30h99" fill="none"/>
+    </g>
+    <g transform="translate(545 238) skewY(24)">
+      <path d="M0 0h82l14 18v24H-7V16z" fill="#f1f0e5"/>
+      <path d="m14 4 54 0 12 13H5z" fill="#9cc5cb"/>
+      <path d="M-5 30h99" fill="none"/>
+    </g>
+    <g transform="translate(725 367) skewY(24)">
+      <path d="M0 0h82l14 18v24H-7V16z" fill="#ca745e"/>
+      <path d="m14 4 54 0 12 13H5z" fill="#aed4d7"/>
+      <path d="M-5 30h99" fill="none"/>
+    </g>
+  </g>
+  <g filter="url(#shadow)">
+    <path d="m109 204 162-83 140 61-162 85z" fill="#dbe9df"/>
+    <path d="m109 204 140 63v125L109 326z" fill="#8cafb3"/>
+    <path d="m249 267 162-85v126l-162 84z" fill="url(#building)"/>
+    <path d="m148 213 31 14v31l-31-14zm58 26 31 14v31l-31-14zm-58 36 31 14v31l-31-14zm58 26 31 14v31l-31-14z" fill="#527e8b"/>
+    <path d="m282 242 26-14v34l-26 14zm56-29 26-14v34l-26 14zm-56 79 26-14v34l-26 14zm56-29 26-14v34l-26 14z" fill="#4a7584"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" filter="url(#shadow)">
+    <g transform="translate(418 438)">
+      <path d="m0 12 42-22 42 22-42 22z" fill="#12305c"/>
+      <path d="m0 12 42 22v53L0 65z" fill="#0b2142"/>
+      <path d="m42 34 42-22v53L42 87z" fill="#174a69"/>
+      <text x="42" y="61" fill="#fff" font-size="21">A</text>
+    </g>
+    <g transform="translate(630 420)">
+      <path d="m0 12 42-22 42 22-42 22z" fill="#12305c"/>
+      <path d="m0 12 42 22v53L0 65z" fill="#0b2142"/>
+      <path d="m42 34 42-22v53L42 87z" fill="#174a69"/>
+      <text x="42" y="61" fill="#fff" font-size="21">B</text>
+    </g>
+    <g transform="translate(824 397)">
+      <path d="m0 12 42-22 42 22-42 22z" fill="#12305c"/>
+      <path d="m0 12 42 22v53L0 65z" fill="#0b2142"/>
+      <path d="m42 34 42-22v53L42 87z" fill="#174a69"/>
+      <text x="42" y="61" fill="#fff" font-size="21">C</text>
+    </g>
+  </g>
+</svg>

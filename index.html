@@ -11,15 +11,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <script src="script.js" defer></script>
+  <script src="garage-scene.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header">
     <div class="nav-wrap">
       <a class="brand" href="index.html" aria-label="APU ParkSmart home">
-        <img src="assets/Park_smart.jpg" alt="ParkSmart logo">
-        <span>APU <strong>ParkSmart</strong></span>
+        <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="ParkSmart logo"></span>
+        <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
       </a>
       <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav">
         <span></span><span></span><span></span>
@@ -35,19 +37,34 @@
     <section class="hero">
       <div class="hero-content">
         <p class="eyebrow hero-eyebrow"><span class="eyebrow-mark"></span> A smarter way to park at APU</p>
-        <h1>APU ParkSmart<span class="hero-period">.</span></h1>
+        <h1 class="wordmark-animation hero-wordmark" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart"><span class="hero-period" aria-hidden="true">.</span></h1>
         <p class="hero-subtitle">Real-Time Smart Parking &amp; Sustainable Mobility Initiative</p>
-        <p class="hero-tagline">Pay only when you actually get a space.</p>
+        <p class="hero-tagline"><span>Entry charge, waived if you leave within 10 minutes.</span></p>
         <div class="hero-badges" aria-label="ParkSmart benefits">
           <span><span class="badge-check">✓</span> 10-min Grace Period</span>
           <span><span class="badge-check">✓</span> Live Slot Data</span>
         </div>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="orbit orbit-one"></div>
-        <div class="orbit orbit-two"></div>
-        <div class="hero-car">P</div>
-        <div class="hero-art-caption"><span class="live-dot"></span> Campus parking, in sync</div>
+      <div class="hero-art" id="parking-scene" aria-label="Animated isometric two-level APU parking garage">
+        <img class="scene-fallback" src="assets/garage-fallback.svg" alt="Isometric illustration of a two-level parking garage with cars, a ramp, and a teal-glass lift tower">
+        <canvas class="scene-canvas" aria-hidden="true"></canvas>
+        <div class="scene-toolbar">
+          <div class="scene-summary">
+            <span class="scene-heading"><span class="scene-heading-icon" aria-hidden="true">P</span> APU parking garage</span>
+            <span class="scene-status status-label status-green" id="scene-status">Available</span>
+            <span class="scene-count" id="scene-count">39 / 108 spaces free</span>
+            <span class="scene-updated">Last updated <time id="scene-updated"></time></span>
+          </div>
+          <label class="scene-speed-control" for="scene-speed">
+            <span>Demo speed</span>
+            <select id="scene-speed" aria-label="Parking scene demo speed">
+              <option value="normal">Normal</option>
+              <option value="fast">Fast</option>
+            </select>
+          </label>
+        </div>
+        <p class="scene-full-message" id="scene-full-message" role="status" hidden>Parking full. Try alternative parking</p>
+        <div class="scene-footnote">Simulated scene for concept demo only.</div>
       </div>
     </section>
 
@@ -60,7 +77,7 @@
         </div>
         <div class="updated-block">
           <span class="live-label"><span class="live-dot"></span> Live</span>
-          <span class="updated-time">Last updated: <time id="last-updated">--:--:--</time></span>
+          <span class="updated-time">Last updated: <time id="last-updated"></time></span>
         </div>
       </section>
 
@@ -70,11 +87,37 @@
           <div>
             <span class="summary-kicker">Spaces available now</span>
             <p class="big-number"><span id="available-total">39</span><span class="number-divider">/</span><span id="capacity-total">108</span></p>
+            <span class="status-label status-green" id="campus-status">Available</span>
             <span class="summary-caption">across all campus zones</span>
           </div>
         </div>
         <div class="zone-list" id="zone-list" aria-live="polite" aria-label="Available spaces by zone"></div>
-        <div class="availability-footnote"><span class="sensor-icon" aria-hidden="true">⌁</span> Live counts simulated from bay sensors and outdoor cameras</div>
+        <div class="availability-footnote"><span class="sensor-icon" aria-hidden="true">⌁</span> Slot counts and bay lights are simulated in this demo.</div>
+      </section>
+
+      <section class="alternative-box" id="alternative-box" hidden aria-live="polite">
+        <div>
+          <strong>Main parking full. Try visitor parking or outside parking.</strong>
+          <p id="alternative-suggestion">Choose another zone if one has spaces available.</p>
+          <p class="directions-message" id="directions-message" hidden></p>
+        </div>
+        <button class="button button-secondary" id="directions-button" type="button">Get directions <span aria-hidden="true">→</span></button>
+      </section>
+
+      <section class="grace-demo" aria-labelledby="grace-title">
+        <div>
+          <p class="eyebrow">A fairer way to park</p>
+          <h2 id="grace-title">10-minute grace period</h2>
+          <p>If you enter but cannot find a space and leave within 10 minutes, your entry charge is waived.</p>
+        </div>
+        <div class="grace-controls">
+          <label class="speed-toggle" for="speed-up-demo">
+            <input id="speed-up-demo" type="checkbox">
+            <span>Speed up demo <small>(about 15 seconds)</small></span>
+          </label>
+          <button class="button button-primary" id="left-without-parking" type="button">I left without parking</button>
+          <p class="grace-countdown" id="grace-countdown" role="status" aria-live="polite"></p>
+        </div>
       </section>
 
       <section class="registration-section" id="register" aria-labelledby="register-title">
@@ -82,7 +125,7 @@
           <div>
             <p class="eyebrow">Quick and fair</p>
             <h2 id="register-title">Register your parking</h2>
-            <p class="section-intro">Tell us where you're headed. You'll only be charged if you park.</p>
+            <p class="section-intro">Entry charge, waived if you leave within 10 minutes.</p>
           </div>
           <div class="rate-note"><span class="rate-icon" aria-hidden="true">RM</span><span><strong>RM 1.00</strong><br>per hour</span></div>
         </div>
@@ -102,6 +145,7 @@
             <div class="field">
               <label for="zone-select">Vehicle location</label>
               <select id="zone-select" name="zone" required>
+                <option value="">Choose a zone</option>
                 <option value="zone-a">Zone A</option>
                 <option value="zone-b">Zone B</option>
                 <option value="zone-c">Zone C</option>
@@ -137,7 +181,7 @@
           <div class="form-message" id="registration-message" role="status" aria-live="polite"></div>
           <div class="form-actions">
             <p><span class="secure-icon" aria-hidden="true">✓</span> Secure demo checkout <span class="action-divider">·</span> No real payment</p>
-            <button class="button button-primary" type="submit">Register &amp; Pay <span aria-hidden="true">→</span></button>
+            <button class="button button-primary" type="submit">Register &amp; Continue — Entry charge, waived if you leave within 10 minutes <span aria-hidden="true">→</span></button>
           </div>
         </form>
       </section>
@@ -147,9 +191,9 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a class="brand brand-footer" href="index.html">
-          <img src="assets/Park_smart.jpg" alt="" aria-hidden="true">
-          <span>APU <strong>ParkSmart</strong></span>
+        <a class="brand brand-footer" href="index.html" aria-label="APU ParkSmart home">
+          <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="" aria-hidden="true"></span>
+          <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
         </a>
         <p>Less circling, less stress. Smart parking for a more sustainable campus.</p>
         <a class="footer-instagram" href="https://www.instagram.com/apu_smart_parking_system?srtk=enV6MjYwYndrcDVn" target="_blank" rel="noopener noreferrer">Follow us on Instagram <span aria-hidden="true">↗</span></a>
@@ -170,6 +214,7 @@
       <button class="dialog-close" type="button" aria-label="Close payment dialog">×</button>
     </div>
     <p class="demo-disclaimer"><span aria-hidden="true">ⓘ</span> Demo only. No real payment is processed.</p>
+    <p class="payment-grace-wording">Entry charge, waived if you leave within 10 minutes.</p>
     <div class="booking-summary" id="booking-summary" aria-label="Booking summary"></div>
     <form id="payment-form" novalidate>
       <div class="field">
@@ -199,10 +244,10 @@
     <div class="confirmation-mark" aria-hidden="true">✓</div>
     <p class="eyebrow">You're all set</p>
     <h2 id="confirmation-title">Parking registered</h2>
-    <p class="confirmation-intro">Your demo booking is confirmed. Have a good day on campus!</p>
+    <p class="confirmation-intro">Your demo booking is confirmed. Entry charge, waived if you leave within 10 minutes.</p>
     <div class="confirmation-reference"><span>Booking reference</span><strong id="booking-reference"></strong></div>
     <div class="confirmation-details" id="confirmation-details"></div>
-    <p class="grace-note"><strong>Your 10-minute grace period</strong>If you leave the gate without parking within 10 minutes, your entry charge is waived automatically (ALPR).</p>
+    <p class="grace-note"><strong>Your 10-minute grace period</strong>If you enter but cannot find a space and leave within 10 minutes, the entry charge is waived.</p>
     <p class="demo-disclaimer"><span aria-hidden="true">ⓘ</span> Demo only. No real payment was processed.</p>
     <button class="button button-primary button-full" id="confirmation-done" type="button">Done</button>
   </dialog>
