@@ -82,6 +82,7 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .zone-row { min-width: 0; }
 .zone-details { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
 .zone-name { overflow: hidden; color: var(--ink); font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.zone-access-note { display: block; margin: -4px 0 8px; color: var(--teal-dark); font-size: 10px; font-weight: 700; }
 .zone-count { flex: 0 0 auto; color: var(--muted); font-size: 11px; font-weight: 600; }
 .zone-count strong { color: var(--navy); font-size: 13px; }
 .progress-track { height: 7px; overflow: hidden; border-radius: 99px; background: #edf0f4; }
@@ -452,6 +453,14 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .button-secondary { flex: 0 0 auto; border: 1px solid #d6c28f; background: #fff; color: var(--navy); }
 .button-secondary:hover { background: #fff5da; }
 .grace-demo { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 18px; padding: 20px 22px; border: 1px solid #dcefea; border-radius: 14px; background: #f5fbf9; }
+.demo-payment-card { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 18px; padding: 20px 22px; border: 1px solid #dcefea; border-radius: 14px; background: #fff; }
+.demo-payment-card[hidden] { display: none; }
+.demo-payment-card h2 { margin: 0; color: var(--navy); font-size: 19px; }
+.demo-payment-card p { margin: 6px 0 0; color: var(--muted); font-size: 11px; }
+.demo-payment-card .eyebrow { margin: 0 0 5px; }
+.demo-payment-disclaimer { max-width: 540px; }
+.demo-payment-actions { display: grid; justify-items: end; gap: 8px; }
+.demo-payment-actions p { max-width: 320px; text-align: right; }
 .grace-demo h2 { margin: 0; color: var(--navy); font-size: 19px; letter-spacing: -.4px; }
 .grace-demo > div:first-child > p:last-child { max-width: 540px; margin: 5px 0 0; color: var(--muted); font-size: 11px; }
 .grace-controls { min-width: 230px; display: grid; justify-items: end; gap: 9px; }
@@ -530,6 +539,9 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   .alternative-box { align-items: stretch; flex-direction: column; gap: 12px; padding: 16px; }
   .alternative-box .button { width: 100%; }
   .grace-demo { align-items: stretch; flex-direction: column; gap: 17px; padding: 18px; }
+  .demo-payment-card { align-items: stretch; flex-direction: column; gap: 17px; padding: 18px; }
+  .demo-payment-actions { justify-items: stretch; }
+  .demo-payment-actions p { text-align: left; }
   .grace-controls { min-width: 0; justify-items: stretch; }
   .parking-session { min-width: 0; grid-template-columns: auto 1fr; }
   .speed-toggle { justify-content: flex-start; }

@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=2" defer></script>
+  <script src="app.js?v=3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -58,7 +58,7 @@
               <li>Visitors pay RM 1.00 per hour from the start, with no grace period. Students and Lecturer / Staff pay RM 5.00 per Malaysia calendar day and have 10 minutes to end parking without a charge.</li>
               <li>Start parking when you arrive. Home shows your car, time parked, and current price.</li>
               <li>End parking when you leave. The final demo charge is calculated from the actual parked time; no real payment is processed.</li>
-              <li>Home shows the car’s zone and space number when connected parking sensors report its location. Sensors are not connected in this demo.</li>
+              <li>Zone C is labeled for visitors only on the dashboard and parking map. This is informational: zones are not assigned to a live session because sensors are not connected in this demo.</li>
             </ol>
           </article>
           <article class="guide-card">
@@ -67,7 +67,7 @@
             <ol class="step-list">
               <li>Choose a registered vehicle and start parking. No payment is taken at the start.</li>
               <li>End your session on Home when you leave. Visitors are charged RM 1.00 per hour; students and Lecturer / Staff are charged RM 5.00 per Malaysia calendar day after the 10-minute grace period.</li>
-              <li>This is a demo: no actual payment is collected.</li>
+              <li>After ending a session with a charge, select <strong>Pay by debit card (demo)</strong> to see a simulated result. No card details are requested or stored, and no actual payment is collected.</li>
             </ol>
             <p class="guide-tip security-tip"><strong>Stay safe.</strong> Never share your card PIN. ParkSmart’s demo will not ask for it.</p>
           </article>
@@ -114,7 +114,7 @@
           </details>
           <details class="faq-item">
             <summary>Does ParkSmart process payments?</summary>
-            <p>No. The prototype calculates a demo parking charge but does not request card details or process a real transaction.</p>
+            <p>No. After a charged session, the prototype offers a simulated debit-card result. It never requests card details or processes a real transaction.</p>
           </details>
           <details class="faq-item">
             <summary>How are my TP number and vehicle plate used?</summary>

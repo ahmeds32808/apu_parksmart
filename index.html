@@ -16,7 +16,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=2" defer></script>
+  <script src="app.js?v=3" defer></script>
   <script src="garage-scene.js" defer></script>
 </head>
 <body>
@@ -100,6 +100,19 @@
           <div class="active-car-details" id="active-car-details" hidden></div>
           <button class="button button-primary" id="left-without-parking" type="button" disabled>End parking</button>
           <a class="button button-primary" id="register-parking-home" href="parking.html">Register parking <span aria-hidden="true">→</span></a>
+        </div>
+      </section>
+
+      <section class="demo-payment-card" id="demo-payment-card" aria-labelledby="demo-payment-title" hidden>
+        <div>
+          <p class="eyebrow">Demo payment</p>
+          <h2 id="demo-payment-title">Debit card option</h2>
+          <p id="demo-payment-summary"></p>
+          <p class="demo-payment-disclaimer">This only simulates a payment. No card number or security code is requested, and no transaction is made.</p>
+        </div>
+        <div class="demo-payment-actions">
+          <button class="button button-primary" id="demo-card-payment" type="button">Pay by debit card (demo)</button>
+          <p id="demo-payment-status" role="status" aria-live="polite"></p>
         </div>
       </section>
 

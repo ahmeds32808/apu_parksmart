@@ -192,6 +192,12 @@ function initializeDashboard() {
       row.innerHTML = `<div class="zone-details"><span class="zone-name"></span><span class="zone-count"><strong></strong> / ${zone.total}</span></div><span class="status-label status-${zoneStatus[0]}">${zoneStatus[1]}</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="${zone.total}" aria-valuenow="${zone.available}"><div class="progress-fill"></div></div>`;
       row.querySelector(".zone-name").textContent = zone.name;
       row.querySelector(".zone-count strong").textContent = String(zone.available);
+      if (zone.id === "zone-c") {
+        const accessNote = document.createElement("span");
+        accessNote.className = "zone-access-note";
+        accessNote.textContent = "Visitors only";
+        row.insertBefore(accessNote, row.querySelector(".status-label"));
+      }
       row.querySelector(".progress-track").setAttribute("aria-label", `${zone.name} available spaces`);
       row.querySelector(".progress-fill").style.width = `${zoneRatio * 100}%`;
       return row;
@@ -236,7 +242,7 @@ function initializeVisitorCounter() {
     .then(({ data, error }) => {
       if (error) throw error;
       countElement.textContent = Number(data).toLocaleString();
-      statusElement.textContent = "Approximate unique browsers today. Clearing browser storage may count you again.";
+      statusElement.textContent = "Approximate unique browsers today (Malaysia time). Clearing browser storage may count you again.";
     })
     .catch((error) => {
       statusElement.textContent = "Visitor count is not available. Check the Supabase setup.";
@@ -470,7 +476,12 @@ function initializeParkingSessionSummary() {
   const registerLink = document.querySelector("#register-parking-home");
   const introElement = document.querySelector("#parking-home-intro");
   const sessionCard = document.querySelector("#parking-home-session");
+  const demoPaymentCard = document.querySelector("#demo-payment-card");
+  const demoPaymentSummary = document.querySelector("#demo-payment-summary");
+  const demoPaymentButton = document.querySelector("#demo-card-payment");
+  const demoPaymentStatus = document.querySelector("#demo-payment-status");
   const previewColor = new URLSearchParams(window.location.search).get("carPreview");
+  demoPaymentCard.hidden = true;
   const malaysiaDateFormatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Kuala_Lumpur",
     year: "numeric",
@@ -495,6 +506,19 @@ function initializeParkingSessionSummary() {
   let currentCarColor = "orange";
   let lastRequestedCarColor = null;
   let carColorRequest = 0;
+  function showDemoPayment(amount) {
+    demoPaymentCard.dataset.amount = String(amount);
+    demoPaymentCard.hidden = false;
+    demoPaymentButton.disabled = amount <= 0;
+    demoPaymentButton.hidden = amount <= 0;
+    demoPaymentButton.textContent = "Pay by debit card (demo)";
+    demoPaymentStatus.textContent = amount > 0
+      ? "No real payment has been made. Select the button to see the demo result."
+      : "No payment is due for this session.";
+    demoPaymentSummary.textContent = amount > 0
+      ? `Final demo amount: RM ${amount.toFixed(2)}.`
+      : "Final demo amount: RM 0.00.";
+  }
 
   function applyCarModelColor(colorName) {
     if (!carModel?.model || lastRequestedCarColor === colorName) return;
@@ -651,6 +675,7 @@ function initializeParkingSessionSummary() {
       return;
     }
     currentSession = data;
+    demoPaymentCard.hidden = true;
     render();
   }
 
@@ -673,9 +698,18 @@ function initializeParkingSessionSummary() {
     const finalAmount = Number(endedSession?.amount_rm || 0);
     currentSession = null;
     render();
-    messageElement.textContent = finalAmount === 0
-      ? "Parking ended. No demo charge was recorded."
-      : `Parking ended. Final demo charge: RM ${finalAmount.toFixed(2)}. No real payment was processed.`;
+    showDemoPayment(finalAmount);
+    if (finalAmount === 0) {
+      messageElement.textContent = "Parking ended. No demo charge was recorded.";
+    }
+  });
+
+  demoPaymentButton.addEventListener("click", () => {
+    const amount = Number(demoPaymentCard.dataset.amount);
+    if (!Number.isFinite(amount) || amount <= 0 || demoPaymentButton.disabled) return;
+    demoPaymentButton.disabled = true;
+    demoPaymentButton.textContent = "Demo payment complete";
+    demoPaymentStatus.textContent = `Demo debit-card payment complete for RM ${amount.toFixed(2)}. No real transaction was made and no card details were collected.`;
   });
 
   function formatElapsedTime(milliseconds) {

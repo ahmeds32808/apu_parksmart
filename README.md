@@ -30,7 +30,8 @@ The Supabase publishable key in `supabase-config.js` is intended for browser use
 
 - Visitor parking is RM 1.00 per hour, charged from the start with no grace period. The session ends when the user ends parking.
 - Student and Lecturer / Staff parking is RM 5.00 per Malaysia calendar day. Ending the session within 10 minutes avoids a charge; otherwise, a daily rate is recorded for each calendar day parked.
-- The Home page shows the registered car, live time parked, and a live price estimate. No payment is processed by this prototype.
+- Zone C is labeled Visitors only as an informational campus rule. Zones are not assigned to parking sessions until sensor integration is available.
+- The Home page shows the registered car, live time parked, and a live price estimate. After ending a session with a charge, users can view a simulated debit-card result. No card details are collected and no payment is processed.
 - Parking availability and the 3D garage are simulated in each browser; they are not connected to campus sensors. The active-session schema includes a sensor location field, but the prototype cannot populate it until a sensor integration is added. Supabase stores accounts, registered car plates, and the user's active parking session.
 - The visitor statistic approximates unique browsers per Malaysia calendar day using a browser-generated anonymous ID. Clearing local browser storage may count a browser again; it is not an audited people count.
 - Account type, student TP number, and staff ID are user-entered demo information and are not independently verified. Do not use this prototype as an access-control or payment system.
