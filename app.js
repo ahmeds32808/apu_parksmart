@@ -47,6 +47,9 @@ async function getAccountData() {
   const client = getSupabaseClient();
   if (!client) return { client: null, user: null, profile: null, vehicles: [], error: null };
   const { data: authData, error: authError } = await client.auth.getUser();
+  if (authError?.code === "auth_session_missing") {
+    return { client, user: null, profile: null, vehicles: [], error: null };
+  }
   if (authError) return { client, user: null, profile: null, vehicles: [], error: authError };
   if (!authData.user) return { client, user: null, profile: null, vehicles: [], error: null };
 
