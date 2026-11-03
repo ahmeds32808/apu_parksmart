@@ -72,19 +72,12 @@ create unique index if not exists one_active_parking_session_per_user
   on public.parking_sessions (user_id)
   where status = 'active';
 
-create table if not exists public.daily_website_visitors (
-  visit_date date not null,
-  visitor_id uuid not null,
-  primary key (visit_date, visitor_id)
-);
-
 alter table public.profiles enable row level security;
 alter table public.vehicles enable row level security;
 alter table public.parking_sessions enable row level security;
-alter table public.daily_website_visitors enable row level security;
 
 grant usage on schema public to anon, authenticated;
-revoke all on public.profiles, public.vehicles, public.parking_sessions, public.daily_website_visitors from anon, authenticated;
+revoke all on public.profiles, public.vehicles, public.parking_sessions from anon, authenticated;
 grant select on public.profiles, public.vehicles, public.parking_sessions to authenticated;
 grant insert, delete on public.vehicles to authenticated;
 
@@ -291,34 +284,4 @@ create trigger on_auth_user_created_parksmart
 
 revoke all on function public.create_parksmart_profile() from public, anon, authenticated;
 
-create or replace function public.record_daily_visitor(p_visitor_id uuid)
-returns bigint
-language plpgsql
-security definer
-set search_path = public, pg_temp
-as $$
-declare
-  local_date date := (now() at time zone 'Asia/Kuala_Lumpur')::date;
-  visitor_count bigint;
-begin
-  if p_visitor_id is null then
-    raise exception 'Visitor ID is required';
-  end if;
-
-  delete from public.daily_website_visitors
-  where visit_date < local_date - 30;
-
-  insert into public.daily_website_visitors (visit_date, visitor_id)
-  values (local_date, p_visitor_id)
-  on conflict do nothing;
-
-  select count(*) into visitor_count
-  from public.daily_website_visitors
-  where visit_date = local_date;
-  return visitor_count;
-end;
-$$;
-
-revoke all on public.daily_website_visitors from anon, authenticated;
-revoke all on function public.record_daily_visitor(uuid) from public;
-grant execute on function public.record_daily_visitor(uuid) to anon, authenticated;
+drop function if exists public.record_daily_visitor(uuid);

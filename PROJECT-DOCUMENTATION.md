@@ -2,7 +2,7 @@
 
 ## 1. Project overview
 
-APU ParkSmart is a four-page campus-parking prototype for Asia Pacific University (APU). It demonstrates account setup, saved vehicles, parking-session timing and pricing, simulated parking availability, and an approximate daily website-visitor count.
+APU ParkSmart is a four-page campus-parking prototype for Asia Pacific University (APU). It demonstrates account setup, saved vehicles, parking-session timing and pricing, and simulated parking availability.
 
 The public demo is available at [https://ahmeds32808.github.io/apu_parksmart/](https://ahmeds32808.github.io/apu_parksmart/).
 
@@ -14,11 +14,11 @@ This section records the project decisions in the order they evolved, including 
 
 ### Phase 1 — Initial idea and four-page structure
 
-The original request described a parking duration, a registration page, a Home-page 10-minute timer/pricing box, car information, a parking registration page, car location, and a count of website visitors. The user asked for four pages total and clarified that account registration should happen once, separately from the user's profile/vehicle management.
+The original request described a parking duration, a registration page, a Home-page 10-minute timer/pricing box, car information, a parking registration page, car location, and a count of website visitors. The user asked for four pages total and clarified that account registration should happen once, separately from the user's profile/vehicle management. The visitor counter was later removed at the user's request.
 
 The resulting page structure is:
 
-1. **Home** for the dashboard, profile, visitor statistic, and active parking session.
+1. **Home** for the dashboard, profile, and active parking session.
 2. **Account Registration** for first-time account creation and later sign-in.
 3. **Register Parking** for starting a parking session using a previously registered car.
 4. **Guide** for instructions, pricing, and limitations.
@@ -40,7 +40,7 @@ The project initially explored a different browser-only booking/checkout flow wi
 The final pricing rules are:
 
 - Visitors pay RM 1.00 per hour from the start; there is no grace period.
-- Students and Lecturer / Staff pay RM 5.00 per Malaysia calendar day.
+- Students and Lecturer / Staff pay RM 5.00 per day.
 - Students and Lecturer / Staff can end parking within 10 minutes without a charge.
 - Student and staff daily charges count Malaysia calendar dates touched by the session.
 
@@ -62,7 +62,7 @@ The user also reported that an unnecessary local Python preview server was block
 
 The browser app was connected to the user's Supabase project using its project URL and browser-safe publishable key. The key is intended for browser use; a Supabase secret or `service_role` key must never be put in frontend code.
 
-The SQL setup creates profile, vehicle, parking-session, and daily-visitor tables; row-level security and access policies; a new-user trigger that creates the profile and first vehicle; and RPC functions for starting/ending sessions and recording daily visitors. An outdated revoke statement for an earlier `start_parking_session` function signature caused the first setup attempt to fail. That stale statement was removed, after which the user ran the setup successfully in Supabase.
+The SQL setup creates profile, vehicle, and parking-session tables; row-level security and access policies; a new-user trigger that creates the profile and first vehicle; and RPC functions for starting and ending sessions. An outdated revoke statement for an earlier `start_parking_session` function signature caused the first setup attempt to fail. That stale statement was removed, after which the user ran the setup successfully in Supabase.
 
 Supabase Auth redirect settings were later corrected to use the published GitHub Pages site as the Site URL and allowed redirect destination. Email confirmation initially sent users to a broken local URL. At the user's request, the Supabase dashboard's **Confirm email** setting was then disabled so new demo accounts could sign in without waiting for email delivery. Email and password are still required; an email address is no longer verified by this demo configuration.
 
@@ -74,7 +74,7 @@ Earlier repository milestones include publishing the site/Instagram link, adding
 
 ### Phase 7 — Live-flow testing and fixes
 
-The public pages, account form validations, signed-out UI, mobile layouts, Guide navigation/FAQ, visitor counter, and car-colour views were tested. Testing found a Supabase `AuthSessionMissingError` on a signed-out visit; the app was updated to show the regular sign-in prompt instead. A cache-busting query version was added to all four pages so browsers fetch the new `app.js`.
+The public pages, account form validations, signed-out UI, mobile layouts, Guide navigation/FAQ, visitor counter (before its removal), and car-colour views were tested. Testing found a Supabase `AuthSessionMissingError` on a signed-out visit; the app was updated to show the regular sign-in prompt instead. A cache-busting query version was added to all four pages so browsers fetch the new `app.js`.
 
 With the user's permission, Visitor and Student test accounts were created and their live flows tested. The Visitor flow confirmed hourly charging with no grace period, duplicate-active-session prevention, and ending sessions. The Student flow confirmed the 10-minute countdown and zero charge when ended within the grace period. A temporary extra vehicle was added to verify multi-car selection and then removed. Test sessions were ended; no active test parking session remained after that test round.
 
@@ -84,9 +84,9 @@ Staff signup was initially blocked by Supabase's email rate limit (HTTP 429). Af
 
 The Student server-side charge procedure was also tested in a transaction that was rolled back afterward: an under-10-minute session returned RM 0 and a cancelled/not-charged status; a session at the 10-minute boundary returned RM 5 and a completed/charged status. A read-only check after testing confirmed no Staff test user existed at that point and no active Student session remained. The Staff account was created later, when email confirmation was disabled.
 
-### Phase 8 — Current visitor, zone, payment, and documentation updates
+### Phase 8 — Current visitor-counter removal, zone, payment, and documentation updates
 
-The daily counter already used the `Asia/Kuala_Lumpur` date; its Home-page explanation was clarified to say Malaysia time. It counts approximate unique browser IDs, not people.
+The website-visitor counter was removed from Home at the user's request. The browser no longer creates or stores visitor IDs or calls the visitor-count RPC. The SQL setup drops the old `record_daily_visitor` function if the setup script is rerun; an existing `daily_website_visitors` table is left untouched to preserve any prior records.
 
 The user requested that Zone C be for visitors. Because live sessions do not have a zone-selection or sensor-assignment flow, the agreed implementation is a visual rule only: Zone C is labeled **Visitors only** on the Home availability dashboard and parking map. No zone is assigned or access-controlled by the current live flow.
 
@@ -98,7 +98,7 @@ This document was added to record the full project history, current architecture
 
 | Page | File | Purpose |
 |---|---|---|
-| Home | `index.html` | Dashboard, simulated availability, visitor count, profile and saved vehicles, active parking session, and demo payment result |
+| Home | `index.html` | Dashboard, simulated availability, profile and saved vehicles, active parking session, and demo payment result |
 | Account Registration | `account.html` | Create an account once or sign in; the first vehicle is saved with the account |
 | Register Parking | `parking.html` | Start parking using a vehicle already saved to the signed-in account |
 | Guide | `guide.html` | Instructions, pricing rules, demo limitations, and FAQs |
@@ -116,8 +116,8 @@ Typical journey:
 | Account type | Parking rate | Grace period |
 |---|---:|---|
 | Visitor | RM 1.00 per hour | None; charges begin at the start |
-| Student | RM 5.00 per Malaysia calendar day | 10 minutes |
-| Lecturer / Staff | RM 5.00 per Malaysia calendar day | 10 minutes |
+| Student | RM 5.00 per day | 10 minutes |
+| Lecturer / Staff | RM 5.00 per day | 10 minutes |
 
 For Students and Lecturer / Staff, ending parking during the first 10 minutes records RM 0. Otherwise, the daily amount is based on the number of Malaysia calendar dates touched by the session, including its start and end dates.
 
@@ -131,18 +131,7 @@ The server-side Supabase functions are the source of truth for starting and endi
 - The live Supabase parking flow does not let a user select a zone and does not assign a zone to a session. Zone assignment requires a real sensor or parking-system integration; the current label does not enforce access.
 - The exact vehicle location is unavailable until a connected sensor reports it. The session table has a `sensor_location` field for that future integration.
 
-## 6. Daily website-visitor counter
-
-The Home page displays an approximate count of distinct browser IDs recorded for the current Malaysia calendar day:
-
-1. The browser creates a random UUID and stores it in local storage under `apusmart.dailyVisitorId`.
-2. The browser calls the Supabase `record_daily_visitor` RPC with that ID.
-3. The RPC derives the date in the `Asia/Kuala_Lumpur` time zone and inserts `(visit_date, visitor_id)` into `daily_website_visitors`.
-4. The table’s composite primary key prevents the same browser ID from being counted twice on the same day. A new Malaysia calendar date creates a new daily count automatically.
-
-The count is an estimate of browsers, not people. Clearing browser storage, using another browser/device, or blocking local storage can change whether a visit is counted.
-
-## 7. Demo debit-card option
+## 6. Demo debit-card option
 
 After a parking session ends with a positive calculated amount, Home offers **Pay by debit card (demo)**. Selecting it changes the page to a simulated completion message.
 
@@ -154,12 +143,12 @@ After a parking session ends with a positive calculated amount, Home offers **Pa
 
 Real payments require a payment provider with a hosted checkout, server-side payment creation and verification, webhook handling, and appropriate security/compliance review. Never add raw card collection to this static frontend.
 
-## 8. Technical architecture
+## 7. Technical architecture
 
 ### Frontend
 
 - Static HTML and CSS with vanilla JavaScript; no frontend framework or build step is required.
-- `app.js` implements Supabase access, account/profile display, simulated dashboard availability, the visitor counter, and Home parking-session display.
+- `app.js` implements Supabase access, account/profile display, simulated dashboard availability, and Home parking-session display.
 - `parking-app.js` loads the signed-in user’s vehicles and starts a session through Supabase.
 - `garage-scene.js` renders the illustrated/simulated campus parking scene.
 - `style.css` contains layout, responsive styling, and component styles.
@@ -176,21 +165,17 @@ Real payments require a payment provider with a hosted checkout, server-side pay
 - `profiles`: one account profile per Supabase Auth user.
 - `vehicles`: saved vehicle plates and display colours.
 - `parking_sessions`: active/completed/cancelled sessions, rates, timestamps, and optional sensor location.
-- `daily_website_visitors`: approximate daily browser counts.
-
 Important RPC functions:
 
 - `start_parking_session(p_vehicle_id)`: checks the signed-in account and vehicle, then starts one active session.
 - `end_parking_session(p_session_id)`: ends the caller’s active session and calculates the amount according to account type and Malaysia time.
-- `record_daily_visitor(p_visitor_id)`: records or reuses the browser’s daily counter entry.
-
 Row-level security and restricted table/function privileges protect account-owned profile, vehicle, and session operations. The browser calls the public RPCs with the signed-in user’s Supabase session.
 
 ### Hosting
 
 GitHub Pages publishes the repository root using `.github/workflows/deploy-pages.yml` when the configured branch is updated. The Supabase Auth Site URL and allowed redirect URL should match the published Pages URL.
 
-## 9. Supabase setup and operations
+## 8. Supabase setup and operations
 
 1. Set the project URL and browser-safe publishable/anon key in `supabase-config.js`.
 2. Run `supabase-setup.sql` in the project’s Supabase SQL Editor.
@@ -198,28 +183,29 @@ GitHub Pages publishes the repository root using `.github/workflows/deploy-pages
 4. Keep credentials and service-role keys out of the repository and browser.
 5. The current demo project has email confirmation disabled in the Supabase dashboard so test users can sign in without a confirmation email. Email and password are still required. This is a dashboard setting, not a setting applied by the SQL setup file.
 
+The visitor-count RPC is removed when this setup script is rerun. Any existing `daily_website_visitors` table is retained and is no longer used by the app.
+
 For a real service, verify user email addresses, configure a reliable SMTP provider, add appropriate abuse protection, and review data retention and privacy requirements before opening registration publicly.
 
-## 10. Privacy and security notes
+## 9. Privacy and security notes
 
 - Do not use real sensitive personal details in this demo.
 - Student TP numbers, staff IDs, names, email addresses, and vehicle plates are user-entered demo information and are not independently validated against APU records.
 - Email confirmation is currently disabled for this demo; a registrant can enter an email address they do not own. Re-enable confirmation before relying on account ownership.
-- The visitor metric uses a random local-storage UUID rather than an audited identity. Clearing storage can cause a repeat count.
 - Never store payment-card details in this application. The debit-card UI is intentionally non-functional and collects no card data.
 - Parking slot availability and location are not live sensor data.
 
-## 11. Verification performed
+## 10. Verification performed
 
 Date: 3 November 2026.
 
 - `node --check app.js`, `node --check parking-app.js`, and `node --check script.js` passed. Earlier browser sessions also ran syntax checks for `garage-scene.js`.
 - `git diff --check` passed.
-- Local browser checks confirmed the dashboard renders the Zone C **Visitors only** note, the visitor-count status identifies Malaysia time, and the payment section is hidden before a charged session ends.
+- Local browser checks confirmed the dashboard renders the Zone C **Visitors only** note and the payment section is hidden before a charged session ends.
 - Local browser checks confirmed the parking map and Guide describe the Zone C visual rule and the simulated payment.
 - At a 390 px viewport, the Home page and parking map had no horizontal overflow.
 - A browser UI check exercised the debit-card demo completion state with a test amount. It displayed that no real transaction was made and no card details were collected; the payment section contains no card input fields.
-- The visitor-counter implementation was inspected: the RPC uses the `Asia/Kuala_Lumpur` calendar date and a `(visit_date, visitor_id)` uniqueness constraint.
+- The visitor counter was removed from the Home page and browser code; the SQL setup now removes the old RPC without deleting its existing table/data.
 - Existing live parking-rate RPC checks (performed earlier) covered the Student grace-period cancellation and the RM 5.00 charge at the 10-minute boundary in a rolled-back SQL transaction.
 - Earlier responsive checks covered all four pages at a 390 px viewport. Account-field validation, visitor/student profile switching, mobile navigation, Guide FAQ/navigation, all seven car colours, signed-out UI, and public page loading were exercised.
 - Visitor and Student live account/parking flows passed in earlier testing. Staff account creation/sign-in passed after email confirmation was disabled; Staff parking remains unverified.

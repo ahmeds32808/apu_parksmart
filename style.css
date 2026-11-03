@@ -311,16 +311,13 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
-.visitor-stat-card, .profile-card, .account-card {
+.profile-card, .account-card {
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--white);
   box-shadow: var(--shadow);
 }
-.visitor-stat-card { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 24px; padding: 22px 26px; }
-.visitor-stat-card h2, .account-card h2 { margin: 0; color: var(--navy); font-size: 22px; letter-spacing: -.5px; }
-.visitor-stat-card p:last-child { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
-.visitor-stat-card > strong { color: var(--teal-dark); font-size: 42px; font-variant-numeric: tabular-nums; line-height: 1; }
+.account-card h2 { margin: 0; color: var(--navy); font-size: 22px; letter-spacing: -.5px; }
 .profile-section { margin-top: 48px; }
 .profile-actions { display: flex; flex-wrap: wrap; gap: 9px; }
 .button-secondary { border: 1px solid #dce5eb; background: #f7fafc; color: var(--navy); }
@@ -359,9 +356,6 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .payment-dialog .payment-error:not(:empty) { min-height: 20px; margin: 10px 0; }
 
 @media (max-width: 680px) {
-  .visitor-stat-card { padding: 18px; }
-  .visitor-stat-card h2 { font-size: 19px; }
-  .visitor-stat-card > strong { font-size: 34px; }
   .profile-section { margin-top: 38px; }
   .profile-actions { width: 100%; }
   .profile-actions .button { flex: 1; }

@@ -216,40 +216,6 @@ function initializeDashboard() {
   }, 5000);
 }
 
-function initializeVisitorCounter() {
-  const countElement = document.querySelector("#visitor-stat-count");
-  const statusElement = document.querySelector("#visitor-stat-status");
-  if (!countElement || !statusElement) return;
-  const client = getSupabaseClient();
-  if (!client) {
-    statusElement.textContent = getSupabaseConfigurationMessage();
-    return;
-  }
-
-  let visitorId;
-  try {
-    visitorId = localStorage.getItem("apusmart.dailyVisitorId");
-    if (!visitorId) {
-      visitorId = crypto.randomUUID();
-      localStorage.setItem("apusmart.dailyVisitorId", visitorId);
-    }
-  } catch (error) {
-    statusElement.textContent = "Daily visitor count is unavailable because this browser blocks local storage.";
-    console.warn("ParkSmart could not store the anonymous daily visitor ID.", error);
-    return;
-  }
-  client.rpc("record_daily_visitor", { p_visitor_id: visitorId })
-    .then(({ data, error }) => {
-      if (error) throw error;
-      countElement.textContent = Number(data).toLocaleString();
-      statusElement.textContent = "Approximate unique browsers today (Malaysia time). Clearing browser storage may count you again.";
-    })
-    .catch((error) => {
-      statusElement.textContent = "Visitor count is not available. Check the Supabase setup.";
-      console.error("ParkSmart could not load the daily visitor count.", error);
-    });
-}
-
 function createTextElement(tagName, text) {
   const element = document.createElement(tagName);
   element.textContent = text;
@@ -741,7 +707,6 @@ initializeNavigation();
 initializeWordmarkAnimations();
 initializeSiteQrCode();
 initializeDashboard();
-initializeVisitorCounter();
 initializeAccountPage();
 initializeProfilePanel();
 initializeParkingSessionSummary();
