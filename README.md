@@ -9,6 +9,8 @@ APU ParkSmart is a four-page campus parking demo built with HTML, CSS, and vanil
 
 The Profile panel is on Home; users can add additional vehicles and choose their display colours there.
 
+See [PROJECT-DOCUMENTATION.md](./PROJECT-DOCUMENTATION.md) for the complete requirements history, implementation decisions, system architecture, Supabase setup, validation record, and known limitations.
+
 ## Run locally
 
 Serve the project folder with a static web server and open its local URL. Supabase Auth and the shared visitor statistic require a configured Supabase project. Set the project URL and browser-safe publishable key (or legacy anon key) in `supabase-config.js`, then run `supabase-setup.sql` in the Supabase SQL Editor. Never put a Supabase secret or `service_role` key in this frontend project.
