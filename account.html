@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12305c">
+  <meta name="description" content="Create your APU ParkSmart account once and register your first car.">
+  <title>Account registration | APU ParkSmart</title>
+  <link rel="icon" type="image/jpeg" href="assets/Park_smart.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="APU ParkSmart home">
+        <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="ParkSmart logo"></span>
+        <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link active" href="account.html" aria-current="page">Account Registration</a>
+        <a class="nav-link" href="parking.html">Register Parking</a>
+        <a class="nav-link" href="guide.html">Guide</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="guide-hero account-hero">
+      <p class="eyebrow"><span class="eyebrow-mark"></span> One-time setup</p>
+      <h1>Your account, <span>one time.</span></h1>
+      <p>Save your details and first vehicle once. Choose a car and parking options separately whenever you park.</p>
+    </section>
+
+    <div class="page-content account-content">
+      <section class="account-card" aria-labelledby="account-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Account registration</p>
+            <h2 id="account-heading">Create an account or sign in</h2>
+            <p class="section-intro">Student TP number or staff ID is collected here, not on the parking form.</p>
+          </div>
+        </div>
+
+        <form class="form-card" id="account-form">
+          <div class="form-grid">
+            <div class="field" id="account-name-field">
+              <label for="account-name">Full name</label>
+              <input id="account-name" name="fullName" type="text" autocomplete="name" maxlength="100" required>
+            </div>
+            <div class="field" id="account-type-field">
+              <label for="account-type">Account type</label>
+              <select id="account-type" name="userType" required>
+                <option value="student">Student</option>
+                <option value="staff">Lecturer / Staff</option>
+                <option value="visitor">Visitor</option>
+              </select>
+            </div>
+            <div class="field" id="campus-id-field">
+              <label for="campus-id" id="campus-id-label">Student TP number</label>
+              <input id="campus-id" name="campusId" type="text" autocomplete="off" placeholder="TP012345" maxlength="30" pattern="[Tt][Pp][0-9]{6}" aria-describedby="campus-id-hint" required>
+              <small class="field-hint" id="campus-id-hint">Format: TP followed by 6 digits.</small>
+            </div>
+            <div class="field">
+              <label for="account-email">Email</label>
+              <input id="account-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+            </div>
+            <div class="field">
+              <label for="account-password">Password</label>
+              <input id="account-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+              <small class="field-hint">At least 8 characters. Use a unique password.</small>
+            </div>
+            <div class="field" id="first-car-field">
+              <label for="first-car-plate">First vehicle plate</label>
+              <input id="first-car-plate" name="vehiclePlate" type="text" placeholder="WXY 1234" maxlength="10" pattern="[A-Za-z]{1,3}\s?[0-9]{1,4}" required>
+              <small class="field-hint">Add extra vehicles later from Profile on Home.</small>
+            </div>
+            <div class="field" id="first-car-color-field">
+              <label for="first-car-color">Car colour</label>
+              <select id="first-car-color" name="vehicleColor">
+                <option value="orange">Orange</option>
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+                <option value="green">Green</option>
+                <option value="purple">Purple</option>
+                <option value="silver">Silver</option>
+                <option value="black">Black</option>
+              </select>
+              <small class="field-hint">Choose how your car appears in the parking view.</small>
+            </div>
+          </div>
+          <div class="form-message" id="account-message" role="status" aria-live="polite"></div>
+          <div class="form-actions">
+            <p id="account-mode-note">Your account is stored securely in Supabase when configured.</p>
+            <button class="button button-primary" id="account-submit" type="submit">Create account</button>
+          </div>
+          <button class="text-button" id="account-mode-toggle" type="button">Already registered? Sign in</button>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand brand-footer" href="index.html" aria-label="APU ParkSmart home">
+          <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="" aria-hidden="true"></span>
+          <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
+        </a>
+        <p>Less circling, less stress. Smart parking for a more sustainable campus.</p>
+      </div>
+      <a class="footer-guide" href="guide.html">Read the parking guide <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="footer-bottom">A student project demo <span>·</span> APU ParkSmart</div>
+  </footer>
+</body>
+</html>

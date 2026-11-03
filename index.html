@@ -12,7 +12,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <script src="script.js" defer></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="app.js" defer></script>
   <script src="garage-scene.js" defer></script>
 </head>
 <body>
@@ -27,7 +31,9 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
-        <a class="nav-link active" href="index.html" aria-current="page">Dashboard</a>
+        <a class="nav-link active" href="index.html" aria-current="page">Home</a>
+        <a class="nav-link" href="account.html">Account Registration</a>
+        <a class="nav-link" href="parking.html">Register Parking</a>
         <a class="nav-link" href="guide.html">Guide</a>
       </nav>
     </div>
@@ -39,9 +45,9 @@
         <p class="eyebrow hero-eyebrow"><span class="eyebrow-mark"></span> A smarter way to park at APU</p>
         <h1 class="wordmark-animation hero-wordmark" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart"><span class="hero-period" aria-hidden="true">.</span></h1>
         <p class="hero-subtitle">Real-Time Smart Parking &amp; Sustainable Mobility Initiative</p>
-        <p class="hero-tagline"><span>Entry charge, waived if you leave within 10 minutes.</span></p>
+        <p class="hero-tagline"><span>Find your space, park with confidence.</span></p>
         <div class="hero-badges" aria-label="ParkSmart benefits">
-          <span><span class="badge-check">✓</span> 10-min Grace Period</span>
+          <span><span class="badge-check">✓</span> Simple hourly &amp; daily rates</span>
           <span><span class="badge-check">✓</span> Live Slot Data</span>
         </div>
       </div>
@@ -69,6 +75,34 @@
     </section>
 
     <div class="page-content">
+      <section class="grace-demo" id="parking-home-session" aria-labelledby="grace-title" hidden>
+        <div>
+          <p class="eyebrow">Your parking</p>
+          <h2 id="grace-title">Your car, at a glance</h2>
+          <p id="parking-home-intro">Your active parking details update automatically while your session is running.</p>
+        </div>
+        <div class="grace-controls" id="parking-home-details">
+          <div class="parking-bay-scene" id="parked-car-scene" data-car-color="orange" role="img" aria-label="Illustrated orange car parked between two yellow parking lines" hidden>
+            <img class="parked-car-art parked-car-poster" src="assets/parked-car.svg" alt="" aria-hidden="true">
+            <model-viewer class="parked-car-art parked-car-model" id="parked-car-model" src="assets/parked-car.glb" alt="" loading="lazy" camera-controls disable-zoom interaction-prompt="none" camera-orbit="35deg 70deg 4.7m" shadow-intensity="1" exposure="1.1"></model-viewer>
+          </div>
+          <div class="parking-session">
+            <div class="parking-session-time">
+              <span>Time parked</span>
+              <strong id="parking-elapsed" role="timer" aria-live="off">00:00:00</strong>
+            </div>
+            <div class="parking-session-status">
+              <span id="parking-session-vehicle">No active parking session</span>
+              <strong id="parking-grace-status" aria-live="off">Your parking details will appear here when you register parking.</strong>
+            </div>
+          </div>
+          <p class="grace-countdown" id="grace-countdown" role="status" aria-live="polite"></p>
+          <div class="active-car-details" id="active-car-details" hidden></div>
+          <button class="button button-primary" id="left-without-parking" type="button" disabled>End parking</button>
+          <a class="button button-primary" id="register-parking-home" href="parking.html">Register parking <span aria-hidden="true">→</span></a>
+        </div>
+      </section>
+
       <section class="section-heading" aria-labelledby="availability-title">
         <div>
           <p class="eyebrow">Know before you go</p>
@@ -95,106 +129,62 @@
         <div class="availability-footnote"><span class="sensor-icon" aria-hidden="true">⌁</span> Slot counts and bay lights are simulated in this demo.</div>
       </section>
 
+      <section class="visitor-stat-card" aria-labelledby="visitor-stat-title">
+        <div>
+          <p class="eyebrow">Campus community</p>
+          <h2 id="visitor-stat-title">Website visitors today</h2>
+          <p id="visitor-stat-status" role="status" aria-live="polite">Connecting to the visitor counter…</p>
+        </div>
+        <strong id="visitor-stat-count" aria-live="polite">—</strong>
+      </section>
+
+      <section class="profile-section" id="profile-panel" aria-labelledby="profile-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Your ParkSmart account</p>
+            <h2 id="profile-title">Profile &amp; registered cars</h2>
+            <p class="section-intro">Register once with one car. Add or manage more cars here.</p>
+          </div>
+          <div class="profile-actions">
+            <a class="button button-secondary" href="account.html">Account registration / sign in</a>
+            <button class="button button-secondary" id="sign-out-button" type="button" hidden>Sign out</button>
+          </div>
+        </div>
+        <div class="profile-card" id="profile-card">
+          <p id="profile-status" role="status" aria-live="polite">Connect Supabase to load your profile and saved vehicles.</p>
+          <div id="profile-details" hidden></div>
+        </div>
+        <form class="add-car-form" id="add-car-form" hidden>
+          <div class="field">
+            <label for="additional-car-plate">Add another vehicle plate</label>
+            <input id="additional-car-plate" name="plateNumber" type="text" placeholder="WXY 1234" maxlength="10" pattern="[A-Za-z]{1,3}\s?[0-9]{1,4}" required>
+          </div>
+          <div class="field">
+            <label for="additional-car-color">Car colour</label>
+            <select id="additional-car-color" name="vehicleColor">
+              <option value="orange">Orange</option>
+              <option value="blue">Blue</option>
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+              <option value="purple">Purple</option>
+              <option value="silver">Silver</option>
+              <option value="black">Black</option>
+            </select>
+          </div>
+          <button class="button button-primary" type="submit">Add car</button>
+        </form>
+        <p class="form-message" id="profile-message" role="status" aria-live="polite"></p>
+      </section>
+
       <section class="alternative-box" id="alternative-box" hidden aria-live="polite">
         <div>
-          <strong>Main parking full. Try visitor parking or outside parking.</strong>
+          <strong>Main parking full. See available alternatives below.</strong>
           <p id="alternative-suggestion">Choose another zone if one has spaces available.</p>
           <p class="directions-message" id="directions-message" hidden></p>
         </div>
         <button class="button button-secondary" id="directions-button" type="button">Get directions <span aria-hidden="true">→</span></button>
       </section>
 
-      <section class="grace-demo" aria-labelledby="grace-title">
-        <div>
-          <p class="eyebrow">Your parking session</p>
-          <h2 id="grace-title">Parking time &amp; 10-minute grace period</h2>
-          <p>Your timer starts when a demo booking is confirmed. Leave within 10 minutes for the entry charge to be waived.</p>
-        </div>
-        <div class="grace-controls">
-          <label class="speed-toggle" for="speed-up-demo">
-            <input id="speed-up-demo" type="checkbox">
-            <span>Speed up demo <small>(about 15 seconds)</small></span>
-          </label>
-          <div class="parking-session">
-            <div class="parking-session-time">
-              <span>Time parked</span>
-              <strong id="parking-elapsed" role="timer" aria-live="off">00:00:00</strong>
-            </div>
-            <div class="parking-session-status">
-              <span id="parking-session-zone">No active parking session</span>
-              <strong id="parking-grace-status" aria-live="off">Complete a demo booking to start tracking.</strong>
-            </div>
-          </div>
-          <p class="grace-countdown" id="grace-countdown" role="status" aria-live="polite"></p>
-          <button class="button button-primary" id="left-without-parking" type="button" disabled>Leave parking</button>
-        </div>
-      </section>
-
-      <section class="registration-section" id="register" aria-labelledby="register-title">
-        <div class="section-heading form-heading">
-          <div>
-            <p class="eyebrow">Quick and fair</p>
-            <h2 id="register-title">Register your parking</h2>
-            <p class="section-intro">Entry charge, waived if you leave within 10 minutes.</p>
-          </div>
-          <div class="rate-note"><span class="rate-icon" aria-hidden="true">RM</span><span><strong>RM 1.00</strong><br>per hour</span></div>
-        </div>
-
-        <form id="registration-form" class="form-card" novalidate>
-          <div class="form-grid">
-            <div class="field">
-              <label for="tp-number">Student TP number</label>
-              <input id="tp-number" name="tpNumber" type="text" placeholder="TP012345" autocomplete="off" maxlength="8" pattern="[Tt][Pp][0-9]{6}" aria-describedby="tp-hint" required>
-              <small class="field-hint" id="tp-hint">Format: TP followed by 6 digits</small>
-            </div>
-            <div class="field">
-              <label for="vehicle-number">Vehicle number</label>
-              <input id="vehicle-number" name="vehicleNumber" type="text" placeholder="WXY 1234" autocomplete="off" maxlength="10" aria-describedby="vehicle-hint" required>
-              <small class="field-hint" id="vehicle-hint">Malaysian plate, for example WXY 1234</small>
-            </div>
-            <div class="field">
-              <label for="zone-select">Vehicle location</label>
-              <select id="zone-select" name="zone" required>
-                <option value="">Choose a zone</option>
-                <option value="zone-a">Zone A</option>
-                <option value="zone-b">Zone B</option>
-                <option value="zone-c">Zone C</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="duration">Duration</label>
-              <select id="duration" name="duration" required>
-                <option value="1">1 hour</option>
-                <option value="2">2 hours</option>
-                <option value="3">3 hours</option>
-                <option value="4">4 hours</option>
-                <option value="5">5 hours</option>
-                <option value="6">6 hours</option>
-                <option value="7">7 hours</option>
-                <option value="8">8 hours</option>
-                <option value="9">9 hours</option>
-                <option value="10">10 hours</option>
-                <option value="11">11 hours</option>
-                <option value="12">12 hours</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="amount">Amount</label>
-              <div class="input-prefix"><span>RM</span><input id="amount" name="amount" type="text" value="1.00" readonly aria-readonly="true"></div>
-            </div>
-            <div class="field">
-              <label for="selected-available">Available slots</label>
-              <div class="input-suffix"><input id="selected-available" type="text" value="13 spaces" readonly aria-readonly="true"><span class="availability-mini-dot"></span></div>
-            </div>
-          </div>
-
-          <div class="form-message" id="registration-message" role="status" aria-live="polite"></div>
-          <div class="form-actions">
-            <p><span class="secure-icon" aria-hidden="true">✓</span> Secure demo checkout <span class="action-divider">·</span> No real payment</p>
-            <button class="button button-primary" type="submit">Register &amp; Continue — Entry charge, waived if you leave within 10 minutes <span aria-hidden="true">→</span></button>
-          </div>
-        </form>
-      </section>
     </div>
   </main>
 
@@ -213,54 +203,17 @@
         <p>Modernising campus traffic, making parking fair, and getting more from the spaces we have.</p>
         <span class="team-credit">An 8-member student team · Asia Pacific University</span>
       </div>
+      <section class="site-qr" aria-labelledby="site-qr-title">
+        <h2 id="site-qr-title">Follow us on Instagram</h2>
+        <div class="site-qr-code" id="site-qr-code" role="img" aria-label="QR code for the APU ParkSmart Instagram page"></div>
+        <p id="site-qr-status" role="status" aria-live="polite">Preparing QR code…</p>
+        <p id="site-qr-url">Instagram page link</p>
+        <button class="button button-secondary site-qr-download" id="download-site-qr" type="button" disabled>Download QR code</button>
+      </section>
       <a class="footer-guide" href="guide.html">New to ParkSmart? Read the guide <span aria-hidden="true">→</span></a>
     </div>
     <div class="footer-bottom">A student project demo <span>·</span> APU ParkSmart</div>
   </footer>
 
-  <dialog class="payment-dialog" id="payment-dialog" aria-labelledby="payment-title">
-    <div class="dialog-top">
-      <div><p class="eyebrow">Demo checkout</p><h2 id="payment-title">Complete your payment</h2></div>
-      <button class="dialog-close" type="button" aria-label="Close payment dialog">×</button>
-    </div>
-    <p class="demo-disclaimer"><span aria-hidden="true">ⓘ</span> Demo only. No real payment is processed.</p>
-    <p class="payment-grace-wording">Entry charge, waived if you leave within 10 minutes.</p>
-    <div class="booking-summary" id="booking-summary" aria-label="Booking summary"></div>
-    <form id="payment-form" novalidate>
-      <div class="field">
-        <label for="card-number">Debit card number</label>
-        <input id="card-number" name="cardNumber" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" maxlength="19" pattern="[0-9 ]{19}" required>
-      </div>
-      <div class="field">
-        <label for="card-name">Name on card</label>
-        <input id="card-name" name="cardName" type="text" autocomplete="cc-name" placeholder="As shown on your card" required>
-      </div>
-      <div class="form-grid payment-fields">
-        <div class="field">
-          <label for="card-expiry">Expiry date</label>
-          <input id="card-expiry" name="cardExpiry" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" maxlength="5" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" required>
-        </div>
-        <div class="field">
-          <label for="card-cvv">CVV</label>
-          <input id="card-cvv" name="cardCvv" type="password" inputmode="numeric" autocomplete="cc-csc" placeholder="•••" maxlength="4" pattern="[0-9]{3,4}" required>
-        </div>
-      </div>
-      <p class="payment-error" id="payment-error" role="alert"></p>
-      <button class="button button-primary button-full" type="submit">Confirm demo payment <span aria-hidden="true">→</span></button>
-    </form>
-  </dialog>
-
-  <dialog class="payment-dialog confirmation-dialog" id="confirmation-dialog" aria-labelledby="confirmation-title">
-    <div class="confirmation-mark" aria-hidden="true">✓</div>
-    <p class="eyebrow">You're all set</p>
-    <h2 id="confirmation-title">Parking registered</h2>
-    <p class="confirmation-intro">Your parking timer starts now. Leave within 10 minutes for the entry charge to be waived.</p>
-    <div class="confirmation-reference"><span>Booking reference</span><strong id="booking-reference"></strong></div>
-    <div class="confirmation-details" id="confirmation-details"></div>
-    <p class="grace-note"><strong>Your 10-minute grace period</strong>Your session is tracked from booking confirmation. Leave within 10 minutes and the entry charge is waived; use the session tracker on the dashboard to end your demo visit.</p>
-    <p class="demo-disclaimer"><span aria-hidden="true">ⓘ</span> Demo only. No real payment was processed.</p>
-    <button class="button button-primary button-full" id="confirmation-done" type="button">Done</button>
-  </dialog>
-  <div class="dialog-backdrop" hidden></div>
 </body>
 </html>

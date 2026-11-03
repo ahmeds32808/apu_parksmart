@@ -1,24 +1,37 @@
 # APU ParkSmart
 
-A responsive, static two-page campus parking demo built with plain HTML, CSS, and vanilla JavaScript. Slot counts, parking-session tracking, the grace period, registration, and checkout are simulated in the browser; there is no backend, database, or real payment processing. The dashboard loads Three.js from a CDN for its low-poly scene and shows a local SVG illustration if the library or WebGL is unavailable.
+APU ParkSmart is a four-page campus parking demo built with HTML, CSS, and vanilla JavaScript:
+
+- `index.html` — Home dashboard, account profile, saved cars, active parking details, 3D garage, and daily website visitor count.
+- `account.html` — One-time account registration and sign-in. Account setup saves one vehicle and its display colour.
+- `parking.html` — Choose a saved vehicle and start an untimed parking session.
+- `guide.html` — How-to information and project limitations.
+
+The Profile panel is on Home; users can add additional vehicles and choose their display colours there.
 
 ## Run locally
 
-Open `index.html` in a modern browser, or serve the folder with any static web server. Google Fonts requires an internet connection; the site falls back to a system sans-serif font if the font service is unavailable.
+Serve the project folder with a static web server and open its local URL. Supabase Auth and the shared visitor statistic require a configured Supabase project. Set the project URL and browser-safe publishable key (or legacy anon key) in `supabase-config.js`, then run `supabase-setup.sql` in the Supabase SQL Editor. Never put a Supabase secret or `service_role` key in this frontend project.
 
-## Deploy to Vercel
+Without that setup, account and parking actions remain unavailable and the visitor counter displays a setup status; the site does not show fake global visitor numbers. Google Fonts, Three.js, `<model-viewer>`, QRCode, and Supabase JS load from CDNs. The parked-car view uses Kenney's `sedan-sports.glb` from the [CC0 Car Kit](https://kenney.nl/assets/car-kit); its two yellow parking-bay lines are part of the 3D model and rotate with it. The local illustration remains as a fallback if the model viewer is unavailable.
 
-1. Push this project folder to a GitHub repository.
-2. Go to [vercel.com](https://vercel.com), choose **Add New Project**, and import the repository.
-3. Keep the framework preset as **Other**, leave the build command empty, and leave the output directory as the project root.
-4. Click **Deploy**.
+## Deploy to GitHub Pages
 
-Alternatively, run `npx vercel` in the project folder and follow the prompts. No install or build command is required.
+The included GitHub Actions workflow publishes the project root whenever changes are pushed to `main`.
 
-## Demo notes
+1. In the repository, open **Settings → Pages** and set the build and deployment source to **GitHub Actions**.
+2. Push the site files to `main`; the **Deploy static site to GitHub Pages** workflow will publish them.
+3. Find the public website URL in the workflow run or under **Settings → Pages**.
+4. In Supabase, set the Auth Site URL to the published website URL and add it to the allowed redirect URLs.
 
-- Slot counts are simulated in the browser and change every five seconds. The dashboard status labels and 3D bay lights follow those counts.
-- The hero scene is a browser-only, animated Three.js isometric parking garage with 108 lit bays, a ramp, a lift tower, and simulated cars. One car demonstrates an upper-level ramp arrival on load, and dashboard changes dispatch cars through the same clear ramp route without overlapping. The scene's occupied-car count follows the dashboard's available-slot total; it has normal/fast speed controls and falls back to `assets/garage-fallback.svg` when WebGL is unavailable. The APU ParkSmart lettering rolls through a staggered hover animation and respects reduced-motion preferences.
-- A confirmed demo booking starts a live parking-duration timer and a 10-minute grace period. The active session timestamp and zone are saved locally in the browser so the timer can resume after a refresh; no card, student, or vehicle details are saved with the timer. **Speed up demo** shortens the grace period to about 15 seconds for testing.
-- The parking rate is set by `PARKING_RATE_RM_PER_HOUR` at the top of `script.js`.
-- The payment dialog is a UI demo only. Do not enter real debit-card details; no payment information is sent or stored.
+The Supabase publishable key in `supabase-config.js` is intended for browser use. Keep database passwords and secret or `service_role` keys private.
+
+## Rates and demo limitations
+
+- Visitor parking is RM 1.00 per hour, charged from the start with no grace period. The session ends when the user ends parking.
+- Student and Lecturer / Staff parking is RM 5.00 per Malaysia calendar day. Ending the session within 10 minutes avoids a charge; otherwise, a daily rate is recorded for each calendar day parked.
+- The Home page shows the registered car, live time parked, and a live price estimate. No payment is processed by this prototype.
+- Parking availability and the 3D garage are simulated in each browser; they are not connected to campus sensors. The active-session schema includes a sensor location field, but the prototype cannot populate it until a sensor integration is added. Supabase stores accounts, registered car plates, and the user's active parking session.
+- The visitor statistic approximates unique browsers per Malaysia calendar day using a browser-generated anonymous ID. Clearing local browser storage may count a browser again; it is not an audited people count.
+- Account type, student TP number, and staff ID are user-entered demo information and are not independently verified. Do not use this prototype as an access-control or payment system.
+- Supabase row-level policies restrict profile and vehicle data to the signed-in owner. `supabase-setup.sql` creates the required tables, policies, and server-side parking-session/charge procedures.

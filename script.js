@@ -3,6 +3,7 @@ const PARKING_RATE_RM_PER_HOUR = 1.00;
 const GRACE_PERIOD_MS = 10 * 60 * 1000;
 const FAST_GRACE_PERIOD_MS = 15 * 1000;
 const ACTIVE_PARKING_SESSION_KEY = "apusmart.activeParkingSession";
+const VISITOR_ZONE_ID = "zone-c";
 const zones = [
   { id: "zone-a", name: "Zone A", total: 36, available: 13 },
   { id: "zone-b", name: "Zone B", total: 42, available: 17 },
@@ -14,6 +15,22 @@ const availableTotal = document.querySelector("#available-total");
 const capacityTotal = document.querySelector("#capacity-total");
 const campusStatus = document.querySelector("#campus-status");
 const lastUpdated = document.querySelector("#last-updated");
+const userTypeSelect = document.querySelector("#user-type");
+const userIdentifierField = document.querySelector("#user-identifier-field");
+const userIdentifierInput = document.querySelector("#user-identifier");
+const userIdentifierLabel = document.querySelector("#user-identifier-label");
+const userIdentifierHint = document.querySelector("#user-identifier-hint");
+const universityEmailField = document.querySelector("#university-email-field");
+const receiptEmailInput = document.querySelector("#receipt-email");
+const receiptEmailLabel = document.querySelector("#receipt-email-label");
+const receiptEmailHint = document.querySelector("#receipt-email-hint");
+const visitorEmailField = document.querySelector("#visitor-email-field");
+const visitorEmailInput = document.querySelector("#visitor-email");
+const visitorPhoneField = document.querySelector("#visitor-phone-field");
+const visitorCountryCodeSelect = document.querySelector("#visitor-country-code");
+const visitorPhoneInput = document.querySelector("#visitor-phone");
+const visitorCustomCodeField = document.querySelector("#visitor-custom-code-field");
+const visitorCustomCountryCodeInput = document.querySelector("#visitor-custom-country-code");
 const zoneSelect = document.querySelector("#zone-select");
 const durationSelect = document.querySelector("#duration");
 const amountInput = document.querySelector("#amount");
@@ -27,10 +44,57 @@ const paymentForm = document.querySelector("#payment-form");
 const paymentError = document.querySelector("#payment-error");
 const bookingSummary = document.querySelector("#booking-summary");
 let pendingBooking = null;
+let confirmedReceipt = null;
 let fullZoneNoticeVisible = false;
 let activeParkingSession = null;
 let completedParkingSession = null;
 let parkingSessionStorageWarning = "";
+
+function initializeSiteQrCode() {
+  const qrContainer = document.querySelector("#site-qr-code");
+  if (!qrContainer) return;
+
+  const qrStatus = document.querySelector("#site-qr-status");
+  const qrUrlLabel = document.querySelector("#site-qr-url");
+  const downloadButton = document.querySelector("#download-site-qr");
+  const instagramUrl = document.querySelector(".footer-instagram").href;
+  if (typeof QRCode === "undefined") {
+    qrStatus.textContent = "QR code generator unavailable. Check your internet connection.";
+    qrContainer.textContent = "QR code unavailable.";
+    return;
+  }
+
+  qrContainer.replaceChildren();
+  new QRCode(qrContainer, {
+    text: instagramUrl,
+    width: 118,
+    height: 118,
+    colorDark: "#12305c",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.M
+  });
+  qrStatus.textContent = "Scan to visit our Instagram page.";
+  qrUrlLabel.textContent = instagramUrl;
+  downloadButton.disabled = false;
+  downloadButton.addEventListener("click", () => {
+    const qrImage = qrContainer.querySelector("img");
+    const qrCanvas = qrContainer.querySelector("canvas");
+    const qrImageUrl = qrImage && qrImage.src
+      ? qrImage.src
+      : qrCanvas && qrCanvas.toDataURL("image/png");
+    if (!qrImageUrl) {
+      qrStatus.textContent = "Could not create a downloadable QR image. Try refreshing the page.";
+      return;
+    }
+
+    const downloadLink = document.createElement("a");
+    downloadLink.href = qrImageUrl;
+    downloadLink.download = "apusmart-site-qr.png";
+    document.body.append(downloadLink);
+    downloadLink.click();
+    downloadLink.remove();
+  });
+}
 
 function initializeWordmarkAnimations() {
   document.querySelectorAll(".wordmark-animation").forEach((wordmark) => {
@@ -68,10 +132,17 @@ function initializeWordmarkAnimations() {
   });
 }
 
+initializeSiteQrCode();
 initializeWordmarkAnimations();
 
 function getZone(id) {
   return zones.find((zone) => zone.id === id);
+}
+
+function isZoneAllowedForUserType(userType, zoneId) {
+  return userType === "visitor"
+    ? zoneId === VISITOR_ZONE_ID
+    : zoneId !== VISITOR_ZONE_ID;
 }
 
 function getStatus(available, total) {
@@ -99,24 +170,34 @@ function renderZoneCards() {
 }
 
 function updateZoneChoices(previousZoneId) {
+  const isVisitor = userTypeSelect.value === "visitor";
+  const allowedZones = zones.filter((zone) => isZoneAllowedForUserType(userTypeSelect.value, zone.id));
   const options = Array.from(zoneSelect.options).filter((option) => option.value);
   zones.forEach((zone) => {
     const option = options.find((item) => item.value === zone.id);
-    option.disabled = zone.available === 0;
-    option.textContent = zone.available === 0
-      ? `${zone.name} — Full`
-      : `${zone.name} — ${zone.available} available`;
+    option.disabled = zone.available === 0 || !isZoneAllowedForUserType(userTypeSelect.value, zone.id);
+    if (zone.available === 0) {
+      option.textContent = `${zone.name} — Full`;
+    } else if (!isZoneAllowedForUserType(userTypeSelect.value, zone.id)) {
+      option.textContent = isVisitor
+        ? `${zone.name} — Visitor parking is in Zone C`
+        : `${zone.name} — Visitor parking only`;
+    } else {
+      option.textContent = `${zone.name} — ${zone.available} available`;
+    }
   });
 
-  const selectedZone = getZone(zoneSelect.value);
-  if (!selectedZone || selectedZone.available === 0) {
-    const nextZone = zones.find((zone) => zone.available > 0);
+  let selectedZone = getZone(zoneSelect.value);
+  if (!selectedZone || !allowedZones.includes(selectedZone) || selectedZone.available === 0) {
+    const nextZone = allowedZones.find((zone) => zone.available > 0);
     zoneSelect.value = nextZone ? nextZone.id : "";
-    if (selectedZone && selectedZone.available === 0) {
-      const alternativeZone = zones.find((zone) => zone.available > 0);
+    if (selectedZone && allowedZones.includes(selectedZone) && selectedZone.available === 0) {
+      const alternativeZone = allowedZones.find((zone) => zone.available > 0);
       registrationMessage.textContent = alternativeZone
         ? `${selectedZone.name} is full. Try ${alternativeZone.name}, which has ${alternativeZone.available} spaces available.`
-        : "All campus zones are full. Try visitor parking or outside parking.";
+        : isVisitor
+          ? "Zone C is full. Visitor parking is only available in Zone C."
+          : "Zones A and B are full. Student and staff parking is only available in Zones A and B.";
       fullZoneNoticeVisible = true;
     } else if (fullZoneNoticeVisible) {
       registrationMessage.textContent = "";
@@ -127,7 +208,7 @@ function updateZoneChoices(previousZoneId) {
     fullZoneNoticeVisible = false;
   }
 
-  registrationForm.querySelector('button[type="submit"]').disabled = !zones.some((zone) => zone.available > 0);
+  registrationForm.querySelector('button[type="submit"]').disabled = !allowedZones.some((zone) => zone.available > 0);
   updateSelectedAvailability();
 }
 
@@ -152,9 +233,12 @@ function updateAlternativeBox() {
   if (!fullZones.length) return;
 
   const suggestedZone = zones.find((zone) => zone.available > 0);
+  const visitorParkingNote = getZone(VISITOR_ZONE_ID).available > 0
+    ? "Visitor parking is available in Zone C, or choose outside parking."
+    : "Zone C visitor parking is full; choose outside parking.";
   document.querySelector("#alternative-suggestion").textContent = suggestedZone
-    ? `${fullZones.map((zone) => zone.name).join(", ")} ${fullZones.length === 1 ? "is" : "are"} full. Try ${suggestedZone.name} (${suggestedZone.available} spaces available), or choose visitor or outside parking.`
-    : "All campus zones are full. Visitor or outside parking may be an option.";
+    ? `${fullZones.map((zone) => zone.name).join(", ")} ${fullZones.length === 1 ? "is" : "are"} full. Try ${suggestedZone.name} (${suggestedZone.available} spaces available). ${visitorParkingNote}`
+    : `All campus zones are full. ${visitorParkingNote}`;
 }
 
 function updateDashboard() {
@@ -193,15 +277,77 @@ function createSummaryItem(label, value, className = "summary-item") {
   return item;
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
+function downloadReceipt(receipt) {
+  const receiptDate = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short"
+  }).format(receipt.confirmedAt);
+  const receiptRows = [
+    ["Receipt reference", receipt.reference],
+    ["Date", receiptDate],
+    ["Receipt email", receipt.receiptEmail],
+    [receipt.identifierLabel, receipt.identifier],
+    ["Vehicle", receipt.vehicleNumber],
+    ["Zone", getZone(receipt.zoneId).name],
+    ["Duration", `${receipt.duration} ${receipt.duration === 1 ? "hour" : "hours"}`],
+    ["Amount", `RM ${receipt.amount}`],
+    ["Payment status", "Demo only — no real payment was processed"]
+  ];
+  const receiptHtml = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APU ParkSmart receipt ${escapeHtml(receipt.reference)}</title>
+  <style>
+    body{margin:0;padding:32px;background:#f4f7fa;color:#17283d;font:15px/1.5 Arial,sans-serif}
+    main{max-width:620px;margin:0 auto;padding:32px;border:1px solid #e4eaf0;border-radius:16px;background:#fff}
+    h1{margin:0;color:#12305c;font-size:25px}p{color:#63738a}
+    dl{margin:24px 0}dl div{display:flex;justify-content:space-between;gap:20px;padding:12px 0;border-bottom:1px solid #e4eaf0}
+    dt{color:#63738a}dd{margin:0;color:#12305c;font-weight:700;text-align:right}
+    .notice{padding:12px;border-radius:8px;background:#f0f7fb;font-size:12px}
+    @media print{body{padding:0;background:#fff}main{border:0}}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>APU ParkSmart</h1>
+    <p>Parking receipt · ${escapeHtml(receipt.reference)}</p>
+    <dl>${receiptRows.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}</dl>
+    <p class="notice">This is a student-project demo receipt. No real payment was processed. You can print this page or save it as a PDF.</p>
+  </main>
+</body>
+</html>`;
+  const receiptUrl = URL.createObjectURL(new Blob([receiptHtml], { type: "text/html;charset=utf-8" }));
+  const downloadLink = document.createElement("a");
+  downloadLink.href = receiptUrl;
+  downloadLink.download = `apusmart-receipt-${receipt.reference.replace(/[^a-z0-9-]/gi, "")}.html`;
+  document.body.append(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
+  window.setTimeout(() => URL.revokeObjectURL(receiptUrl), 1000);
+}
+
 function openPayment(booking) {
   pendingBooking = booking;
   const zone = getZone(booking.zoneId);
   bookingSummary.replaceChildren(
-    createSummaryItem("Student TP", booking.tpNumber),
+    createSummaryItem(booking.identifierLabel, booking.identifier),
+    createSummaryItem("Receipt email", booking.receiptEmail),
     createSummaryItem("Vehicle", booking.vehicleNumber),
     createSummaryItem("Zone", zone.name),
     createSummaryItem("Duration", `${booking.duration} ${booking.duration === 1 ? "hour" : "hours"}`),
-    createSummaryItem("Amount", `RM ${booking.amount}`)
+    createSummaryItem("Charge after grace period", `RM ${booking.amount}`)
   );
   paymentError.textContent = "";
   paymentForm.reset();
@@ -247,6 +393,10 @@ function loadActiveParkingSession() {
       Number.isFinite(session.startedAt) &&
       Number.isFinite(session.gracePeriodMs) &&
       [GRACE_PERIOD_MS, FAST_GRACE_PERIOD_MS].includes(session.gracePeriodMs) &&
+      Number.isFinite(session.chargeAmount) &&
+      session.chargeAmount >= 0 &&
+      (session.chargeAppliedAt === null ||
+        (Number.isFinite(session.chargeAppliedAt) && session.chargeAppliedAt >= session.startedAt)) &&
       typeof session.reference === "string";
     if (validSession) return session;
 
@@ -277,6 +427,14 @@ function clearSavedParkingSession() {
   }
 }
 
+function applyParkingChargeIfDue(now = Date.now()) {
+  if (!activeParkingSession || activeParkingSession.chargeAppliedAt !== null) return;
+  if (now - activeParkingSession.startedAt < activeParkingSession.gracePeriodMs) return;
+
+  activeParkingSession.chargeAppliedAt = activeParkingSession.startedAt + activeParkingSession.gracePeriodMs;
+  saveActiveParkingSession();
+}
+
 function renderParkingSession() {
   const elapsedElement = document.querySelector("#parking-elapsed");
   const zoneElement = document.querySelector("#parking-session-zone");
@@ -286,7 +444,9 @@ function renderParkingSession() {
   const speedUpDemo = document.querySelector("#speed-up-demo");
 
   if (activeParkingSession) {
-    const elapsed = Math.max(0, Date.now() - activeParkingSession.startedAt);
+    const now = Date.now();
+    applyParkingChargeIfDue(now);
+    const elapsed = Math.max(0, now - activeParkingSession.startedAt);
     const zone = getZone(activeParkingSession.zoneId);
     elapsedElement.textContent = formatElapsedTime(elapsed);
     const startedAt = new Intl.DateTimeFormat(undefined, {
@@ -301,10 +461,13 @@ function renderParkingSession() {
       graceStatus.textContent = `${formatElapsedTime(remaining)} grace time remaining`;
       graceStatus.className = "is-grace-active";
     } else {
-      graceStatus.textContent = "Grace period ended · parking time is still tracked";
-      graceStatus.className = "is-grace-ended";
+      graceStatus.textContent = `Grace period ended · RM ${activeParkingSession.chargeAmount.toFixed(2)} simulated charge applied`;
+      graceStatus.className = "is-charge-applied";
     }
-    message.textContent = parkingSessionStorageWarning;
+    message.textContent = parkingSessionStorageWarning ||
+      (elapsed < activeParkingSession.gracePeriodMs
+        ? `RM ${activeParkingSession.chargeAmount.toFixed(2)} will be simulated if you stay past the grace period.`
+        : "This is a demo charge only. No real money was taken.");
     return;
   }
 
@@ -314,12 +477,12 @@ function renderParkingSession() {
     elapsedElement.textContent = formatElapsedTime(completedParkingSession.elapsed);
     zoneElement.textContent = `${completedParkingSession.zoneName} · Session ended`;
     graceStatus.textContent = completedParkingSession.chargeWaived
-      ? "Left within grace period · entry charge waived"
-      : "Grace period ended · demo booking charge applies";
-    graceStatus.className = completedParkingSession.chargeWaived ? "is-grace-active" : "is-grace-ended";
+      ? "Left within grace period · charge waived"
+      : `RM ${completedParkingSession.chargeAmount.toFixed(2)} simulated charge applied`;
+    graceStatus.className = completedParkingSession.chargeWaived ? "is-grace-active" : "is-charge-applied";
     message.textContent = completedParkingSession.chargeWaived
-      ? `Session duration: ${formatElapsedTime(completedParkingSession.elapsed)}. Entry charge waived in this demo.`
-      : `Session duration: ${formatElapsedTime(completedParkingSession.elapsed)}. The simulated booking charge remains in effect.`;
+      ? `Session duration: ${formatElapsedTime(completedParkingSession.elapsed)}. No demo charge was applied.`
+      : `Session duration: ${formatElapsedTime(completedParkingSession.elapsed)}. No real money was taken.`;
     return;
   }
 
@@ -694,9 +857,95 @@ if (registrationForm) {
     updateSelectedAvailability();
   });
 
-  document.querySelector("#tp-number").addEventListener("input", (event) => {
-    event.currentTarget.value = event.currentTarget.value.toUpperCase();
+  function updateRegistrationFields() {
+    const isVisitor = userTypeSelect.value === "visitor";
+    userIdentifierField.hidden = isVisitor;
+    userIdentifierInput.disabled = isVisitor;
+    userIdentifierInput.required = !isVisitor;
+    universityEmailField.hidden = isVisitor;
+    receiptEmailInput.disabled = isVisitor;
+    receiptEmailInput.required = !isVisitor;
+    visitorEmailField.hidden = !isVisitor;
+    visitorEmailInput.disabled = !isVisitor;
+    visitorEmailInput.required = isVisitor;
+    visitorPhoneField.hidden = !isVisitor;
+    visitorPhoneInput.disabled = !isVisitor;
+    visitorPhoneInput.required = isVisitor;
+    visitorCountryCodeSelect.disabled = !isVisitor;
+    visitorCountryCodeSelect.required = isVisitor;
+
+    const usesCustomCountryCode = visitorCountryCodeSelect.value === "other";
+    visitorCustomCodeField.hidden = !isVisitor || !usesCustomCountryCode;
+    visitorCustomCountryCodeInput.disabled = !isVisitor || !usesCustomCountryCode;
+    visitorCustomCountryCodeInput.required = isVisitor && usesCustomCountryCode;
+
+    if (!isVisitor) {
+      const identifierSettings = {
+        student: {
+          label: "Student TP number",
+          placeholder: "TP012345",
+          hint: "Format: TP followed by 6 digits",
+          maxLength: 8,
+          pattern: "[Tt][Pp][0-9]{6}"
+        },
+        lecturer: {
+          label: "Staff ID",
+          placeholder: "Enter your staff ID",
+          hint: "Enter your staff ID",
+          maxLength: 30
+        }
+      }[userTypeSelect.value];
+
+      userIdentifierLabel.textContent = identifierSettings.label;
+      userIdentifierInput.placeholder = identifierSettings.placeholder;
+      userIdentifierInput.maxLength = identifierSettings.maxLength;
+      if (identifierSettings.pattern) {
+        userIdentifierInput.pattern = identifierSettings.pattern;
+      } else {
+        userIdentifierInput.removeAttribute("pattern");
+      }
+      userIdentifierHint.textContent = identifierSettings.hint;
+      receiptEmailLabel.textContent = "University Outlook email";
+      if (userTypeSelect.value === "student") {
+        receiptEmailInput.readOnly = true;
+        receiptEmailInput.removeAttribute("pattern");
+        receiptEmailHint.textContent = "Filled automatically from your TP number.";
+        updateStudentEmail();
+      } else {
+        receiptEmailInput.readOnly = false;
+        receiptEmailInput.pattern = "[^\\s@]+@apu[.]edu[.]my";
+        receiptEmailHint.textContent = "Enter your university email ending in @apu.edu.my.";
+      }
+    }
+    updateZoneChoices(zoneSelect.value);
+  }
+
+  function updateStudentEmail() {
+    const studentId = userIdentifierInput.value.trim();
+    receiptEmailInput.value = /^TP[0-9]{6}$/i.test(studentId)
+      ? `${studentId.toLowerCase()}@mail.apu.edu.my`
+      : "";
+  }
+
+  userTypeSelect.addEventListener("change", () => {
+    if (userTypeSelect.value === "lecturer") receiptEmailInput.value = "";
+    updateRegistrationFields();
   });
+  visitorCountryCodeSelect.addEventListener("change", updateRegistrationFields);
+  userIdentifierInput.addEventListener("input", () => {
+    if (userTypeSelect.value === "student") {
+      userIdentifierInput.value = userIdentifierInput.value.toUpperCase();
+      updateStudentEmail();
+    }
+  });
+  visitorPhoneInput.addEventListener("input", (event) => {
+    event.currentTarget.value = event.currentTarget.value.replace(/\D/g, "").slice(0, 15);
+  });
+  visitorCustomCountryCodeInput.addEventListener("input", (event) => {
+    const digits = event.currentTarget.value.replace(/\D/g, "").slice(0, 3);
+    event.currentTarget.value = digits ? `+${digits}` : "";
+  });
+  updateRegistrationFields();
   document.querySelector("#vehicle-number").addEventListener("input", (event) => {
     event.currentTarget.value = event.currentTarget.value.toUpperCase();
   });
@@ -709,6 +958,8 @@ if (registrationForm) {
       return;
     }
     const vehicleNumber = document.querySelector("#vehicle-number");
+    const identifier = userIdentifierInput.value.trim();
+    const isVisitor = userTypeSelect.value === "visitor";
     const platePattern = /^[A-Z]{1,3}\s?\d{1,4}$/;
     if (!registrationForm.reportValidity()) return;
     if (!platePattern.test(vehicleNumber.value.trim())) {
@@ -719,15 +970,32 @@ if (registrationForm) {
     }
 
     const zone = getZone(zoneSelect.value);
+    if (!isZoneAllowedForUserType(userTypeSelect.value, zoneSelect.value)) {
+      registrationMessage.textContent = isVisitor
+        ? "Visitor parking is only available in Zone C."
+        : "Student and staff parking is only available in Zones A and B.";
+      updateZoneChoices(zoneSelect.value);
+      return;
+    }
     if (!zone || zone.available === 0) {
       registrationMessage.textContent = zone
-        ? `${zone.name} is full right now. Choose a zone with spaces available.`
-        : "All campus zones are full. Try visitor parking or outside parking.";
+        ? userTypeSelect.value === "visitor"
+          ? "Zone C is full. Visitor parking is only available in Zone C."
+          : `${zone.name} is full right now. Choose a zone with spaces available.`
+        : "All campus zones are full. Use outside parking.";
       updateDashboard();
       return;
     }
+    const visitorCountryCode = visitorCountryCodeSelect.value === "other"
+      ? visitorCustomCountryCodeInput.value.trim()
+      : visitorCountryCodeSelect.value;
     pendingBooking = {
-      tpNumber: document.querySelector("#tp-number").value.trim().toUpperCase(),
+      userType: userTypeSelect.value,
+      identifierLabel: isVisitor ? "Phone" : userIdentifierLabel.textContent,
+      identifier: isVisitor
+        ? `${visitorCountryCode} ${visitorPhoneInput.value.trim()}`
+        : userTypeSelect.value === "student" ? identifier.toUpperCase() : identifier,
+      receiptEmail: isVisitor ? visitorEmailInput.value.trim() : receiptEmailInput.value.trim(),
       vehicleNumber: vehicleNumber.value.trim().toUpperCase(),
       zoneId: zone.id,
       duration: Number(durationSelect.value),
@@ -762,6 +1030,12 @@ if (registrationForm) {
 
     const booking = pendingBooking;
     const zone = booking && getZone(booking.zoneId);
+    if (booking && !isZoneAllowedForUserType(booking.userType, booking.zoneId)) {
+      paymentError.textContent = booking.userType === "visitor"
+        ? "Visitor bookings are only allowed in Zone C. Close this window and choose Zone C."
+        : "Student and staff bookings are only allowed in Zones A and B. Close this window and choose another zone.";
+      return;
+    }
     if (!zone || zone.available === 0) {
       paymentError.textContent = "That zone has just filled up. Close this window and choose another zone.";
       return;
@@ -775,18 +1049,27 @@ if (registrationForm) {
       zoneId: zone.id,
       startedAt: Date.now(),
       gracePeriodMs: booking.gracePeriodMs,
+      chargeAmount: Number(booking.amount),
+      chargeAppliedAt: null,
       reference
     };
     completedParkingSession = null;
     saveActiveParkingSession();
     renderParkingSession();
     const confirmationDetails = document.querySelector("#confirmation-details");
+    confirmedReceipt = {
+      ...booking,
+      reference,
+      confirmedAt: new Date()
+    };
+    document.querySelector("#receipt-download-status").textContent = "";
     confirmationDetails.replaceChildren(
-      createSummaryItem("Student TP", booking.tpNumber, "confirmation-item"),
+      createSummaryItem(booking.identifierLabel, booking.identifier, "confirmation-item"),
+      createSummaryItem("Receipt email", booking.receiptEmail, "confirmation-item"),
       createSummaryItem("Vehicle", booking.vehicleNumber, "confirmation-item"),
       createSummaryItem("Zone", zone.name, "confirmation-item"),
       createSummaryItem("Duration", `${booking.duration} ${booking.duration === 1 ? "hour" : "hours"}`, "confirmation-item"),
-      createSummaryItem("Amount", `RM ${booking.amount}`, "confirmation-item")
+      createSummaryItem("Charge after grace period", `RM ${booking.amount}`, "confirmation-item")
     );
     paymentForm.reset();
     closeDialog(paymentDialog);
@@ -795,6 +1078,15 @@ if (registrationForm) {
   });
 
   document.querySelector(".dialog-close").addEventListener("click", () => closeDialog(paymentDialog));
+  document.querySelector("#download-receipt").addEventListener("click", () => {
+    const status = document.querySelector("#receipt-download-status");
+    if (!confirmedReceipt) {
+      status.textContent = "Receipt details are unavailable. Complete a demo booking first.";
+      return;
+    }
+    downloadReceipt(confirmedReceipt);
+    status.textContent = "Receipt downloaded. Attach the file to an email to send it.";
+  });
   document.querySelector("#confirmation-done").addEventListener("click", () => closeDialog(confirmationDialog));
   paymentDialog.addEventListener("click", (event) => {
     if (event.target === paymentDialog) closeDialog(paymentDialog);
@@ -802,19 +1094,22 @@ if (registrationForm) {
 
   document.querySelector("#directions-button").addEventListener("click", () => {
     const message = document.querySelector("#directions-message");
-    message.textContent = "Visitor parking: follow the campus visitor parking signs. Outside parking: use marked public parking nearby.";
+    message.textContent = "Visitor parking: use Zone C and follow the campus visitor parking signs. Outside parking: use marked public parking nearby.";
     message.hidden = false;
   });
 
   const graceButton = document.querySelector("#left-without-parking");
   graceButton.addEventListener("click", () => {
     if (!activeParkingSession) return;
-    const elapsed = Math.max(0, Date.now() - activeParkingSession.startedAt);
+    const now = Date.now();
+    applyParkingChargeIfDue(now);
+    const elapsed = Math.max(0, now - activeParkingSession.startedAt);
     const zoneName = getZone(activeParkingSession.zoneId).name;
     completedParkingSession = {
       elapsed,
       zoneName,
-      chargeWaived: elapsed <= activeParkingSession.gracePeriodMs
+      chargeAmount: activeParkingSession.chargeAmount,
+      chargeWaived: elapsed < activeParkingSession.gracePeriodMs
     };
     const zone = getZone(activeParkingSession.zoneId);
     zone.available = Math.min(zone.total, zone.available + 1);

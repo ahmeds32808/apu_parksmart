@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12305c">
+  <meta name="description" content="Register your car for parking with APU ParkSmart.">
+  <title>Register parking | APU ParkSmart</title>
+  <link rel="icon" type="image/jpeg" href="assets/Park_smart.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="parking-app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="APU ParkSmart home">
+        <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="ParkSmart logo"></span>
+        <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="account.html">Account Registration</a>
+        <a class="nav-link active" href="parking.html" aria-current="page">Register Parking</a>
+        <a class="nav-link" href="guide.html">Guide</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="guide-hero account-hero">
+      <p class="eyebrow"><span class="eyebrow-mark"></span> Your parking visit</p>
+      <h1>Register your <span>parking.</span></h1>
+      <p>Choose your registered car and start parking. Your time and price are tracked automatically.</p>
+    </section>
+
+    <div class="page-content account-content">
+      <section class="account-card" aria-labelledby="parking-heading">
+        <div class="section-heading form-heading">
+          <div>
+            <p class="eyebrow">Register parking</p>
+            <h2 id="parking-heading">Choose your car</h2>
+            <p class="section-intro">No zone or duration to choose. Register your car when you arrive and end parking when you leave.</p>
+          </div>
+          <div class="rate-note"><span class="rate-icon" aria-hidden="true">RM</span><span id="rate-description">RM 1.00 per hour for visitors</span></div>
+        </div>
+
+        <form class="form-card" id="parking-form">
+          <div class="form-grid">
+            <div class="field">
+              <label for="parking-vehicle">Registered vehicle</label>
+              <select id="parking-vehicle" name="vehicleId" required>
+                <option value="">Loading your vehicles…</option>
+              </select>
+            </div>
+          </div>
+          <p class="parking-pricing-note" id="parking-price-note">Visitors: RM 1.00 per hour, charged from the start. Students and Lecturer / Staff: RM 5.00 per day, with the first 10 minutes free.</p>
+          <div class="form-message" id="parking-message" role="status" aria-live="polite"></div>
+          <div class="form-actions">
+            <p><span class="secure-icon" aria-hidden="true">ⓘ</span> Demo only · no real payment is processed</p>
+            <button class="button button-primary" id="parking-submit" type="submit" disabled>Start parking <span aria-hidden="true">→</span></button>
+          </div>
+        </form>
+      </section>
+
+      <section class="account-card map-card" aria-labelledby="parking-map-title">
+        <p class="eyebrow">Vehicle location</p>
+        <h2 id="parking-map-title">Location updates automatically</h2>
+        <p class="section-intro">Connected parking sensors will report your car’s zone and space number to Home. Sensors are not connected in this demo, so no location is shown yet.</p>
+        <div class="simple-campus-map" role="img" aria-label="Illustration of campus parking areas; exact car location requires connected sensors">
+          <div class="map-building">APU CAMPUS</div>
+          <div class="map-road">CAMPUS DRIVE</div>
+          <div class="map-zone map-zone-a">Parking <span>Campus bays</span></div>
+          <div class="map-zone map-zone-b">Parking <span>Campus bays</span></div>
+          <div class="map-zone map-zone-c">Parking <span>Campus bays</span></div>
+        </div>
+        <p class="map-caption">Your sensor-reported location will appear on Home during an active parking session.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand brand-footer" href="index.html" aria-label="APU ParkSmart home">
+          <span class="brand-mark"><img src="assets/Park_smart.jpg" alt="" aria-hidden="true"></span>
+          <span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span>
+        </a>
+        <p>Less circling, less stress. Smart parking for a more sustainable campus.</p>
+      </div>
+      <a class="footer-guide" href="guide.html">Read the parking guide <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="footer-bottom">A student project demo <span>·</span> APU ParkSmart</div>
+  </footer>
+</body>
+</html>

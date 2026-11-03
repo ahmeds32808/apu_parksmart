@@ -11,7 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -25,7 +27,9 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
-        <a class="nav-link" href="index.html">Dashboard</a>
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="account.html">Account Registration</a>
+        <a class="nav-link" href="parking.html">Register Parking</a>
         <a class="nav-link active" href="guide.html" aria-current="page">Guide</a>
       </nav>
     </div>
@@ -48,21 +52,22 @@
             <div class="guide-card-top"><span class="step-icon" aria-hidden="true">01</span><span class="guide-icon" aria-hidden="true">↗</span></div>
             <h3>Register for a space</h3>
             <ol class="step-list">
-              <li>Enter your student TP number (TP + 6 digits).</li>
-              <li>Add your vehicle plate number.</li>
-              <li>Choose a parking zone and your duration.</li>
-              <li>Check the amount and available slots.</li>
-              <li>Tap <strong>Register &amp; Continue</strong> to open the demo checkout.</li>
-              <li>Your parking timer starts when the booking is confirmed; leave within 10 minutes for the entry charge to be waived.</li>
+              <li>Create your account once with your name, email, password, account type, first vehicle plate, and car colour. Students use a TP number (TP + 6 digits); Lecturer / Staff enter a staff ID.</li>
+              <li>Sign in on a later visit. Add extra vehicle plates from the Profile panel on Home.</li>
+              <li>Open <strong>Register Parking</strong> and choose one of your saved vehicles. There is no zone or duration to select.</li>
+              <li>Visitors pay RM 1.00 per hour from the start, with no grace period. Students and Lecturer / Staff pay RM 5.00 per Malaysia calendar day and have 10 minutes to end parking without a charge.</li>
+              <li>Start parking when you arrive. Home shows your car, time parked, and current price.</li>
+              <li>End parking when you leave. The final demo charge is calculated from the actual parked time; no real payment is processed.</li>
+              <li>Home shows the car’s zone and space number when connected parking sensors report its location. Sensors are not connected in this demo.</li>
             </ol>
           </article>
           <article class="guide-card">
             <div class="guide-card-top"><span class="step-icon" aria-hidden="true">02</span><span class="guide-icon" aria-hidden="true">▤</span></div>
-            <h3>Pay with a debit card</h3>
+            <h3>Confirm your demo booking</h3>
             <ol class="step-list">
-              <li>Enter the card number, name on card, expiry date, and CVV in the payment window.</li>
-              <li>Review your booking summary and the entry charge, waived if you leave within 10 minutes, before confirming.</li>
-              <li>See your booking reference and use the dashboard tracker to monitor your parking time and grace period.</li>
+              <li>Choose a registered vehicle and start parking. No payment is taken at the start.</li>
+              <li>End your session on Home when you leave. Visitors are charged RM 1.00 per hour; students and Lecturer / Staff are charged RM 5.00 per Malaysia calendar day after the 10-minute grace period.</li>
+              <li>This is a demo: no actual payment is collected.</li>
             </ol>
             <p class="guide-tip security-tip"><strong>Stay safe.</strong> Never share your card PIN. ParkSmart’s demo will not ask for it.</p>
           </article>
@@ -70,12 +75,12 @@
             <div class="guide-card-top"><span class="step-icon" aria-hidden="true">03</span><span class="guide-icon" aria-hidden="true">⌖</span></div>
             <h3>Find an available spot</h3>
             <ol class="step-list">
+              <li>Scan the Instagram QR code in the dashboard footer to open the APU ParkSmart Instagram page.</li>
               <li>Check the live dashboard for total spaces and each zone’s status.</li>
               <li><strong>Available</strong> means more than 30% of spaces are free; <strong>Nearly Full</strong> means 1–30% are free; <strong>Full</strong> means no spaces are free.</li>
               <li>Check “Last updated” so you know how recent the count is.</li>
-              <li>Choose an available zone. Full zones cannot be selected in the registration form.</li>
             </ol>
-            <p class="guide-tip"><strong>Demo note.</strong> Slot counts and the 3D bay lights change in your browser. This concept demo does not connect to parking sensors or a live service.</p>
+            <p class="guide-tip"><strong>Demo note.</strong> Slot counts and the 3D bay lights change in your browser. Parking sensors are not connected, so a car’s exact location is not available yet.</p>
           </article>
         </div>
       </section>
@@ -85,8 +90,8 @@
         <div class="benefit-grid">
           <article class="benefit-card grace-benefit">
             <span class="benefit-number" aria-hidden="true">10</span>
-            <div><p class="eyebrow">No space? No charge.</p><h3>10-Minute Grace Period</h3>
-              <p>Your parking timer starts when a demo booking is confirmed. Leave within 10 minutes and the entry charge is waived; the dashboard tracker shows your elapsed time and grace time remaining.</p>
+            <div><p class="eyebrow">Students &amp; Lecturer / Staff</p><h3>10-Minute Grace Period</h3>
+              <p>End parking within 10 minutes to avoid a charge. Visitors have no grace period and are charged from the start.</p>
             </div>
           </article>
         </div>
@@ -97,25 +102,29 @@
         <div class="faq-list">
           <details class="faq-item">
             <summary>Is this a live APU parking service?</summary>
-            <p>This is a student project demo. Slot counts change to demonstrate the live dashboard; no real parking is reserved and no real payment is taken.</p>
+            <p>This is a student project demo. Slot counts change to demonstrate the dashboard; no real parking is reserved and no real payment or refund is processed.</p>
           </details>
           <details class="faq-item">
             <summary>How much does parking cost in this demo?</summary>
-            <p>The demo rate is RM 1.00 per hour, for up to 12 hours. The amount updates automatically when you change your duration.</p>
+            <p>Visitors pay RM 1.00 per hour from the start, with no grace period. Students and Lecturer / Staff pay RM 5.00 per Malaysia calendar day and can end parking within 10 minutes without a charge.</p>
           </details>
           <details class="faq-item">
-            <summary>What happens if my selected zone is full?</summary>
-            <p>You can’t submit a registration for a zone with no available slots. Check the live dashboard and choose a zone with spaces available.</p>
+            <summary>How will I know where my car is parked?</summary>
+            <p>Connected parking sensors can report the car’s zone and space number to Home. Sensors are not connected in this demo, so the exact location is unavailable.</p>
           </details>
           <details class="faq-item">
-            <summary>Does the payment demo store my card details?</summary>
-            <p>No. The demo does not send or store payment details and does not process a real transaction. Do not enter real card details.</p>
+            <summary>Does ParkSmart process payments?</summary>
+            <p>No. The prototype calculates a demo parking charge but does not request card details or process a real transaction.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How are my TP number and vehicle plate used?</summary>
+            <p>Account details and saved vehicle plates are stored in the configured Supabase project. Do not use sensitive personal information in a demo deployment.</p>
           </details>
         </div>
       </section>
       <section class="guide-cta">
         <div><p class="eyebrow">Ready when you are</p><h2>Find your space.</h2><p>Check availability and try the ParkSmart registration demo.</p></div>
-        <a class="button button-primary" href="index.html#register">Go to dashboard <span aria-hidden="true">→</span></a>
+        <a class="button button-primary" href="account.html">Register your account <span aria-hidden="true">→</span></a>
       </section>
     </div>
   </main>
