@@ -16,7 +16,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=4" defer></script>
+  <script src="app.js?v=7" defer></script>
   <script src="garage-scene.js" defer></script>
 </head>
 <body>
@@ -76,10 +76,18 @@
 
     <div class="page-content">
       <section class="grace-demo" id="parking-home-session" aria-labelledby="grace-title" hidden>
-        <div>
+        <div class="grace-intro">
           <p class="eyebrow">Your parking</p>
           <h2 id="grace-title">Your car, at a glance</h2>
           <p id="parking-home-intro">Your active parking details update automatically while your session is running.</p>
+          <div class="home-profile-card" aria-label="Your profile">
+            <img class="home-profile-avatar" src="assets/profile-avatar.svg" alt="" aria-hidden="true">
+            <div class="home-profile-copy">
+              <p class="eyebrow">Your profile</p>
+              <p id="home-profile-status" role="status" aria-live="polite">Sign in to see your profile.</p>
+              <div id="home-profile-details" hidden></div>
+            </div>
+          </div>
         </div>
         <div class="grace-controls" id="parking-home-details">
           <div class="parking-bay-scene" id="parked-car-scene" data-car-color="orange" role="img" aria-label="Illustrated orange car parked between two yellow parking lines" hidden>
@@ -114,6 +122,27 @@
           <button class="button button-primary" id="demo-card-payment" type="button">Pay by debit card (demo)</button>
           <p id="demo-payment-status" role="status" aria-live="polite"></p>
         </div>
+      </section>
+
+      <section class="parking-rating-card" id="parking-rating-card" aria-labelledby="parking-rating-title" hidden>
+        <div>
+          <p class="eyebrow">Session complete</p>
+          <h2 id="parking-rating-title">How was your parking experience?</h2>
+          <p>Your feedback helps us improve ParkSmart.</p>
+        </div>
+        <form id="parking-rating-form">
+          <fieldset class="star-rating">
+            <legend>Choose a rating from 1 to 5 stars</legend>
+            <label><input type="radio" name="rating" value="1" required><span aria-hidden="true">★</span><span class="sr-only">1 star</span></label>
+            <label><input type="radio" name="rating" value="2"><span aria-hidden="true">★</span><span class="sr-only">2 stars</span></label>
+            <label><input type="radio" name="rating" value="3"><span aria-hidden="true">★</span><span class="sr-only">3 stars</span></label>
+            <label><input type="radio" name="rating" value="4"><span aria-hidden="true">★</span><span class="sr-only">4 stars</span></label>
+            <label><input type="radio" name="rating" value="5"><span aria-hidden="true">★</span><span class="sr-only">5 stars</span></label>
+          </fieldset>
+          <button class="button button-primary" id="parking-rating-submit" type="submit">Submit rating</button>
+          <button class="button button-secondary" id="parking-rating-skip" type="button">Not now</button>
+        </form>
+        <p id="parking-rating-status" role="status" aria-live="polite"></p>
       </section>
 
       <section class="section-heading" aria-labelledby="availability-title">

@@ -446,8 +446,16 @@ function initializeParkingSessionSummary() {
   const demoPaymentSummary = document.querySelector("#demo-payment-summary");
   const demoPaymentButton = document.querySelector("#demo-card-payment");
   const demoPaymentStatus = document.querySelector("#demo-payment-status");
+  const homeProfileStatus = document.querySelector("#home-profile-status");
+  const homeProfileDetails = document.querySelector("#home-profile-details");
+  const ratingCard = document.querySelector("#parking-rating-card");
+  const ratingForm = document.querySelector("#parking-rating-form");
+  const ratingSubmit = document.querySelector("#parking-rating-submit");
+  const ratingSkip = document.querySelector("#parking-rating-skip");
+  const ratingStatus = document.querySelector("#parking-rating-status");
   const previewColor = new URLSearchParams(window.location.search).get("carPreview");
   demoPaymentCard.hidden = true;
+  if (ratingCard) ratingCard.hidden = true;
   const malaysiaDateFormatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Kuala_Lumpur",
     year: "numeric",
@@ -472,6 +480,35 @@ function initializeParkingSessionSummary() {
   let currentCarColor = "orange";
   let lastRequestedCarColor = null;
   let carColorRequest = 0;
+  let ratingSessionId = null;
+  function renderHomeProfile(account) {
+    if (!homeProfileStatus || !homeProfileDetails) return;
+    if (!account?.user || !account.profile) {
+      homeProfileStatus.textContent = account?.error
+        ? `Profile unavailable: ${account.error.message}`
+        : "Sign in to see your profile.";
+      homeProfileDetails.hidden = true;
+      return;
+    }
+    const roleLabel = { student: "Student", staff: "Lecturer / Staff", visitor: "Visitor" }[account.profile.user_type] || "Account";
+    homeProfileStatus.textContent = "";
+    homeProfileDetails.hidden = false;
+    homeProfileDetails.replaceChildren(
+      createTextElement("h3", account.profile.full_name),
+      createTextElement("p", roleLabel),
+      ...(account.profile.campus_id ? [createTextElement("p", account.profile.campus_id)] : []),
+      ...(account.user.email ? [createTextElement("p", account.user.email)] : [])
+    );
+  }
+  function showRatingPrompt(sessionId) {
+    if (!ratingCard || !ratingForm) return;
+    ratingSessionId = sessionId;
+    ratingForm.reset();
+    ratingForm.hidden = false;
+    ratingSubmit.disabled = false;
+    ratingStatus.textContent = "";
+    ratingCard.hidden = false;
+  }
   function showDemoPayment(amount) {
     demoPaymentCard.dataset.amount = String(amount);
     demoPaymentCard.hidden = false;
@@ -602,12 +639,15 @@ function initializeParkingSessionSummary() {
         vehicles: { plate_number: "WXY 1234", color: previewColor }
       };
       userType = "student";
+      renderHomeProfile(null);
+      if (homeProfileStatus) homeProfileStatus.textContent = "Visual parking preview";
       render();
       return;
     }
     const account = await getAccountData();
     currentUser = account.user;
     userType = account.profile?.user_type || null;
+    renderHomeProfile(account);
     if (!account.client || !account.user) {
       render();
       return;
@@ -662,12 +702,47 @@ function initializeParkingSessionSummary() {
       return;
     }
     const finalAmount = Number(endedSession?.amount_rm || 0);
+    const endedSessionId = endedSession?.id || currentSession.id;
     currentSession = null;
     render();
     showDemoPayment(finalAmount);
+    showRatingPrompt(endedSessionId);
     if (finalAmount === 0) {
       messageElement.textContent = "Parking ended. No demo charge was recorded.";
     }
+  });
+
+  ratingForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (ratingSubmit.disabled || !ratingForm.reportValidity() || !ratingSessionId) return;
+    const rating = Number(new FormData(ratingForm).get("rating"));
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+      ratingStatus.textContent = "Choose a rating from 1 to 5 stars.";
+      return;
+    }
+    ratingSubmit.disabled = true;
+    try {
+      const account = await getAccountData();
+      if (!account.client || !account.user) throw new Error("Sign in again before submitting your rating.");
+      const { error } = await account.client.from("parking_ratings").insert({
+        parking_session_id: ratingSessionId,
+        user_id: account.user.id,
+        rating
+      });
+      if (error) throw error;
+      ratingForm.hidden = true;
+      ratingStatus.textContent = "Thanks for your feedback!";
+    } catch (error) {
+      ratingStatus.textContent = `Could not save your rating: ${error.message || "Please try again."}`;
+      console.error("ParkSmart could not save the parking rating.", error);
+    } finally {
+      ratingSubmit.disabled = false;
+    }
+  });
+
+  ratingSkip?.addEventListener("click", () => {
+    ratingCard.hidden = true;
+    ratingSessionId = null;
   });
 
   demoPaymentButton.addEventListener("click", () => {

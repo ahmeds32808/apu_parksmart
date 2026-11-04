@@ -72,13 +72,23 @@ create unique index if not exists one_active_parking_session_per_user
   on public.parking_sessions (user_id)
   where status = 'active';
 
+create table if not exists public.parking_ratings (
+  id uuid primary key default gen_random_uuid(),
+  parking_session_id uuid not null unique references public.parking_sessions (id) on delete cascade,
+  user_id uuid not null references auth.users (id) on delete cascade,
+  rating smallint not null check (rating between 1 and 5),
+  created_at timestamptz not null default now()
+);
+
 alter table public.profiles enable row level security;
 alter table public.vehicles enable row level security;
 alter table public.parking_sessions enable row level security;
+alter table public.parking_ratings enable row level security;
 
 grant usage on schema public to anon, authenticated;
-revoke all on public.profiles, public.vehicles, public.parking_sessions from anon, authenticated;
+revoke all on public.profiles, public.vehicles, public.parking_sessions, public.parking_ratings from anon, authenticated;
 grant select on public.profiles, public.vehicles, public.parking_sessions to authenticated;
+grant select, insert on public.parking_ratings to authenticated;
 grant insert, delete on public.vehicles to authenticated;
 
 drop policy if exists "Users can read their own profile" on public.profiles;
@@ -110,6 +120,27 @@ create policy "Users can read their own parking sessions"
   on public.parking_sessions for select
   to authenticated
   using ((select auth.uid()) = user_id);
+
+drop policy if exists "Users can read their own parking ratings" on public.parking_ratings;
+create policy "Users can read their own parking ratings"
+  on public.parking_ratings for select
+  to authenticated
+  using ((select auth.uid()) = user_id);
+
+drop policy if exists "Users can rate their own ended sessions" on public.parking_ratings;
+create policy "Users can rate their own ended sessions"
+  on public.parking_ratings for insert
+  to authenticated
+  with check (
+    (select auth.uid()) = user_id
+    and exists (
+      select 1
+      from public.parking_sessions
+      where parking_sessions.id = parking_session_id
+        and parking_sessions.user_id = (select auth.uid())
+        and parking_sessions.status in ('completed', 'cancelled')
+    )
+  );
 
 drop policy if exists "Users can create their own parking sessions" on public.parking_sessions;
 drop policy if exists "Users can end their own parking sessions" on public.parking_sessions;

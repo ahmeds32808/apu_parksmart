@@ -2,7 +2,7 @@
 
 APU ParkSmart is a four-page campus parking demo built with HTML, CSS, and vanilla JavaScript:
 
-- `index.html` — Home dashboard, account profile, saved cars, active parking details, and 3D garage.
+- `index.html` — Home dashboard, account profile, saved cars, active parking details, post-session star rating, and 3D garage.
 - `account.html` — One-time account registration and sign-in. Account setup saves one vehicle and its display colour.
 - `parking.html` — Choose a saved vehicle and start an untimed parking session.
 - `guide.html` — How-to information and project limitations.
@@ -34,6 +34,8 @@ The Supabase publishable key in `supabase-config.js` is intended for browser use
 - Student and Lecturer / Staff parking is RM 5.00 per day. Ending the session within 10 minutes avoids a charge; otherwise, the daily rate is recorded for each day parked.
 - Zone C is labeled Visitors only as an informational campus rule. Zones are not assigned to parking sessions until sensor integration is available.
 - The Home page shows the registered car, live time parked, and a live price estimate. After ending a session with a charge, users can view a simulated debit-card result. No card details are collected and no payment is processed.
+- After ending a session, users can optionally submit a 1–5 star rating. Ratings are saved to the `parking_ratings` table; run `supabase-setup.sql` in the Supabase SQL Editor to create the table and access policies.
+- The Instagram QR code appears in the footer on all four pages.
 - Parking availability and the 3D garage are simulated in each browser; they are not connected to campus sensors. The active-session schema includes a sensor location field, but the prototype cannot populate it until a sensor integration is added. Supabase stores accounts, registered car plates, and the user's active parking session.
 - Account type, student TP number, and staff ID are user-entered demo information and are not independently verified. Do not use this prototype as an access-control or payment system.
 - Supabase row-level policies restrict profile and vehicle data to the signed-in owner. `supabase-setup.sql` creates the required tables, policies, and server-side parking-session/charge procedures.
