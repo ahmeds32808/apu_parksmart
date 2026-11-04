@@ -2,7 +2,7 @@
 
 ## 1. Project overview
 
-APU ParkSmart is a five-page campus-parking prototype for Asia Pacific University (APU). It demonstrates account setup, saved vehicles, parking-session timing and pricing, simulated parking availability, and an About Us page for the project and its eight team roles.
+APU ParkSmart is a six-page campus-parking prototype for Asia Pacific University (APU). It demonstrates account setup, saved vehicles, parking-session timing and pricing, simulated parking availability, an About Us page, and a demo rating dashboard.
 
 The public demo is available at [https://ahmeds32808.github.io/apu_parksmart/](https://ahmeds32808.github.io/apu_parksmart/).
 
@@ -153,7 +153,8 @@ Real payments require a payment provider with a hosted checkout, server-side pay
 - `garage-scene.js` renders the illustrated/simulated campus parking scene.
 - `style.css` contains layout, responsive styling, and component styles.
 - `supabase-config.js` contains the Supabase project URL and browser-safe publishable/anon key. It must never contain a service-role key or other secret.
-- `script.js` is a legacy standalone browser-only booking prototype and is not included by the current four HTML pages.
+- `ratings-dashboard.html` and `ratings-dashboard.js` display the anonymized parking-rating summary returned by Supabase.
+- `script.js` is a legacy standalone browser-only booking prototype and is not included by the current HTML pages.
 - `assets/parked-car.glb` is the car model with the yellow bay-line meshes embedded. The bay lines use their own material so vehicle paint recolouring does not change them.
 - `assets/Textures/colormap.png` supplies the model's car-paint texture used by the colour preview.
 - `assets/parked-car.svg` is the local illustration/fallback used by the parked-car display.
@@ -165,11 +166,13 @@ Real payments require a payment provider with a hosted checkout, server-side pay
 - `profiles`: one account profile per Supabase Auth user.
 - `vehicles`: saved vehicle plates and display colours.
 - `parking_sessions`: active/completed/cancelled sessions, rates, timestamps, and optional sensor location.
+- `parking_ratings`: one 1–5 star rating per ended parking session.
 Important RPC functions:
 
 - `start_parking_session(p_vehicle_id)`: checks the signed-in account and vehicle, then starts one active session.
 - `end_parking_session(p_session_id)`: ends the caller’s active session and calculates the amount according to account type and Malaysia time.
-Row-level security and restricted table/function privileges protect account-owned profile, vehicle, and session operations. The browser calls the public RPCs with the signed-in user’s Supabase session.
+- `get_parksmart_rating_summary()`: returns only anonymized rating totals after at least five responses for the demo dashboard.
+Row-level security and restricted table/function privileges protect account-owned profile, vehicle, and session operations. The browser calls the public RPCs with the signed-in user’s Supabase session. The ratings dashboard uses an aggregate-only function and never reads individual rating records.
 
 ### Hosting
 

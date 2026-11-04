@@ -142,6 +142,50 @@ create policy "Users can rate their own ended sessions"
     )
   );
 
+-- Return anonymous rating totals only after a minimum number of responses.
+-- The dashboard never receives user IDs, session IDs, or individual rating rows.
+create or replace function public.get_parksmart_rating_summary()
+returns table (
+  results_ready boolean,
+  average_rating numeric,
+  total_ratings bigint,
+  one_star bigint,
+  two_stars bigint,
+  three_stars bigint,
+  four_stars bigint,
+  five_stars bigint
+)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  with summary as (
+    select
+      count(*) as total,
+      round(avg(rating)::numeric, 1) as average,
+      count(*) filter (where rating = 1) as one_star_count,
+      count(*) filter (where rating = 2) as two_star_count,
+      count(*) filter (where rating = 3) as three_star_count,
+      count(*) filter (where rating = 4) as four_star_count,
+      count(*) filter (where rating = 5) as five_star_count
+    from public.parking_ratings
+  )
+  select
+    total >= 5,
+    case when total >= 5 then average else null end,
+    case when total >= 5 then total else null end,
+    case when total >= 5 then one_star_count else null end,
+    case when total >= 5 then two_star_count else null end,
+    case when total >= 5 then three_star_count else null end,
+    case when total >= 5 then four_star_count else null end,
+    case when total >= 5 then five_star_count else null end
+  from summary;
+$$;
+
+revoke all on function public.get_parksmart_rating_summary() from public, anon, authenticated;
+grant execute on function public.get_parksmart_rating_summary() to anon, authenticated;
+
 drop policy if exists "Users can create their own parking sessions" on public.parking_sessions;
 drop policy if exists "Users can end their own parking sessions" on public.parking_sessions;
 

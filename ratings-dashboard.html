@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12305c">
+  <meta name="description" content="Demo dashboard showing anonymized APU ParkSmart parking ratings from Supabase.">
+  <title>Ratings dashboard | APU ParkSmart</title>
+  <link rel="icon" type="image/jpeg" href="assets/Park_smart.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="ratings-dashboard.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="APU ParkSmart home"><span class="brand-mark"><img src="assets/Park_smart.jpg" alt="ParkSmart logo"></span><span>APU ParkSmart</span></a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="account.html">Account Registration</a>
+        <a class="nav-link" href="parking.html">Register Parking</a>
+        <a class="nav-link" href="guide.html">Guide</a>
+        <a class="nav-link" href="about.html">About Us</a>
+        <a class="nav-link active" href="ratings-dashboard.html" aria-current="page">Ratings Dashboard</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="ratings-main">
+    <section class="ratings-heading">
+      <p class="eyebrow"><span class="eyebrow-mark"></span> Demo admin view</p>
+      <div class="ratings-heading-row"><div><h1>Parking feedback</h1><p>See how drivers rated their ParkSmart experience.</p></div><button class="button button-secondary" id="refresh-ratings" type="button">Refresh data</button></div>
+    </section>
+    <section class="ratings-notice" aria-label="Privacy note"><span aria-hidden="true">i</span><p>This dashboard shows anonymized totals only. Results appear after at least five ratings have been submitted.</p></section>
+    <p class="ratings-status" id="ratings-status" role="status" aria-live="polite">Loading ratings from Supabase…</p>
+    <section class="ratings-summary" id="ratings-summary" aria-label="Rating summary" hidden>
+      <article class="ratings-metric"><span>Average rating</span><strong id="average-rating">—</strong><small>out of 5 stars</small></article>
+      <article class="ratings-metric"><span>Total responses</span><strong id="total-ratings">—</strong><small>submitted ratings</small></article>
+      <article class="ratings-metric"><span>Top rating</span><strong id="top-rating">—</strong><small id="top-rating-detail">most selected</small></article>
+    </section>
+    <section class="ratings-chart-card" id="ratings-chart-card" aria-labelledby="ratings-chart-title" hidden>
+      <div class="ratings-chart-heading"><div><p class="eyebrow">Rating distribution</p><h2 id="ratings-chart-title">How many stars did people give?</h2></div><span class="ratings-live"><span class="live-dot" aria-hidden="true"></span> From Supabase</span></div>
+      <div class="rating-bars" id="rating-bars" aria-label="Ratings from one to five stars"></div>
+      <p class="ratings-updated" id="ratings-updated"></p>
+    </section>
+    <section class="ratings-empty" id="ratings-empty" hidden><span class="ratings-empty-icon" aria-hidden="true">★</span><h2>Collecting feedback</h2><p>Once five people have rated a completed parking session, the anonymous chart will appear here.</p></section>
+  </main>
+  <footer class="site-footer"><div class="footer-bottom">A student project demo <span>·</span> APU ParkSmart <span>·</span> <a href="about.html">About us</a></div></footer>
+</body>
+</html>
