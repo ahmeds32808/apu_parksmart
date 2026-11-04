@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <defs><radialGradient id="bg"><stop stop-color="#fff"/><stop offset="1" stop-color="#d4dce9"/></radialGradient><linearGradient id="black" x2="1"><stop stop-color="#121820"/><stop offset=".5" stop-color="#424a55"/><stop offset="1" stop-color="#151a22"/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#202936" flood-opacity=".3"/></filter></defs>
+  <circle cx="48" cy="48" r="48" fill="url(#bg)"/><circle cx="48" cy="48" r="42" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="2"/>
+  <g filter="url(#shadow)"><path d="M14 94q2-24 19-31h30q17 7 19 31Z" fill="#202630"/><path d="M22 70 13 86m61-16 9 16" stroke="#e7b432" stroke-width="8" stroke-linecap="round"/><rect x="40" y="51" width="16" height="14" rx="5" fill="#e5b437"/><rect x="26" y="17" width="44" height="42" rx="16" fill="url(#black)"/><rect x="40" y="10" width="16" height="9" rx="4" fill="#e5b437"/>
+  <path d="M24 31q24-25 48 0l-5 27q-19 15-38 0Z" fill="url(#black)" stroke="#11161d" stroke-width="2"/><path d="M30 37h13v5H30zm23 0h13v5H53Z" fill="#d64c51"/><path d="M32 48h32l-5 12H37Z" fill="#abb3bd"/><path d="M39 50v8m6-9v10m6-10v10m6-9v8" stroke="#47505b" stroke-width="1.4"/></g>
+</svg>
