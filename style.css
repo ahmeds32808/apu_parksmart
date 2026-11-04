@@ -88,24 +88,24 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .team-card:nth-child(7) { --team-accent:#dd4a3e; --team-tint:#fff1e9; }
 .team-card:nth-child(8) { --team-accent:#e68a29; --team-tint:#fff7e8; }
 .team-details { min-width:0; }
-.team-avatar { width:80px; height:80px; flex:0 0 80px; display:block; border:3px solid #fff; border-radius:50%; object-fit:cover; box-shadow:0 5px 16px rgba(18,48,92,.16); transform-origin:50% 80%; }
-.team-avatar-batman { --team-motion:avatar-batman; }
-.team-avatar-ironman { --team-motion:avatar-ironman; }
-.team-avatar-spiderman { --team-motion:avatar-spider; }
-.team-avatar-joker { --team-motion:avatar-joker; }
-.team-avatar-ninja { --team-motion:avatar-ninja; }
-.team-avatar-vader { --team-motion:avatar-vader; }
-.team-avatar-luffy { --team-motion:avatar-luffy; }
-.team-avatar-goku { --team-motion:avatar-goku; }
+.team-avatar { width:100px; height:100px; flex:0 0 100px; display:block; border:3px solid #fff; border-radius:50%; object-fit:cover; image-rendering:auto; box-shadow:0 5px 16px rgba(18,48,92,.16); transform-origin:50% 80%; }
+.team-avatar-1 { --team-motion:avatar-1; }
+.team-avatar-2 { --team-motion:avatar-2; }
+.team-avatar-3 { --team-motion:avatar-3; }
+.team-avatar-4 { --team-motion:avatar-4; }
+.team-avatar-5 { --team-motion:avatar-5; }
+.team-avatar-6 { --team-motion:avatar-6; }
+.team-avatar-7 { --team-motion:avatar-7; }
+.team-avatar-8 { --team-motion:avatar-8; }
 .team-card:hover .team-avatar { animation:var(--team-motion) .55s ease-in-out; }
-@keyframes avatar-batman { 35% { transform:translateY(-3px) rotate(-4deg); } 70% { transform:rotate(3deg); } }
-@keyframes avatar-ironman { 50% { transform:translateY(-3px) scale(1.04); filter:drop-shadow(0 0 4px #ffd45c); } }
-@keyframes avatar-spider { 25% { transform:rotate(-6deg) translateY(-2px); } 70% { transform:rotate(5deg); } }
-@keyframes avatar-joker { 35% { transform:rotate(5deg); } 70% { transform:rotate(-4deg); } }
-@keyframes avatar-ninja { 40% { transform:translateY(-3px) rotate(3deg); } 70% { transform:rotate(-3deg); } }
-@keyframes avatar-vader { 50% { transform:scale(1.03); filter:drop-shadow(0 0 3px #c94e4e); } }
-@keyframes avatar-luffy { 35% { transform:translateY(-3px) rotate(-4deg); } 70% { transform:rotate(3deg); } }
-@keyframes avatar-goku { 40% { transform:translateY(-4px) scale(1.04); filter:drop-shadow(0 0 4px #ffad36); } }
+@keyframes avatar-1 { 35% { transform:translateY(-3px) rotate(-4deg); } 70% { transform:rotate(3deg); } }
+@keyframes avatar-2 { 50% { transform:translateY(-3px) scale(1.04); } }
+@keyframes avatar-3 { 25% { transform:rotate(-6deg) translateY(-2px); } 70% { transform:rotate(5deg); } }
+@keyframes avatar-4 { 35% { transform:rotate(5deg); } 70% { transform:rotate(-4deg); } }
+@keyframes avatar-5 { 40% { transform:translateY(-3px) rotate(3deg); } 70% { transform:rotate(-3deg); } }
+@keyframes avatar-6 { 50% { transform:scale(1.03); } }
+@keyframes avatar-7 { 35% { transform:translateY(-3px) rotate(-4deg); } 70% { transform:rotate(3deg); } }
+@keyframes avatar-8 { 40% { transform:translateY(-4px) scale(1.04); } }
 .team-note { margin: 15px 0 0; color: var(--muted); font-size: 11px; }
 .about-note { display: flex; align-items: flex-start; gap: 13px; margin-top: 38px; padding: 17px 19px; border: 1px solid #dcefea; border-radius: 12px; background: #f3fbf9; }
 .about-note > span { width: 22px; height: 22px; flex: 0 0 22px; display: grid; place-items: center; border-radius: 50%; background: #d9f3ef; color: var(--teal-dark); font-size: 13px; font-weight: 800; }
