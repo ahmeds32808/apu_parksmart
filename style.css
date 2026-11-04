@@ -80,28 +80,75 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .team-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 .team-card { display:flex; align-items:flex-start; gap:15px; min-height:148px; padding:20px; border:1px solid var(--line); border-radius:14px; background:var(--white); box-shadow:0 8px 24px rgba(18,48,92,.045); }
 .team-details { min-width:0; }
-.team-character { width:76px; height:76px; flex:0 0 76px; object-fit:cover; border-radius:50%; transform-origin:50% 90%; box-shadow:0 4px 12px rgba(18,48,92,.12); }
+.team-character { --suit:#3c5a77; --trim:#e7be32; position:relative; width:76px; height:92px; flex:0 0 76px; overflow:visible; border-radius:50%; background:radial-gradient(circle at 50% 38%,#fff 0 30%,#e8f7f4 72%); transform-origin:50% 82%; }
+.mini-figure { position:absolute; inset:4px 7px 2px; }
+.mini-head { position:absolute; z-index:4; top:4px; left:12px; width:38px; height:34px; border:1px solid rgba(134,94,16,.35); border-radius:13px 13px 11px 11px; background:linear-gradient(105deg,#f0b832 0%,#ffe576 28%,#ffd45c 67%,#eab83c 100%); box-shadow:inset 2px 2px 3px rgba(255,255,255,.7),inset -3px -4px 4px rgba(154,102,10,.18),0 2px 2px rgba(35,48,63,.2); }
+.mini-head::after { position:absolute; z-index:-1; top:-5px; left:11px; width:15px; height:6px; border:1px solid rgba(134,94,16,.35); border-bottom:0; border-radius:5px 5px 1px 1px; background:linear-gradient(90deg,#edb531,#ffe276 45%,#e9b63a); content:""; }
+.mini-eye { position:absolute; top:13px; z-index:2; width:3px; height:4px; border-radius:50%; background:#25364b; }
+.mini-eye-left { left:10px; }.mini-eye-right { right:10px; }
+.mini-mouth { position:absolute; left:13px; bottom:7px; width:12px; height:6px; border-bottom:1.5px solid #714628; border-radius:0 0 9px 9px; }
+.mini-mask { position:absolute; z-index:3; display:none; }
+.mini-headgear { position:absolute; z-index:4; display:none; }
+.mini-neck { position:absolute; z-index:2; top:35px; left:24px; width:15px; height:7px; border-radius:2px 2px 4px 4px; background:linear-gradient(90deg,#dfa728,#ffe16c 42%,#edb937); }
+.mini-torso { position:absolute; z-index:3; top:39px; left:10px; width:43px; height:26px; border:1px solid rgba(20,34,49,.35); border-radius:7px 7px 5px 5px; background:linear-gradient(100deg,color-mix(in srgb,var(--suit),#111 14%),var(--suit) 35%,color-mix(in srgb,var(--suit),#fff 16%) 58%,var(--suit)); box-shadow:inset 1px 2px 3px rgba(255,255,255,.35),inset -2px -3px 4px rgba(0,0,0,.18),0 2px 2px rgba(30,44,56,.2); clip-path:polygon(12% 0,88% 0,100% 12%,94% 100%,6% 100%,0 12%); }
+.mini-emblem { position:absolute; top:7px; left:16px; width:9px; height:9px; border:1px solid rgba(255,255,255,.7); border-radius:50%; background:var(--trim); box-shadow:0 0 4px rgba(255,255,255,.35); }
+.mini-arm { position:absolute; z-index:2; top:41px; width:10px; height:23px; border:1px solid rgba(0,0,0,.15); border-radius:6px; background:linear-gradient(90deg,#e2a92f,#ffe275 45%,#edb838); transform-origin:50% 12%; }
+.mini-arm-left { left:4px; transform:rotate(13deg); }.mini-arm-right { right:4px; transform:rotate(-13deg); }
+.mini-hand { position:absolute; bottom:-4px; left:0; width:10px; height:10px; border-radius:50% 50% 45% 45%; background:linear-gradient(90deg,#dda329,#ffe16c 55%,#edb838); }
+.mini-leg { position:absolute; z-index:2; top:63px; width:20px; height:19px; border:1px solid rgba(15,28,43,.32); border-radius:2px 2px 4px 4px; background:linear-gradient(90deg,color-mix(in srgb,var(--suit),#111 16%),var(--suit) 45%,color-mix(in srgb,var(--suit),#fff 13%)); box-shadow:inset 0 -3px 2px rgba(0,0,0,.12); }
+.mini-leg-left { left:11px; border-radius:3px 1px 4px 4px; }.mini-leg-right { right:9px; border-radius:1px 3px 4px 4px; }
+.character-batman { --suit:#273447; --trim:#f1c84b; }
+.character-batman .mini-mask { display:block; top:10px; left:0; width:100%; height:13px; background:#273447; clip-path:polygon(0 10%,24% 20%,32% 80%,43% 60%,50% 83%,58% 60%,68% 80%,76% 20%,100% 10%,92% 92%,8% 92%); }
+.character-batman .mini-headgear { display:block; top:-5px; left:4px; width:30px; height:16px; background:#202a38; clip-path:polygon(0 100%,6% 0,37% 56%,50% 0,64% 56%,94% 0,100% 100%); }
+.character-batman .mini-eye { background:#fff5c2; }
+.character-ironman { --suit:#bf252b; --trim:#ffd45c; }
+.character-ironman .mini-mask { display:block; inset:0; border-radius:12px; background:linear-gradient(90deg,#a81e27,#e64337 45%,#c9252e); clip-path:polygon(20% 0,80% 0,100% 24%,90% 84%,70% 100%,30% 100%,10% 84%,0 24%); }
+.character-ironman .mini-mask::before { position:absolute; top:13px; left:5px; width:26px; height:4px; background:#fff0a0; content:""; }
+.character-ironman .mini-headgear { display:block; top:-2px; left:3px; width:32px; height:7px; border-radius:7px 7px 0 0; background:linear-gradient(#ef4939,#a81e27); }
+.character-spiderman { --suit:#d83235; --trim:#2467bd; }
+.character-spiderman .mini-mask { display:block; inset:0; border-radius:12px; background:linear-gradient(125deg,#e8443e,#bd202a); }
+.character-spiderman .mini-mask::before,.character-spiderman .mini-mask::after { position:absolute; top:14px; width:9px; height:5px; border:1px solid #26364b; border-radius:90% 20%; background:#fff; content:""; }
+.character-spiderman .mini-mask::before { left:5px; transform:rotate(15deg); }.character-spiderman .mini-mask::after { right:5px; transform:scaleX(-1) rotate(15deg); }
+.character-spiderman .mini-eye,.character-spiderman .mini-mouth { display:none; }
+.character-joker { --suit:#633493; --trim:#55bb68; }
+.character-joker .mini-headgear { display:block; top:-4px; left:4px; width:30px; height:15px; background:#56b95d; clip-path:polygon(0 100%,7% 8%,35% 64%,51% 0,65% 64%,94% 8%,100% 100%); }
+.character-joker .mini-mouth { height:7px; border-bottom:2px solid #c63a3d; width:15px; left:11px; }
+.character-ninja { --suit:#328451; --trim:#f3cf46; }
+.character-ninja .mini-mask { display:block; left:-1px; top:13px; width:40px; height:12px; border-radius:3px; background:#253849; }
+.character-ninja .mini-eye { background:#fff2c4; }
+.character-ninja .mini-headgear { display:block; top:1px; left:-1px; width:40px; height:13px; border-radius:15px 15px 4px 4px; background:linear-gradient(#42a15c,#277246); }
+.character-vader { --suit:#252a32; --trim:#d95151; }
+.character-vader .mini-cape { position:absolute; z-index:1; top:38px; left:5px; width:53px; height:38px; background:linear-gradient(90deg,#131820,#343a44 45%,#171c24); clip-path:polygon(14% 0,86% 0,100% 100%,50% 88%,0 100%); }
+.character-vader .mini-mask { display:block; inset:0; border-radius:12px; background:linear-gradient(100deg,#171c24,#424954 45%,#171c24); clip-path:polygon(20% 0,80% 0,100% 25%,87% 76%,70% 100%,30% 100%,13% 76%,0 25%); }
+.character-vader .mini-mask::before { position:absolute; top:15px; left:6px; width:24px; height:3px; background:#dc5151; box-shadow:0 8px #bec4ca; content:""; }
+.character-vader .mini-eye,.character-vader .mini-mouth { display:none; }
+.character-luffy { --suit:#d8493d; --trim:#f1c94a; }
+.character-luffy .mini-headgear { display:block; top:-1px; left:2px; width:34px; height:10px; border-radius:50% 50% 2px 2px; background:linear-gradient(#f1c94a 0 38%,#543a27 42% 54%,#d8a82d 58%); box-shadow:0 4px #d4493d; }
+.character-luffy .mini-mouth { width:10px; }
+.character-goku { --suit:#ed842c; --trim:#2860a5; }
+.character-goku .mini-headgear { display:block; top:-8px; left:0; width:38px; height:23px; background:#252b3a; clip-path:polygon(0 78%,9% 0,28% 53%,43% 0,55% 46%,74% 0,77% 53%,100% 10%,88% 100%); }
+.character-goku .mini-eye { height:5px; background:#382a24; }
 .team-member-name { margin:0 0 2px; color:var(--muted); font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
 .team-member-tp { margin:0 0 5px; color:#8390a0; font-size:10px; font-weight:600; letter-spacing:.4px; }
 .team-card h3 { margin:0; color:var(--navy); font-size:14px; font-weight:750; }
 .team-card .team-details > p:last-child { margin:6px 0 0; color:var(--muted); font-size:11px; line-height:1.5; }
 .team-favorite { margin:3px 0 0; color:var(--teal-dark); font-size:10px; font-weight:700; }
-.team-card:hover .character-batman,.team-card:focus-within .character-batman { animation:batman-flutter .7s ease-in-out; }
-.team-card:hover .character-ironman,.team-card:focus-within .character-ironman { animation:ironman-pulse .7s ease-in-out; }
-.team-card:hover .character-spiderman,.team-card:focus-within .character-spiderman { animation:spiderman-swing .7s ease-in-out; }
-.team-card:hover .character-joker,.team-card:focus-within .character-joker { animation:joker-tilt .7s ease-in-out; }
-.team-card:hover .character-ninja,.team-card:focus-within .character-ninja { animation:ninja-spin .7s ease-in-out; }
-.team-card:hover .character-vader,.team-card:focus-within .character-vader { animation:vader-breathe .8s ease-in-out; }
-.team-card:hover .character-luffy,.team-card:focus-within .character-luffy { animation:luffy-stretch .7s ease-in-out; }
-.team-card:hover .character-goku,.team-card:focus-within .character-goku { animation:goku-energy .7s ease-in-out; }
-@keyframes batman-flutter { 40% { transform:translateY(-4px) rotate(-7deg); } 75% { transform:rotate(5deg); } }
-@keyframes ironman-pulse { 50% { transform:translateY(-4px) scale(1.06); filter:drop-shadow(0 0 5px #ffc857); } }
-@keyframes spiderman-swing { 25% { transform:rotate(-12deg) translateY(-2px); } 70% { transform:rotate(10deg); } }
-@keyframes joker-tilt { 35% { transform:rotate(9deg); } 70% { transform:rotate(-7deg); } }
-@keyframes ninja-spin { 45% { transform:rotate(12deg) translateY(-3px); } 75% { transform:rotate(-6deg); } }
-@keyframes vader-breathe { 50% { transform:scale(1.04); filter:drop-shadow(0 0 4px #c94e4e); } }
-@keyframes luffy-stretch { 35% { transform:scaleX(1.12) rotate(-4deg); } 70% { transform:scaleX(.96) rotate(3deg); } }
-@keyframes goku-energy { 40% { transform:translateY(-5px) scale(1.06); filter:drop-shadow(0 0 5px #ffad36); } }
+.team-card:hover .character-batman,.team-card:focus-within .character-batman { animation:minifig-batman .65s ease-in-out; }
+.team-card:hover .character-ironman,.team-card:focus-within .character-ironman { animation:minifig-ironman .65s ease-in-out; }
+.team-card:hover .character-spiderman,.team-card:focus-within .character-spiderman { animation:minifig-spider .65s ease-in-out; }
+.team-card:hover .character-joker,.team-card:focus-within .character-joker { animation:minifig-joker .65s ease-in-out; }
+.team-card:hover .character-ninja,.team-card:focus-within .character-ninja { animation:minifig-ninja .65s ease-in-out; }
+.team-card:hover .character-vader,.team-card:focus-within .character-vader { animation:minifig-vader .7s ease-in-out; }
+.team-card:hover .character-luffy,.team-card:focus-within .character-luffy { animation:minifig-luffy .65s ease-in-out; }
+.team-card:hover .character-goku,.team-card:focus-within .character-goku { animation:minifig-goku .65s ease-in-out; }
+@keyframes minifig-batman { 35% { transform:translateY(-4px) rotate(-5deg); } 70% { transform:rotate(4deg); } }
+@keyframes minifig-ironman { 50% { transform:translateY(-4px) scale(1.04); filter:drop-shadow(0 0 5px #ffd45c); } }
+@keyframes minifig-spider { 25% { transform:rotate(-8deg) translateY(-2px); } 70% { transform:rotate(7deg); } }
+@keyframes minifig-joker { 35% { transform:rotate(6deg); } 70% { transform:rotate(-5deg); } }
+@keyframes minifig-ninja { 40% { transform:translateY(-4px) rotate(4deg); } 70% { transform:rotate(-4deg); } }
+@keyframes minifig-vader { 50% { transform:scale(1.04); filter:drop-shadow(0 0 4px #c94e4e); } }
+@keyframes minifig-luffy { 35% { transform:translateY(-3px) rotate(-5deg); } 70% { transform:rotate(4deg); } }
+@keyframes minifig-goku { 40% { transform:translateY(-5px) scale(1.05); filter:drop-shadow(0 0 5px #ffad36); } }
 .team-note { margin: 15px 0 0; color: var(--muted); font-size: 11px; }
 .about-note { display: flex; align-items: flex-start; gap: 13px; margin-top: 38px; padding: 17px 19px; border: 1px solid #dcefea; border-radius: 12px; background: #f3fbf9; }
 .about-note > span { width: 22px; height: 22px; flex: 0 0 22px; display: grid; place-items: center; border-radius: 50%; background: #d9f3ef; color: var(--teal-dark); font-size: 13px; font-weight: 800; }
