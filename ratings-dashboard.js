@@ -1,10 +1,12 @@
 const ratingLabels = ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"];
 const ratingStatus = document.querySelector("#ratings-status");
 const refreshRatingsButton = document.querySelector("#refresh-ratings");
+const previewSampleRatingsButton = document.querySelector("#preview-sample-ratings");
 const ratingsSummary = document.querySelector("#ratings-summary");
 const ratingsChartCard = document.querySelector("#ratings-chart-card");
 const ratingsEmpty = document.querySelector("#ratings-empty");
 const ratingBars = document.querySelector("#rating-bars");
+let samplePreviewActive = false;
 
 function initializeRatingsNavigation() {
   const toggle = document.querySelector(".menu-toggle");
@@ -47,20 +49,12 @@ function showRatingBars(counts, total) {
   });
 }
 
-async function loadRatingSummary() {
-  const config = window.PARKSMART_SUPABASE_CONFIG;
-  if (!config?.url || !config?.anonKey || !window.supabase) {
-    throw new Error("Supabase did not load. Check your connection and supabase-config.js.");
-  }
-  const client = window.supabase.createClient(config.url, config.anonKey);
-  const { data, error } = await client.rpc("get_parksmart_rating_summary");
-  if (error) throw error;
-  const summary = data?.[0];
+function showRatingSummary(summary, sample = false) {
   ratingsSummary.hidden = true;
   ratingsChartCard.hidden = true;
   ratingsEmpty.hidden = true;
   if (!summary?.results_ready) {
-    ratingStatus.textContent = "Results are hidden until at least five ratings are available.";
+    ratingStatus.textContent = "No chart yet. At least five real ratings are needed.";
     ratingsEmpty.hidden = false;
     return;
   }
@@ -72,14 +66,30 @@ async function loadRatingSummary() {
   document.querySelector("#total-ratings").textContent = String(total);
   document.querySelector("#top-rating").textContent = `${topIndex + 1} ★`;
   document.querySelector("#top-rating-detail").textContent = `${counts[topIndex]} ${counts[topIndex] === 1 ? "response" : "responses"}`;
+  document.querySelector("#ratings-source-label").textContent = sample ? "Sample preview" : "From Supabase";
+  document.querySelector("#ratings-updated").textContent = sample
+    ? "Example data for preview only. It is not saved to Supabase."
+    : `Updated ${new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date())}`;
   showRatingBars(counts, total);
-  document.querySelector("#ratings-updated").textContent = `Updated ${new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date())}`;
   ratingsSummary.hidden = false;
   ratingsChartCard.hidden = false;
-  ratingStatus.textContent = "Ratings loaded.";
+  ratingStatus.textContent = sample ? "Showing sample ratings. These are not real responses." : "Ratings loaded from Supabase.";
+}
+
+async function loadRatingSummary() {
+  const config = window.PARKSMART_SUPABASE_CONFIG;
+  if (!config?.url || !config?.anonKey || !window.supabase) {
+    throw new Error("Supabase did not load. Check your connection and supabase-config.js.");
+  }
+  const client = window.supabase.createClient(config.url, config.anonKey);
+  const { data, error } = await client.rpc("get_parksmart_rating_summary");
+  if (error) throw error;
+  if (samplePreviewActive) return;
+  showRatingSummary(data?.[0]);
 }
 
 refreshRatingsButton.addEventListener("click", async () => {
+  samplePreviewActive = false;
   refreshRatingsButton.disabled = true;
   ratingStatus.textContent = "Refreshing ratings…";
   try {
@@ -89,6 +99,20 @@ refreshRatingsButton.addEventListener("click", async () => {
   } finally {
     refreshRatingsButton.disabled = false;
   }
+});
+
+previewSampleRatingsButton.addEventListener("click", () => {
+  samplePreviewActive = true;
+  showRatingSummary({
+    results_ready: true,
+    average_rating: 4.3,
+    total_ratings: 24,
+    one_star: 0,
+    two_stars: 1,
+    three_stars: 3,
+    four_stars: 8,
+    five_stars: 12
+  }, true);
 });
 
 initializeRatingsNavigation();

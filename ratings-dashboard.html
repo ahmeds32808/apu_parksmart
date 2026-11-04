@@ -34,7 +34,7 @@
   <main id="main" class="ratings-main">
     <section class="ratings-heading">
       <p class="eyebrow"><span class="eyebrow-mark"></span> Demo admin view</p>
-      <div class="ratings-heading-row"><div><h1>Parking feedback</h1><p>See how drivers rated their ParkSmart experience.</p></div><button class="button button-secondary" id="refresh-ratings" type="button">Refresh data</button></div>
+      <div class="ratings-heading-row"><div><h1>Parking feedback</h1><p>See how drivers rated their ParkSmart experience.</p></div><div class="ratings-actions"><button class="button button-secondary" id="preview-sample-ratings" type="button">Preview sample ratings</button><button class="button button-secondary" id="refresh-ratings" type="button">Show live data</button></div></div>
     </section>
     <section class="ratings-notice" aria-label="Privacy note"><span aria-hidden="true">i</span><p>This dashboard shows anonymized totals only. Results appear after at least five ratings have been submitted.</p></section>
     <p class="ratings-status" id="ratings-status" role="status" aria-live="polite">Loading ratings from Supabase…</p>
@@ -44,7 +44,7 @@
       <article class="ratings-metric"><span>Top rating</span><strong id="top-rating">—</strong><small id="top-rating-detail">most selected</small></article>
     </section>
     <section class="ratings-chart-card" id="ratings-chart-card" aria-labelledby="ratings-chart-title" hidden>
-      <div class="ratings-chart-heading"><div><p class="eyebrow">Rating distribution</p><h2 id="ratings-chart-title">How many stars did people give?</h2></div><span class="ratings-live"><span class="live-dot" aria-hidden="true"></span> From Supabase</span></div>
+      <div class="ratings-chart-heading"><div><p class="eyebrow">Rating distribution</p><h2 id="ratings-chart-title">How many stars did people give?</h2></div><span class="ratings-live"><span class="live-dot" aria-hidden="true"></span><span id="ratings-source-label">From Supabase</span></span></div>
       <div class="rating-bars" id="rating-bars" aria-label="Ratings from one to five stars"></div>
       <p class="ratings-updated" id="ratings-updated"></p>
     </section>

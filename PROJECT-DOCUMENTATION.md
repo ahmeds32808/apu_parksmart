@@ -153,7 +153,7 @@ Real payments require a payment provider with a hosted checkout, server-side pay
 - `garage-scene.js` renders the illustrated/simulated campus parking scene.
 - `style.css` contains layout, responsive styling, and component styles.
 - `supabase-config.js` contains the Supabase project URL and browser-safe publishable/anon key. It must never contain a service-role key or other secret.
-- `ratings-dashboard.html` and `ratings-dashboard.js` display the anonymized parking-rating summary returned by Supabase.
+- `ratings-dashboard.html` and `ratings-dashboard.js` display the anonymized parking-rating summary returned by Supabase and provide a sample-only preview that does not write to the database.
 - `script.js` is a legacy standalone browser-only booking prototype and is not included by the current HTML pages.
 - `assets/parked-car.glb` is the car model with the yellow bay-line meshes embedded. The bay lines use their own material so vehicle paint recolouring does not change them.
 - `assets/Textures/colormap.png` supplies the model's car-paint texture used by the colour preview.

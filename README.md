@@ -7,7 +7,7 @@ APU ParkSmart is a six-page campus parking demo built with HTML, CSS, and vanill
 - `parking.html` — Choose a saved vehicle and start an untimed parking session.
 - `guide.html` — How-to information and project limitations.
 - `about.html` — Project introduction and the eight team roles.
-- `ratings-dashboard.html` — Anonymized rating summary and chart from Supabase.
+- `ratings-dashboard.html` — Anonymized rating chart from Supabase, with a clearly labeled sample preview.
 
 The Profile panel is on Home; users can add additional vehicles and choose their display colours there.
 
