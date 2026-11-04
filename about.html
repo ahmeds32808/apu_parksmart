@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12305c">
+  <meta name="description" content="Meet the eight-member student team behind APU ParkSmart and learn about the project.">
+  <title>About us | APU ParkSmart</title>
+  <link rel="icon" type="image/jpeg" href="assets/Park_smart.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="app.js?v=7" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="APU ParkSmart home"><span class="brand-mark"><img src="assets/Park_smart.jpg" alt="ParkSmart logo"></span><span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span></a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="account.html">Account Registration</a>
+        <a class="nav-link" href="parking.html">Register Parking</a>
+        <a class="nav-link" href="guide.html">Guide</a>
+        <a class="nav-link active" href="about.html" aria-current="page">About Us</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="about-hero"><div class="about-hero-inner">
+      <p class="eyebrow hero-eyebrow"><span class="eyebrow-mark"></span> The people behind ParkSmart</p>
+      <h1>About <span>us.</span></h1>
+      <p>We are an eight-member student team at Asia Pacific University, exploring how a clearer view of campus parking could make getting around easier.</p>
+    </div></section>
+    <div class="about-content">
+      <section class="about-story" aria-labelledby="story-heading">
+        <div class="about-story-copy"><p class="eyebrow">Our project</p><h2 id="story-heading">Less circling. A smarter campus.</h2>
+          <p>APU ParkSmart is a student-built website concept for campus parking. It brings parking availability, account and vehicle registration, and parking-session information into one simple experience.</p>
+          <p>Our idea supports <strong>UN Sustainable Development Goal 9: Industry, Innovation and Infrastructure</strong> by exploring a digital approach to campus services.</p>
+        </div>
+        <div class="about-facts" aria-label="Project facts"><div class="about-fact"><strong>8</strong><span>student team members</span></div><div class="about-fact"><strong>APU</strong><span>Asia Pacific University</span></div><div class="about-fact"><strong>SDG 9</strong><span>Industry and innovation</span></div></div>
+      </section>
+      <section class="team-section" aria-labelledby="team-heading">
+        <div class="section-heading"><div><p class="eyebrow">Meet the team</p><h2 id="team-heading">Our members and roles</h2><p class="section-intro">Each role represents a contribution to the ParkSmart project.</p></div></div>
+        <div class="team-grid">
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">01</span><div><p class="team-member-name">Team member 1</p><h3>Project Coordinator</h3><p>Organises the team’s work and keeps project tasks moving.</p></div></article>
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">02</span><div><p class="team-member-name">Team member 2</p><h3>Research &amp; Requirements</h3><p>Gathers user needs and supports the project research.</p></div></article>
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">03</span><div><p class="team-member-name">Team member 3</p><h3>UI &amp; Visual Design</h3><p>Shapes the page layouts, visual style and user experience.</p></div></article>
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">04</span><div><p class="team-member-name">Team member 4</p><h3>Frontend Development</h3><p>Builds the website interface and interactive page elements.</p></div></article>
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">05</span><div><p class="team-member-name">Team member 5</p><h3>Application Development</h3><p>Implements account, vehicle and parking-session flows.</p></div></article>
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">06</span><div><p class="team-member-name">Team member 6</p><h3>Database &amp; Integration</h3><p>Supports data storage and the website’s Supabase integration.</p></div></article>
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">07</span><div><p class="team-member-name">Team member 7</p><h3>Testing &amp; Quality</h3><p>Reviews the website flows and checks the project experience.</p></div></article>
+          <article class="team-card"><span class="team-avatar" aria-hidden="true">08</span><div><p class="team-member-name">Team member 8</p><h3>Documentation &amp; Presentation</h3><p>Prepares project documentation and communicates the concept.</p></div></article>
+        </div>
+        <p class="team-note">Names are not included in the project files yet. Replace “Team member 1–8” with your team’s names.</p>
+      </section>
+      <section class="about-note" aria-label="About the prototype"><span aria-hidden="true">i</span><p><strong>A concept prototype:</strong> parking availability is simulated, and payments are not processed. A live service would need campus sensor integration and university approval.</p></section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand"><a class="brand brand-footer" href="index.html" aria-label="APU ParkSmart home"><span class="brand-mark"><img src="assets/Park_smart.jpg" alt="" aria-hidden="true"></span><span class="wordmark-animation" data-wordmark="APU ParkSmart" aria-label="APU ParkSmart">APU ParkSmart</span></a><p>Less circling, less stress. Smart parking for a more sustainable campus.</p><a class="footer-instagram" href="https://www.instagram.com/apu_smart_parking_system?srtk=enV6MjYwYndrcDVn" target="_blank" rel="noopener noreferrer">Follow us on Instagram <span aria-hidden="true">↗</span></a></div>
+      <div class="footer-project"><span class="sdg-badge"><span class="sdg-icon">9</span> Supporting SDG 9</span><p>Modernising campus traffic, making parking fair, and getting more from the spaces we have.</p><span class="team-credit">An 8-member student team · Asia Pacific University</span></div>
+      <section class="site-qr" aria-labelledby="site-qr-title"><h2 id="site-qr-title">Follow us on Instagram</h2><div class="site-qr-code" id="site-qr-code" role="img" aria-label="QR code for the APU ParkSmart Instagram page"></div><p id="site-qr-status" role="status" aria-live="polite">Preparing QR code…</p><p id="site-qr-url">Instagram page link</p><button class="button button-secondary site-qr-download" id="download-site-qr" type="button" disabled>Download QR code</button></section>
+      <a class="footer-guide" href="guide.html">Read the parking guide <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="footer-bottom">A student project demo <span>·</span> APU ParkSmart</div>
+  </footer>
+</body>
+</html>

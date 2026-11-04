@@ -61,6 +61,33 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 7px rgba(18,176,165,0); } }
 
 .page-content, .guide-content { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+.about-hero { position: relative; overflow: hidden; background: linear-gradient(115deg, #0b2142 0%, #12305c 57%, #174a69 100%); color: var(--white); }
+.about-hero::after { position: absolute; right: -8%; bottom: -150px; width: 55%; height: 250px; transform: rotate(-9deg); border-radius: 50%; background: rgba(18,176,165,.09); content: ""; }
+.about-hero-inner { position: relative; z-index: 1; width: min(1000px, calc(100% - 48px)); margin: 0 auto; padding: 74px 0 82px; }
+.about-hero h1 { margin: 0; font-size: clamp(42px, 6vw, 64px); font-weight: 800; letter-spacing: -2.8px; line-height: 1.08; }
+.about-hero h1 span { color: #67d6ca; }
+.about-hero-inner > p:last-child { max-width: 650px; margin: 17px 0 0; color: #d3deeb; font-size: 16px; }
+.about-content { width: min(1000px, calc(100% - 48px)); margin: 0 auto; padding: 60px 0 80px; }
+.about-story { display: grid; grid-template-columns: 1.35fr .8fr; align-items: center; gap: 50px; padding-bottom: 60px; }
+.about-story h2 { margin: 0; color: var(--navy); font-size: clamp(26px, 3.2vw, 36px); letter-spacing: -1px; line-height: 1.2; }
+.about-story-copy > p:not(.eyebrow) { max-width: 650px; margin: 13px 0 0; color: var(--muted); font-size: 14px; }
+.about-story-copy strong { color: var(--navy); }
+.about-facts { display: grid; gap: 10px; }
+.about-fact { display: flex; align-items: center; gap: 14px; padding: 13px 16px; border: 1px solid var(--line); border-radius: 12px; background: #fbfcfd; }
+.about-fact strong { min-width: 56px; color: var(--navy); font-size: 19px; font-weight: 800; }
+.about-fact span { color: var(--muted); font-size: 12px; font-weight: 600; }
+.team-section { padding-top: 10px; }
+.team-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.team-card { display: flex; align-items: flex-start; gap: 15px; min-height: 130px; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); box-shadow: 0 8px 24px rgba(18,48,92,.045); }
+.team-avatar { width: 42px; height: 42px; flex: 0 0 42px; display: grid; place-items: center; border-radius: 12px; background: #e8f7f5; color: var(--teal-dark); font-size: 12px; font-weight: 800; }
+.team-member-name { margin: 0 0 2px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+.team-card h3 { margin: 0; color: var(--navy); font-size: 14px; font-weight: 750; }
+.team-card div > p:last-child { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.team-note { margin: 15px 0 0; color: var(--muted); font-size: 11px; }
+.about-note { display: flex; align-items: flex-start; gap: 13px; margin-top: 38px; padding: 17px 19px; border: 1px solid #dcefea; border-radius: 12px; background: #f3fbf9; }
+.about-note > span { width: 22px; height: 22px; flex: 0 0 22px; display: grid; place-items: center; border-radius: 50%; background: #d9f3ef; color: var(--teal-dark); font-size: 13px; font-weight: 800; }
+.about-note p { margin: 0; color: var(--muted); font-size: 12px; }
+.about-note strong { color: var(--navy); }
 .page-content { padding: 54px 0 80px; }
 .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 22px; }
 .section-heading h2, .guide-section h2, .benefits-section h2, .faq-section h2 { margin: 0; color: var(--navy); font-size: clamp(24px, 3vw, 30px); font-weight: 750; letter-spacing: -.8px; line-height: 1.25; }
@@ -226,6 +253,9 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .guide-cta p:last-child { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
 
 @media (max-width: 900px) {
+  .about-story { grid-template-columns: 1fr; gap: 25px; }
+  .about-content { padding-top: 42px; }
+  .about-hero-inner { padding: 58px 0 64px; }
   .hero-art { right: 18px; opacity: .7; }
   .hero-content { width: min(100% - 48px, 1160px); }
   .hero-content > * { max-width: 550px; }
@@ -239,6 +269,7 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 680px) {
+  .team-grid { grid-template-columns: 1fr; }
   .nav-wrap { width: calc(100% - 36px); min-height: 66px; }
   .brand img { width: 37px; height: 37px; }
   .menu-toggle { width: 42px; height: 42px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 1px solid var(--line); border-radius: 10px; background: var(--white); cursor: pointer; }

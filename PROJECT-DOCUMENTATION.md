@@ -2,7 +2,7 @@
 
 ## 1. Project overview
 
-APU ParkSmart is a four-page campus-parking prototype for Asia Pacific University (APU). It demonstrates account setup, saved vehicles, parking-session timing and pricing, and simulated parking availability.
+APU ParkSmart is a five-page campus-parking prototype for Asia Pacific University (APU). It demonstrates account setup, saved vehicles, parking-session timing and pricing, simulated parking availability, and an About Us page for the project and its eight team roles.
 
 The public demo is available at [https://ahmeds32808.github.io/apu_parksmart/](https://ahmeds32808.github.io/apu_parksmart/).
 
