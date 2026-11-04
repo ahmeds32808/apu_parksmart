@@ -111,6 +111,17 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .about-note > span { width: 22px; height: 22px; flex: 0 0 22px; display: grid; place-items: center; border-radius: 50%; background: #d9f3ef; color: var(--teal-dark); font-size: 13px; font-weight: 800; }
 .about-note p { margin: 0; color: var(--muted); font-size: 12px; }
 .about-note strong { color: var(--navy); }
+.about-instagram-counter { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-top:18px; padding:24px 28px; border:1px solid #f1d6df; border-radius:18px; background:linear-gradient(115deg,#fff1f5 0%,#fff7ec 53%,#f1f3ff 100%); }
+.instagram-counter-copy { max-width:520px; }
+.instagram-counter-copy .eyebrow { margin-bottom:8px; color:#bd4772; }
+.instagram-counter-copy h2 { margin:0; color:var(--navy); font-size:22px; }
+.instagram-counter-copy > p:last-child { margin:8px 0 0; color:var(--muted); font-size:13px; }
+.instagram-counter { min-width:160px; display:grid; justify-items:center; gap:3px; padding:15px 20px; border:1px solid rgba(190,71,114,.17); border-radius:15px; background:rgba(255,255,255,.82); color:var(--navy); text-decoration:none; box-shadow:0 8px 22px rgba(96,51,82,.08); transition:transform .2s ease, box-shadow .2s ease; }
+.instagram-counter:hover { transform:translateY(-2px); box-shadow:0 12px 26px rgba(96,51,82,.13); }
+.instagram-counter-icon { color:#c84e86; font-size:23px; line-height:1; }
+.instagram-counter-number { font-size:28px; font-weight:800; line-height:1.1; }
+.instagram-counter-label { color:var(--muted); font-size:12px; font-weight:700; }
+.instagram-counter-note { margin-top:6px; color:#a4426b; font-size:10px; font-weight:700; }
 .ratings-main { width: min(1000px, calc(100% - 48px)); min-height: calc(100vh - 160px); margin: 0 auto; padding: 54px 0 76px; }
 .ratings-heading { margin-bottom: 20px; }
 .ratings-heading-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
@@ -357,6 +368,8 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   .ratings-chart-heading { flex-direction: column; gap: 11px; }
   .rating-bar-row { grid-template-columns: 60px minmax(0, 1fr) 26px; gap: 9px; }
   .team-grid { grid-template-columns: 1fr; }
+  .about-instagram-counter { align-items:flex-start; flex-direction:column; padding:21px; }
+  .instagram-counter { width:100%; }
   .nav-wrap { width: calc(100% - 36px); min-height: 66px; }
   .brand img { width: 37px; height: 37px; }
   .menu-toggle { width: 42px; height: 42px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 1px solid var(--line); border-radius: 10px; background: var(--white); cursor: pointer; }
