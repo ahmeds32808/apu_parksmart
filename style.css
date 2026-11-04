@@ -105,6 +105,14 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .ratings-metric strong { margin: 5px 0 0; color: var(--navy); font-size: 31px; font-weight: 800; letter-spacing: -1px; line-height: 1.2; }
 .ratings-metric small { color: var(--muted); font-size: 10px; }
 .ratings-chart-card { margin-top: 20px; padding: 26px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); box-shadow: var(--shadow); }
+.rating-feedback-card { margin-top: 20px; padding: 26px; border: 1px solid var(--line); border-radius: 16px; background: var(--white); box-shadow: var(--shadow); }
+.rating-feedback-card[hidden] { display: none; }
+.rating-feedback-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.rating-feedback-entry { min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: #fbfcfd; }
+.rating-feedback-stars { color: #b87912; font-size: 11px; font-weight: 800; }
+.rating-feedback-entry p { margin: 8px 0 0; color: var(--ink); font-size: 12px; line-height: 1.55; overflow-wrap: anywhere; white-space: pre-wrap; }
+.feedback-list-status { margin: 0 0 12px; color: var(--muted); font-size: 11px; }
+.feedback-count-note { color: var(--muted); font-size: 10px; }
 .ratings-chart-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 24px; }
 .ratings-chart-heading .eyebrow { margin-bottom: 5px; }
 .ratings-chart-heading h2 { margin: 0; color: var(--navy); font-size: 20px; letter-spacing: -.5px; }
@@ -321,6 +329,8 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   .ratings-metric { padding: 15px 17px; }
   .ratings-metric strong { font-size: 26px; }
   .ratings-chart-card { padding: 20px 17px; }
+  .rating-feedback-card { padding: 20px 17px; }
+  .rating-feedback-list { grid-template-columns: 1fr; }
   .ratings-chart-heading { flex-direction: column; gap: 11px; }
   .rating-bar-row { grid-template-columns: 60px minmax(0, 1fr) 26px; gap: 9px; }
   .team-grid { grid-template-columns: 1fr; }
@@ -595,10 +605,16 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .parking-rating-card[hidden] { display: none; }
 .parking-rating-card h2 { margin: 0; color: var(--navy); font-size: 18px; }
 .parking-rating-card > div > p:last-child { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
-.parking-rating-card form { display: flex; align-items: center; gap: 14px; }
+.parking-rating-card form { display: grid; grid-template-columns: max-content max-content; align-items: center; justify-content: start; gap: 10px 14px; }
 .star-rating { display: flex; gap: 3px; margin: 0; padding: 0; border: 0; }
+.parking-rating-card .star-rating, .rating-feedback-field { grid-column: 1 / -1; }
 .star-rating legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 .star-rating label { position: relative; display: inline-flex; cursor: pointer; }
+.rating-feedback-field { width: 100%; display: grid; gap: 5px; }
+.rating-feedback-field label { color: var(--navy); font-size: 11px; font-weight: 700; }
+.rating-feedback-field label span, .rating-feedback-field small { color: var(--muted); font-size: 10px; font-weight: 400; }
+.rating-feedback-field textarea { width: 100%; min-height: 76px; resize: vertical; padding: 10px 12px; border: 1px solid #dce3ea; border-radius: 9px; color: var(--ink); font: inherit; font-size: 12px; }
+.rating-feedback-field textarea:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px rgba(18,176,165,.12); }
 .star-rating input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .star-rating label > span:first-of-type { color: #b7c1cc; font-size: 27px; line-height: 1; transition: color .15s ease; }
 .star-rating label:hover > span:first-of-type, .star-rating label:has(input:checked) > span:first-of-type { color: #e6a51a; }
@@ -649,9 +665,10 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
   .demo-payment-actions p { text-align: left; }
   .grace-controls { min-width: 0; justify-items: stretch; }
   .parking-session { min-width: 0; grid-template-columns: 9ch minmax(0, 1fr); }
-  .parking-rating-card, .parking-rating-card form { align-items: flex-start; flex-direction: column; }
+  .parking-rating-card { align-items: flex-start; flex-direction: column; }
   .parking-rating-card { padding: 17px; }
-  .parking-rating-card form { gap: 11px; }
+  .parking-rating-card form { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+  .parking-rating-card form > .button { width: 100%; padding: 0 10px; }
   .speed-toggle { justify-content: flex-start; }
   .grace-controls .button { width: 100%; }
   .grace-countdown { text-align: center; }

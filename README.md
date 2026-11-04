@@ -36,9 +36,9 @@ The Supabase publishable key in `supabase-config.js` is intended for browser use
 - Student and Lecturer / Staff parking is RM 5.00 per day. Ending the session within 10 minutes avoids a charge; otherwise, the daily rate is recorded for each day parked.
 - Zone C is labeled Visitors only as an informational campus rule. Zones are not assigned to parking sessions until sensor integration is available.
 - The Home page shows the registered car, live time parked, and a live price estimate. After ending a session with a charge, users can view a simulated debit-card result. No card details are collected and no payment is processed.
-- After ending a session, users can optionally submit a 1–5 star rating. Ratings are saved to the `parking_ratings` table; run `supabase-setup.sql` in the Supabase SQL Editor to create the table and access policies.
+- After ending a session, users can submit a 1–5 star rating and optional feedback up to 280 characters. Ratings and feedback are saved to `parking_ratings` and shown on the public demo dashboard; run `supabase-setup.sql` in the Supabase SQL Editor to add the feedback column and dashboard function.
 - The Instagram QR code appears in the footer on all five standard site pages.
-- Ratings are stored in `parking_ratings`. The Ratings Dashboard uses an aggregate-only Supabase function and displays results after at least five responses. Run the latest `supabase-setup.sql` to install the function.
+- The public Ratings Dashboard shows rating totals and the latest written comments after at least five ratings. Run the latest `supabase-setup.sql` to add feedback storage and its dashboard function.
 - Parking availability and the 3D garage are simulated in each browser; they are not connected to campus sensors. The active-session schema includes a sensor location field, but the prototype cannot populate it until a sensor integration is added. Supabase stores accounts, registered car plates, and the user's active parking session.
 - Account type, student TP number, and staff ID are user-entered demo information and are not independently verified. Do not use this prototype as an access-control or payment system.
 - Supabase row-level policies restrict profile and vehicle data to the signed-in owner. `supabase-setup.sql` creates the required tables, policies, and server-side parking-session/charge procedures.

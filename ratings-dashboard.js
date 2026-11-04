@@ -6,6 +6,9 @@ const ratingsSummary = document.querySelector("#ratings-summary");
 const ratingsChartCard = document.querySelector("#ratings-chart-card");
 const ratingsEmpty = document.querySelector("#ratings-empty");
 const ratingBars = document.querySelector("#rating-bars");
+const ratingFeedbackCard = document.querySelector("#rating-feedback-card");
+const ratingFeedbackList = document.querySelector("#rating-feedback-list");
+const feedbackListStatus = document.querySelector("#feedback-list-status");
 let samplePreviewActive = false;
 
 function initializeRatingsNavigation() {
@@ -49,10 +52,31 @@ function showRatingBars(counts, total) {
   });
 }
 
+function showRatingFeedback(entries, sample = false) {
+  ratingFeedbackList.replaceChildren();
+  feedbackListStatus.textContent = sample ? "Example comments only. They are not real responses." : "";
+  if (!entries.length) {
+    feedbackListStatus.textContent = "No written feedback yet.";
+    return;
+  }
+  entries.forEach((entry) => {
+    const card = document.createElement("article");
+    card.className = "rating-feedback-entry";
+    const stars = document.createElement("span");
+    stars.className = "rating-feedback-stars";
+    stars.textContent = `${entry.rating} ★`;
+    const text = document.createElement("p");
+    text.textContent = entry.feedback;
+    card.append(stars, text);
+    ratingFeedbackList.append(card);
+  });
+}
+
 function showRatingSummary(summary, sample = false) {
   ratingsSummary.hidden = true;
   ratingsChartCard.hidden = true;
   ratingsEmpty.hidden = true;
+  ratingFeedbackCard.hidden = true;
   if (!summary?.results_ready) {
     ratingStatus.textContent = "No chart yet. At least five real ratings are needed.";
     ratingsEmpty.hidden = false;
@@ -73,6 +97,18 @@ function showRatingSummary(summary, sample = false) {
   showRatingBars(counts, total);
   ratingsSummary.hidden = false;
   ratingsChartCard.hidden = false;
+  ratingFeedbackCard.hidden = false;
+  if (sample) {
+    showRatingFeedback([
+      { rating: 5, feedback: "Finding a parking space felt much easier." },
+      { rating: 4, feedback: "The steps were clear and simple to follow." },
+      { rating: 5, feedback: "I like seeing the parking information in one place." },
+      { rating: 3, feedback: "A map with more details would make it even better." }
+    ], true);
+  } else {
+    feedbackListStatus.textContent = "Loading comments…";
+    ratingFeedbackList.replaceChildren();
+  }
   ratingStatus.textContent = sample ? "Showing sample ratings. These are not real responses." : "Ratings loaded from Supabase.";
 }
 
@@ -85,7 +121,17 @@ async function loadRatingSummary() {
   const { data, error } = await client.rpc("get_parksmart_rating_summary");
   if (error) throw error;
   if (samplePreviewActive) return;
-  showRatingSummary(data?.[0]);
+  const summary = data?.[0];
+  showRatingSummary(summary);
+  if (!summary?.results_ready) return;
+
+  const { data: feedback, error: feedbackError } = await client.rpc("get_parksmart_rating_feedback");
+  if (samplePreviewActive) return;
+  if (feedbackError) {
+    feedbackListStatus.textContent = `Could not load comments: ${feedbackError.message || "Please try again."} Run the latest supabase-setup.sql to enable written feedback.`;
+    return;
+  }
+  showRatingFeedback((feedback || []).filter((entry) => entry.feedback));
 }
 
 refreshRatingsButton.addEventListener("click", async () => {
@@ -117,5 +163,7 @@ previewSampleRatingsButton.addEventListener("click", () => {
 
 initializeRatingsNavigation();
 loadRatingSummary().catch((error) => {
-  ratingStatus.textContent = `Could not load ratings: ${error.message || "Please try again."} Run the latest supabase-setup.sql in Supabase if the dashboard function is missing.`;
+  if (!samplePreviewActive) {
+    ratingStatus.textContent = `Could not load ratings: ${error.message || "Please try again."} Run the latest supabase-setup.sql in Supabase if the dashboard function is missing.`;
+  }
 });

@@ -166,13 +166,14 @@ Real payments require a payment provider with a hosted checkout, server-side pay
 - `profiles`: one account profile per Supabase Auth user.
 - `vehicles`: saved vehicle plates and display colours.
 - `parking_sessions`: active/completed/cancelled sessions, rates, timestamps, and optional sensor location.
-- `parking_ratings`: one 1–5 star rating per ended parking session.
+- `parking_ratings`: one 1–5 star rating per ended parking session, with optional short feedback.
 Important RPC functions:
 
 - `start_parking_session(p_vehicle_id)`: checks the signed-in account and vehicle, then starts one active session.
 - `end_parking_session(p_session_id)`: ends the caller’s active session and calculates the amount according to account type and Malaysia time.
-- `get_parksmart_rating_summary()`: returns only anonymized rating totals after at least five responses for the demo dashboard.
-Row-level security and restricted table/function privileges protect account-owned profile, vehicle, and session operations. The browser calls the public RPCs with the signed-in user’s Supabase session. The ratings dashboard uses an aggregate-only function and never reads individual rating records.
+- `get_parksmart_rating_summary()`: returns only rating totals after at least five responses for the demo dashboard.
+- `get_parksmart_rating_feedback()`: returns the latest 20 comments without names or account IDs after at least five ratings.
+Row-level security and restricted table/function privileges protect account-owned profile, vehicle, and session operations. The browser calls the public RPCs with the signed-in user’s Supabase session. The public demo ratings dashboard receives only rating totals and the latest written feedback, without names or account IDs.
 
 ### Hosting
 

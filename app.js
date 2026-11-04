@@ -716,6 +716,7 @@ function initializeParkingSessionSummary() {
     event.preventDefault();
     if (ratingSubmit.disabled || !ratingForm.reportValidity() || !ratingSessionId) return;
     const rating = Number(new FormData(ratingForm).get("rating"));
+    const feedback = String(new FormData(ratingForm).get("feedback") || "").trim();
     if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
       ratingStatus.textContent = "Choose a rating from 1 to 5 stars.";
       return;
@@ -724,12 +725,25 @@ function initializeParkingSessionSummary() {
     try {
       const account = await getAccountData();
       if (!account.client || !account.user) throw new Error("Sign in again before submitting your rating.");
-      const { error } = await account.client.from("parking_ratings").insert({
+      const ratingRecord = {
         parking_session_id: ratingSessionId,
         user_id: account.user.id,
         rating
+      };
+      const { error } = await account.client.from("parking_ratings").insert({
+        ...ratingRecord,
+        feedback: feedback || null
       });
-      if (error) throw error;
+      if (error) {
+        const feedbackColumnMissing = error.code === "PGRST204"
+          || /feedback.*(column|schema cache)/i.test(error.message || "");
+        if (!feedbackColumnMissing) throw error;
+        const fallback = await account.client.from("parking_ratings").insert(ratingRecord);
+        if (fallback.error) throw fallback.error;
+        ratingForm.hidden = true;
+        ratingStatus.textContent = "Your rating was saved. Run the latest Supabase setup to save written feedback.";
+        return;
+      }
       ratingForm.hidden = true;
       ratingStatus.textContent = "Thanks for your feedback!";
     } catch (error) {

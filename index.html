@@ -141,6 +141,11 @@
             <label><input type="radio" name="rating" value="4"><span aria-hidden="true">★</span><span class="sr-only">4 stars</span></label>
             <label><input type="radio" name="rating" value="5"><span aria-hidden="true">★</span><span class="sr-only">5 stars</span></label>
           </fieldset>
+          <div class="rating-feedback-field">
+            <label for="parking-rating-feedback">Short feedback <span>(optional)</span></label>
+            <textarea id="parking-rating-feedback" name="feedback" rows="3" maxlength="280" placeholder="What went well or what could be better?"></textarea>
+            <small>Up to 280 characters. Comments are public on the dashboard, so don’t include personal details.</small>
+          </div>
           <button class="button button-primary" id="parking-rating-submit" type="submit">Submit rating</button>
           <button class="button button-secondary" id="parking-rating-skip" type="button">Not now</button>
         </form>

@@ -36,7 +36,7 @@
       <p class="eyebrow"><span class="eyebrow-mark"></span> Demo admin view</p>
       <div class="ratings-heading-row"><div><h1>Parking feedback</h1><p>See how drivers rated their ParkSmart experience.</p></div><div class="ratings-actions"><button class="button button-secondary" id="preview-sample-ratings" type="button">Preview sample ratings</button><button class="button button-secondary" id="refresh-ratings" type="button">Show live data</button></div></div>
     </section>
-    <section class="ratings-notice" aria-label="Privacy note"><span aria-hidden="true">i</span><p>This dashboard shows anonymized totals only. Results appear after at least five ratings have been submitted.</p></section>
+    <section class="ratings-notice" aria-label="Dashboard note"><span aria-hidden="true">i</span><p>Ratings and written comments are visible to anyone visiting this demo dashboard. Results appear after at least five ratings have been submitted.</p></section>
     <p class="ratings-status" id="ratings-status" role="status" aria-live="polite">Loading ratings from Supabase…</p>
     <section class="ratings-summary" id="ratings-summary" aria-label="Rating summary" hidden>
       <article class="ratings-metric"><span>Average rating</span><strong id="average-rating">—</strong><small>out of 5 stars</small></article>
@@ -47,6 +47,11 @@
       <div class="ratings-chart-heading"><div><p class="eyebrow">Rating distribution</p><h2 id="ratings-chart-title">How many stars did people give?</h2></div><span class="ratings-live"><span class="live-dot" aria-hidden="true"></span><span id="ratings-source-label">From Supabase</span></span></div>
       <div class="rating-bars" id="rating-bars" aria-label="Ratings from one to five stars"></div>
       <p class="ratings-updated" id="ratings-updated"></p>
+    </section>
+    <section class="rating-feedback-card" id="rating-feedback-card" aria-labelledby="rating-feedback-title" hidden>
+      <div class="ratings-chart-heading"><div><p class="eyebrow">What drivers said</p><h2 id="rating-feedback-title">Recent feedback</h2></div><span class="feedback-count-note">Latest 20 comments</span></div>
+      <p class="feedback-list-status" id="feedback-list-status" role="status" aria-live="polite"></p>
+      <div class="rating-feedback-list" id="rating-feedback-list"></div>
     </section>
     <section class="ratings-empty" id="ratings-empty" hidden><span class="ratings-empty-icon" aria-hidden="true">★</span><h2>Collecting feedback</h2><p>Once five people have rated a completed parking session, the anonymous chart will appear here.</p></section>
   </main>

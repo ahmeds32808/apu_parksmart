@@ -80,6 +80,12 @@ create table if not exists public.parking_ratings (
   created_at timestamptz not null default now()
 );
 
+alter table public.parking_ratings add column if not exists feedback text;
+alter table public.parking_ratings drop constraint if exists parking_ratings_feedback_length_check;
+alter table public.parking_ratings
+  add constraint parking_ratings_feedback_length_check
+  check (feedback is null or char_length(feedback) <= 280);
+
 alter table public.profiles enable row level security;
 alter table public.vehicles enable row level security;
 alter table public.parking_sessions enable row level security;
@@ -185,6 +191,31 @@ $$;
 
 revoke all on function public.get_parksmart_rating_summary() from public, anon, authenticated;
 grant execute on function public.get_parksmart_rating_summary() to anon, authenticated;
+
+create or replace function public.get_parksmart_rating_feedback()
+returns table (
+  rating smallint,
+  feedback text,
+  submitted_at timestamptz
+)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select
+    ratings.rating,
+    ratings.feedback,
+    ratings.created_at as submitted_at
+  from public.parking_ratings as ratings
+  where nullif(btrim(ratings.feedback), '') is not null
+    and (select count(*) from public.parking_ratings) >= 5
+  order by ratings.created_at desc
+  limit 20;
+$$;
+
+revoke all on function public.get_parksmart_rating_feedback() from public, anon, authenticated;
+grant execute on function public.get_parksmart_rating_feedback() to anon, authenticated;
 
 drop policy if exists "Users can create their own parking sessions" on public.parking_sessions;
 drop policy if exists "Users can end their own parking sessions" on public.parking_sessions;
