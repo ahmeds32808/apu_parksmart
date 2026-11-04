@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="LEGO-style joker character portrait">
+ <defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#50bd65" stop-opacity=".22"/><stop offset="1" stop-color="#4d247e" stop-opacity=".16"/></linearGradient></defs>
+ <rect width="96" height="96" rx="24" fill="url(#bg)"/><circle cx="48" cy="48" r="43" fill="#fff" fill-opacity=".42"/>
+ 
+ <path d="M14 96 Q17 67 34 61 L48 68 62 61 Q79 67 82 96Z" fill="#4d247e" stroke="#23334a" stroke-width="3"/>
+ <path d="M34 63l14 12 14-12" fill="#50bd65"/><path d="M41 75h14l-3 9h-8Z" fill="#50bd65"/>
+ <rect x="40" y="52" width="16" height="17" rx="5" fill="#e8dcc6"/>
+ <rect x="24" y="16" width="48" height="44" rx="17" fill="#e8dcc6" stroke="#26364b" stroke-width="3"/>
+ <path d="M28 34v-6q20-18 40 0v6" fill="#50bd65"/>
+ <circle cx="22" cy="38" r="5" fill="#e8dcc6" stroke="#26364b" stroke-width="2"/><circle cx="74" cy="38" r="5" fill="#e8dcc6" stroke="#26364b" stroke-width="2"/>
+ <path d="M25 31 Q14 9 30 6 L42 24 Q48 5 55 23 L71 6 Q83 11 69 34 L66 51 Q48 62 30 51Z" fill="#50bd65"/><path d="M34 38h9m10 0h9" stroke="#4d247e" stroke-width="3"/><path d="M39 49q9 7 18 0" fill="none" stroke="#c62828" stroke-width="3"/>
+ <path d="M44 55q4 3 8 0" fill="none" stroke="#583e37" stroke-width="2" stroke-linecap="round"/>
+</svg>

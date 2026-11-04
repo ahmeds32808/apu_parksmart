@@ -1,0 +1,13 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="LEGO-style goku character portrait">
+ <defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#2353a2" stop-opacity=".22"/><stop offset="1" stop-color="#e9822d" stop-opacity=".16"/></linearGradient></defs>
+ <rect width="96" height="96" rx="24" fill="url(#bg)"/><circle cx="48" cy="48" r="43" fill="#fff" fill-opacity=".42"/>
+ 
+ <path d="M14 96 Q17 67 34 61 L48 68 62 61 Q79 67 82 96Z" fill="#e9822d" stroke="#23334a" stroke-width="3"/>
+ <path d="M34 63l14 12 14-12" fill="#2353a2"/><path d="M41 75h14l-3 9h-8Z" fill="#2353a2"/>
+ <rect x="40" y="52" width="16" height="17" rx="5" fill="#edbf91"/>
+ <rect x="24" y="16" width="48" height="44" rx="17" fill="#edbf91" stroke="#26364b" stroke-width="3"/>
+ <path d="M28 34v-6q20-18 40 0v6" fill="#1d2638"/>
+ <circle cx="22" cy="38" r="5" fill="#edbf91" stroke="#26364b" stroke-width="2"/><circle cx="74" cy="38" r="5" fill="#edbf91" stroke="#26364b" stroke-width="2"/>
+ <path d="M25 33 L18 15 L34 24 L36 4 L47 22 L58 3 L61 24 L78 12 L68 36 L66 50 Q48 61 30 50Z" fill="#1d2638"/><path d="M33 39h10m10 0h10" stroke="#513b2d" stroke-width="2"/>
+ <path d="M44 55q4 3 8 0" fill="none" stroke="#583e37" stroke-width="2" stroke-linecap="round"/>
+</svg>

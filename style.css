@@ -80,32 +80,7 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .team-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 .team-card { display:flex; align-items:flex-start; gap:15px; min-height:148px; padding:20px; border:1px solid var(--line); border-radius:14px; background:var(--white); box-shadow:0 8px 24px rgba(18,48,92,.045); }
 .team-details { min-width:0; }
-.team-character { --suit:#34445c; --trim:#f2c94c; --skin:#f1c27d; position:relative; width:48px; height:65px; flex:0 0 48px; transform-origin:50% 90%; }
-.figure-head { position:absolute; z-index:2; top:3px; left:13px; width:22px; height:21px; border:2px solid #23334a; border-radius:7px 7px 8px 8px; background:var(--skin); box-shadow:inset 0 -5px rgba(0,0,0,.1); }
-.figure-head::after { position:absolute; right:3px; bottom:5px; left:3px; height:2px; border-radius:2px; background:#28364a; content:""; }
-.figure-body { position:absolute; z-index:2; top:26px; left:8px; width:32px; height:20px; border:2px solid #23334a; border-radius:6px 6px 4px 4px; background:var(--suit); }
-.figure-body i { position:absolute; top:6px; left:11px; width:6px; height:6px; border-radius:50%; background:var(--trim); }
-.figure-legs { position:absolute; z-index:1; top:44px; left:10px; width:28px; height:17px; border:2px solid #23334a; border-radius:2px 2px 5px 5px; background:linear-gradient(90deg,var(--suit) 48%,#23334a 49%,#23334a 53%,var(--suit) 54%); }
-.figure-cape { position:absolute; z-index:0; top:23px; left:5px; width:38px; height:37px; border-radius:4px 4px 16px 16px; background:var(--cape,#202b3b); clip-path:polygon(15% 0,85% 0,100% 100%,50% 82%,0 100%); }
-.character-batman { --suit:#252d3a; --trim:#f2c94c; --skin:#d5b08b; --cape:#1c2635; }
-.character-batman .figure-head { border-radius:4px 4px 8px 8px; }
-.character-batman .figure-head::before,.character-goku .figure-head::before { position:absolute; top:-7px; left:2px; width:16px; height:10px; background:#252d3a; clip-path:polygon(0 100%,10% 0,40% 45%,60% 45%,90% 0,100% 100%); content:""; }
-.character-ironman { --suit:#c62828; --trim:#ffd54f; --skin:#c62828; }
-.character-ironman .figure-head { background:linear-gradient(90deg,#c62828 40%,#ffd54f 41%,#ffd54f 60%,#c62828 61%); }
-.character-spiderman { --suit:#d32f2f; --trim:#2866bd; --skin:#d32f2f; }
-.character-spiderman .figure-head { background:linear-gradient(90deg,#d32f2f 48%,#2866bd 49%,#2866bd 58%,#d32f2f 59%); }
-.character-spiderman .figure-head::before { position:absolute; top:7px; left:3px; width:13px; height:5px; border-radius:50%; background:#fff; content:""; }
-.character-joker { --suit:#4d247e; --trim:#50bd65; --skin:#e8dcc6; }
-.character-joker .figure-head::before { position:absolute; top:-6px; left:3px; width:13px; height:7px; background:#50bd65; clip-path:polygon(0 100%,15% 0,50% 60%,85% 0,100% 100%); content:""; }
-.character-ninja { --suit:#31814e; --trim:#f2c94c; --skin:#25384c; }
-.character-ninja .figure-head { border-radius:8px 8px 5px 5px; }
-.character-ninja .figure-head::before { position:absolute; top:7px; right:-2px; left:-2px; height:6px; background:#31814e; content:""; }
-.character-vader { --suit:#171c25; --trim:#d94b4b; --skin:#171c25; --cape:#111720; }
-.character-vader .figure-head { border-radius:10px 10px 5px 5px; background:linear-gradient(180deg,#171c25 50%,#404954 51%); }
-.character-luffy { --suit:#d34a3e; --trim:#f2c94c; --skin:#edbf91; }
-.character-luffy .figure-head::before { position:absolute; top:-5px; right:-2px; left:-2px; height:5px; border-radius:4px; background:#272a31; content:""; }
-.character-goku { --suit:#e9822d; --trim:#2353a2; --skin:#edbf91; }
-.character-goku .figure-head::before { background:#1d2638; clip-path:polygon(0 100%,12% 0,35% 60%,53% 0,75% 65%,100% 10%,94% 100%); }
+.team-character { width:56px; height:56px; flex:0 0 56px; object-fit:cover; border-radius:16px; transform-origin:50% 90%; }
 .team-member-name { margin:0 0 2px; color:var(--muted); font-size:10px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; }
 .team-member-tp { margin:0 0 5px; color:#8390a0; font-size:10px; font-weight:600; letter-spacing:.4px; }
 .team-card h3 { margin:0; color:var(--navy); font-size:14px; font-weight:750; }
@@ -126,7 +101,7 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 @keyframes ninja-spin { 45% { transform:rotate(12deg) translateY(-3px); } 75% { transform:rotate(-6deg); } }
 @keyframes vader-breathe { 50% { transform:scale(1.04); filter:drop-shadow(0 0 4px #c94e4e); } }
 @keyframes luffy-stretch { 35% { transform:scaleX(1.12) rotate(-4deg); } 70% { transform:scaleX(.96) rotate(3deg); } }
-@keyframes goku-energy { 40% { transform:translateY(-5px) scale(1.06); filter:drop-shadow(0 0 5px #ffad36); }
+@keyframes goku-energy { 40% { transform:translateY(-5px) scale(1.06); filter:drop-shadow(0 0 5px #ffad36); } }
 .team-note { margin: 15px 0 0; color: var(--muted); font-size: 11px; }
 .about-note { display: flex; align-items: flex-start; gap: 13px; margin-top: 38px; padding: 17px 19px; border: 1px solid #dcefea; border-radius: 12px; background: #f3fbf9; }
 .about-note > span { width: 22px; height: 22px; flex: 0 0 22px; display: grid; place-items: center; border-radius: 50%; background: #d9f3ef; color: var(--teal-dark); font-size: 13px; font-weight: 800; }
