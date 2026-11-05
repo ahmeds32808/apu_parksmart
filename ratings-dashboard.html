@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="ratings-dashboard.js" defer></script>
+  <script src="ratings-dashboard.js?v=2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -36,9 +36,33 @@
   <main id="main" class="ratings-main">
     <section class="ratings-heading">
       <p class="eyebrow"><span class="eyebrow-mark"></span> Demo admin view</p>
-      <div class="ratings-heading-row"><div><h1>Parking feedback</h1><p>See how drivers rated their ParkSmart experience.</p></div><div class="ratings-actions"><button class="button button-secondary" id="preview-sample-ratings" type="button">Preview sample ratings</button><button class="button button-secondary" id="refresh-ratings" type="button">Show live data</button></div></div>
+      <div class="ratings-heading-row"><div><h1>Ratings dashboard</h1><p>View anonymous website ratings and parking feedback.</p></div><div class="ratings-actions"><button class="button button-secondary" id="preview-sample-ratings" type="button">Preview sample ratings</button><button class="button button-secondary" id="refresh-ratings" type="button">Show live data</button></div></div>
     </section>
-    <section class="ratings-notice" aria-label="Dashboard note"><span aria-hidden="true">i</span><p>Ratings and written comments are visible to anyone visiting this demo dashboard. Results appear after at least five ratings have been submitted.</p></section>
+    <section class="ratings-notice" aria-label="Dashboard note"><span aria-hidden="true">i</span><p>Website ratings are anonymous. Parking-session summaries and comments appear after at least five parking ratings have been submitted.</p></section>
+    <section class="website-ratings-dashboard" aria-labelledby="website-ratings-title">
+      <div class="ratings-heading-row website-ratings-heading"><div><p class="eyebrow">Anonymous website feedback</p><h2 id="website-ratings-title">Rate this website results</h2><p>Ratings and comments submitted from the Home page.</p></div><span class="ratings-live"><span class="live-dot" aria-hidden="true"></span><span>Website ratings</span></span></div>
+      <p class="website-dashboard-status" id="website-dashboard-status" role="status" aria-live="polite">Loading website ratings…</p>
+      <section class="ratings-summary website-ratings-summary" id="website-ratings-summary" aria-label="Website rating metrics">
+        <article class="ratings-metric"><span>Average website rating</span><strong id="website-average-rating">—</strong><small>out of 5 stars</small></article>
+        <article class="ratings-metric"><span>Total website ratings</span><strong id="website-total-ratings">0</strong><small>star ratings submitted</small></article>
+        <article class="ratings-metric"><span>Would use ParkSmart</span><strong id="website-would-use-percent">—</strong><small id="website-would-use-count">No answers yet</small></article>
+        <article class="ratings-metric"><span>Yes answers</span><strong id="website-would-use-yes">0</strong><small>answered Yes</small></article>
+        <article class="ratings-metric"><span>No answers</span><strong id="website-would-use-no">0</strong><small>answered No</small></article>
+      </section>
+      <section class="ratings-chart-card website-star-chart" id="website-star-chart" aria-labelledby="website-star-chart-title">
+        <div class="ratings-chart-heading"><div><p class="eyebrow">Website star ratings</p><h3 id="website-star-chart-title">Rating distribution</h3></div></div>
+        <div class="rating-bars" id="website-rating-bars" aria-label="Website ratings from one to five stars"></div>
+        <div class="website-use-chart" aria-label="Would use ParkSmart answers">
+          <div class="website-use-row"><span>Yes</span><div class="rating-bar-track"><span class="rating-bar-fill" id="website-yes-fill"></span></div><strong id="website-yes-percent">0%</strong></div>
+          <div class="website-use-row"><span>No</span><div class="rating-bar-track"><span class="rating-bar-fill website-no-fill" id="website-no-fill"></span></div><strong id="website-no-percent">0%</strong></div>
+        </div>
+      </section>
+      <section class="rating-feedback-card website-feedback-card" id="website-feedback-card" aria-labelledby="website-feedback-title">
+        <div class="ratings-chart-heading"><div><p class="eyebrow">Written website feedback</p><h3 id="website-feedback-title">Recent comments</h3></div><span class="feedback-count-note">Latest 20 comments</span></div>
+        <p class="feedback-list-status" id="website-feedback-status" role="status" aria-live="polite">Loading comments…</p>
+        <div class="rating-feedback-list" id="website-feedback-list"></div>
+      </section>
+    </section>
     <p class="ratings-status" id="ratings-status" role="status" aria-live="polite">Loading ratings from Supabase…</p>
     <section class="ratings-summary" id="ratings-summary" aria-label="Rating summary" hidden>
       <article class="ratings-metric"><span>Average rating</span><strong id="average-rating">—</strong><small>out of 5 stars</small></article>

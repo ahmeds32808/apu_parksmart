@@ -713,6 +713,21 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .website-rating-actions { display:flex; align-items:center; gap:13px; }
 .website-rating-status { min-height:16px; margin:12px 0 0; color:var(--teal-dark); font-size:12px; font-weight:700; }
 .website-rating-card [hidden] { display:none; }
+.website-ratings-dashboard { margin:30px 0 42px; }
+.website-ratings-heading { align-items:flex-end; margin-bottom:14px; }
+.website-ratings-heading h2 { margin:0; color:var(--navy); font-size:22px; letter-spacing:-.5px; }
+.website-ratings-heading p:last-child { margin:5px 0 0; color:var(--muted); font-size:11px; }
+.website-dashboard-status { margin:0; color:var(--muted); font-size:11px; }
+.website-ratings-summary { grid-template-columns:repeat(5,minmax(0,1fr)); margin:14px 0 0; }
+.website-ratings-summary .ratings-metric { min-width:0; padding:17px; }
+.website-ratings-summary .ratings-metric strong { font-size:27px; }
+.website-star-chart h3, .website-feedback-card h3 { margin:0; color:var(--navy); font-size:18px; letter-spacing:-.3px; }
+.website-use-chart { display:grid; gap:12px; margin-top:26px; padding-top:20px; border-top:1px solid var(--line); }
+.website-use-row { display:grid; grid-template-columns:35px minmax(0,1fr) 76px; align-items:center; gap:12px; color:var(--muted); font-size:11px; font-weight:700; }
+.website-use-row strong { color:var(--navy); text-align:right; font-size:11px; }
+.website-use-row .rating-bar-track { height:10px; }
+.website-no-fill { background:var(--navy); }
+.website-feedback-card { margin-top:20px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
 
 @media (max-width: 900px) {
@@ -725,6 +740,11 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 }
 
 @media (max-width: 680px) {
+  .website-ratings-heading { align-items:flex-start; }
+  .website-ratings-summary { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  .website-ratings-summary .ratings-metric { padding:14px; }
+  .website-ratings-summary .ratings-metric strong { font-size:23px; }
+  .website-use-row { grid-template-columns:30px minmax(0,1fr) 66px; gap:8px; }
   .website-rating-card { margin-top:22px; padding:20px 17px; }
   .website-rating-heading { align-items:flex-start; flex-direction:column; }
   .website-rating-average { width:100%; grid-template-columns:auto 1fr; justify-items:start; align-items:center; gap:10px; }
