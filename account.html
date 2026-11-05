@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="supabase-config.js" defer></script>
@@ -30,12 +30,13 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <a class="nav-link" href="index.html">Home</a>
         <a class="nav-link active" href="account.html" aria-current="page">Account Registration</a>
-        <a class="nav-link" href="profile.html">Profile</a>
+        <a class="nav-link profile-nav-link" href="profile.html">Profile</a>
         <a class="nav-link" href="parking.html">Register Parking</a>
         <a class="nav-link" href="guide.html">Guide</a>
         <a class="nav-link" href="about.html">About Us</a>
         <a class="nav-link" href="ratings-dashboard.html">Ratings Dashboard</a>
       </nav>
+      <a class="profile-nav-action" href="profile.html" aria-label="Open your profile" title="Profile"><img src="assets/profile-avatar.svg" alt=""></a>
     </div>
   </header>
 

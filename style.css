@@ -37,6 +37,12 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 .nav-link { position: relative; padding: 10px 16px; color: #66758a; font-size: 14px; font-weight: 600; text-decoration: none; transition: color .2s ease; }
 .nav-link:hover, .nav-link.active { color: var(--navy); }
 .nav-link.active::after { position: absolute; right: 16px; bottom: 3px; left: 16px; height: 2px; border-radius: 2px; background: var(--teal); content: ""; }
+.profile-nav-link { display:none; }
+.profile-nav-action { position:absolute; top:50%; right:24px; translate:0 -50%; width:42px; height:42px; display:grid; place-items:center; border:1px solid #dcefea; border-radius:50%; background:#eaf8f5; transition:background .18s ease, border-color .18s ease, scale .18s ease; }
+.profile-nav-action img { display:block; width:28px; height:28px; object-fit:contain; }
+.profile-nav-action:hover { scale:1.06; border-color:var(--teal); background:#dff4f0; }
+.profile-nav-action:focus-visible { outline:3px solid rgba(18,176,165,.6); outline-offset:3px; }
+.profile-nav-action.is-current { border-color:var(--teal); box-shadow:0 0 0 3px rgba(18,176,165,.15); }
 .menu-toggle { display: none; }
 
 .hero { position: relative; min-height: 365px; overflow: hidden; display: flex; align-items: center; background: linear-gradient(115deg, #0b2142 0%, #12305c 57%, #174a69 100%); color: var(--white); }
@@ -330,6 +336,8 @@ button, a, input, select, summary { -webkit-tap-highlight-color: transparent; }
 
 @media (max-width: 900px) {
   .nav-wrap { width: calc(100% - 36px); min-height: 66px; }
+  .profile-nav-action { display:none; }
+  .profile-nav-link { display:block; }
   .menu-toggle { width: 42px; height: 42px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border: 1px solid var(--line); border-radius: 10px; background: var(--white); cursor: pointer; }
   .menu-toggle span { width: 17px; height: 2px; border-radius: 2px; background: var(--navy); transition: transform .2s ease, opacity .2s ease; }
   .menu-toggle[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
