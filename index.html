@@ -16,7 +16,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js" defer></script>
-  <script src="app.js?v=7" defer></script>
+  <script src="app.js?v=8" defer></script>
+  <script src="website-rating.js?v=1" defer></script>
   <script src="garage-scene.js" defer></script>
 </head>
 <body>
@@ -33,6 +34,7 @@
       <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
         <a class="nav-link active" href="index.html" aria-current="page">Home</a>
         <a class="nav-link" href="account.html">Account Registration</a>
+        <a class="nav-link" href="profile.html">Profile</a>
         <a class="nav-link" href="parking.html">Register Parking</a>
         <a class="nav-link" href="guide.html">Guide</a>
         <a class="nav-link" href="about.html">About Us</a>
@@ -88,6 +90,7 @@
               <p class="eyebrow">Your profile</p>
               <p id="home-profile-status" role="status" aria-live="polite">Sign in to see your profile.</p>
               <div id="home-profile-details" hidden></div>
+              <a class="home-profile-link" href="profile.html">View full profile <span aria-hidden="true">→</span></a>
             </div>
           </div>
         </div>
@@ -183,7 +186,7 @@
           <div>
             <p class="eyebrow">Your ParkSmart account</p>
             <h2 id="profile-title">Profile &amp; registered cars</h2>
-            <p class="section-intro">Register once with one car. Add or manage more cars here.</p>
+            <p class="section-intro">Register once with your first car. Add or manage vehicles on your Profile page.</p>
           </div>
           <div class="profile-actions">
             <a class="button button-secondary" href="account.html">Account registration / sign in</a>
@@ -214,6 +217,38 @@
           <button class="button button-primary" type="submit">Add car</button>
         </form>
         <p class="form-message" id="profile-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="website-rating-card" id="website-rating-card" aria-labelledby="website-rating-title">
+        <div class="website-rating-heading">
+          <div><p class="eyebrow">Your opinion</p><h2 id="website-rating-title">Rate this website</h2><p>It takes a few seconds. Your answer is anonymous.</p></div>
+          <div class="website-rating-average"><strong id="website-rating-average">&mdash;</strong><span>Average rating</span></div>
+        </div>
+        <p class="would-use-summary" id="would-use-summary" aria-live="polite">Loading answers&hellip;</p>
+        <form id="website-rating-form">
+          <fieldset class="star-rating website-star-rating">
+            <legend>How would you rate ParkSmart? <span aria-hidden="true">(required)</span></legend>
+            <label><input type="radio" name="rating" value="1" required><span aria-hidden="true">&#9733;</span><span class="sr-only">1 star</span></label>
+            <label><input type="radio" name="rating" value="2"><span aria-hidden="true">&#9733;</span><span class="sr-only">2 stars</span></label>
+            <label><input type="radio" name="rating" value="3"><span aria-hidden="true">&#9733;</span><span class="sr-only">3 stars</span></label>
+            <label><input type="radio" name="rating" value="4"><span aria-hidden="true">&#9733;</span><span class="sr-only">4 stars</span></label>
+            <label><input type="radio" name="rating" value="5"><span aria-hidden="true">&#9733;</span><span class="sr-only">5 stars</span></label>
+          </fieldset>
+          <fieldset class="would-use-fieldset">
+            <legend>Would you use ParkSmart? <span aria-hidden="true">(required)</span></legend>
+            <div class="would-use-options">
+              <label><input type="radio" name="would_use" value="true" required><span>Yes</span></label>
+              <label><input type="radio" name="would_use" value="false"><span>No</span></label>
+            </div>
+          </fieldset>
+          <div class="rating-feedback-field website-feedback-field">
+            <label for="website-rating-feedback">Short feedback <span>(optional)</span></label>
+            <textarea id="website-rating-feedback" name="feedback" rows="3" maxlength="280" placeholder="What worked well or what could be clearer?"></textarea>
+            <small>Up to 280 characters. Don&rsquo;t include names, contact details, or other personal information.</small>
+          </div>
+          <div class="website-rating-actions"><button class="button button-primary" id="website-rating-submit" type="submit">Submit rating</button></div>
+        </form>
+        <p class="website-rating-status" id="website-rating-status" role="status" aria-live="polite"></p>
       </section>
 
       <section class="alternative-box" id="alternative-box" hidden aria-live="polite">

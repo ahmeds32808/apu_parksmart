@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12305c">
+  <meta name="description" content="View your ParkSmart profile and registered vehicles.">
+  <title>Your profile | APU ParkSmart</title>
+  <link rel="icon" type="image/jpeg" href="assets/Park_smart.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js" defer></script>
+  <script src="app.js?v=8" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="index.html" aria-label="APU ParkSmart home"><span class="brand-mark"><img src="assets/Park_smart.jpg" alt="ParkSmart logo"></span><span>APU ParkSmart</span></a>
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span><span></span></button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="account.html">Account Registration</a>
+        <a class="nav-link active" href="profile.html" aria-current="page">Profile</a>
+        <a class="nav-link" href="parking.html">Register Parking</a>
+        <a class="nav-link" href="guide.html">Guide</a>
+        <a class="nav-link" href="about.html">About Us</a>
+        <a class="nav-link" href="ratings-dashboard.html">Ratings Dashboard</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="guide-hero profile-hero">
+      <p class="eyebrow"><span class="eyebrow-mark"></span> Your account</p>
+      <h1>Your profile</h1>
+      <p>Your details and saved vehicles, together in one place.</p>
+    </section>
+    <div class="page-content profile-page-content">
+      <section class="profile-page-card" aria-labelledby="profile-page-title">
+        <div class="profile-page-heading">
+          <img class="profile-page-avatar" src="assets/profile-avatar.svg" alt="" aria-hidden="true">
+          <div><p class="eyebrow">ParkSmart member</p><h2 id="profile-page-title">Your details</h2><p class="profile-page-intro">Only you can see your saved account and car details.</p></div>
+        </div>
+        <p class="profile-page-status" id="profile-status" role="status" aria-live="polite">Loading your profile…</p>
+        <div class="profile-page-details" id="profile-details" hidden></div>
+        <form class="add-car-form" id="add-car-form" hidden>
+          <div class="field"><label for="additional-car-plate">Add another vehicle plate</label><input id="additional-car-plate" name="plateNumber" type="text" placeholder="WXY 1234" maxlength="10" pattern="[A-Za-z]{1,3}\s?[0-9]{1,4}" required></div>
+          <div class="field"><label for="additional-car-color">Car colour</label><select id="additional-car-color" name="vehicleColor"><option value="orange">Orange</option><option value="blue">Blue</option><option value="red">Red</option><option value="green">Green</option><option value="purple">Purple</option><option value="silver">Silver</option><option value="black">Black</option></select></div>
+          <button class="button button-primary" type="submit">Add vehicle</button>
+        </form>
+        <div class="profile-page-actions"><a class="button button-secondary" id="profile-sign-in" href="account.html">Sign in or create an account</a><button class="button button-secondary" id="sign-out-button" type="button" hidden>Sign out</button></div>
+        <p class="form-message" id="profile-message" role="status" aria-live="polite"></p>
+      </section>
+      <a class="profile-back-link" href="index.html">Back to Home</a>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="footer-bottom">A student project demo <span>·</span> APU ParkSmart</div></footer>
+</body>
+</html>

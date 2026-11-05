@@ -291,7 +291,7 @@ function initializeAccountPage() {
       if (signInMode) {
         const { error } = await client.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        window.location.assign("index.html");
+        window.location.assign("profile.html");
         return;
       }
       const userType = accountType.value;
@@ -311,9 +311,9 @@ function initializeAccountPage() {
       });
       if (error) throw error;
       status.textContent = data.session
-        ? "Account created. You can now register parking."
+        ? "Account created. Your profile is ready."
         : "Account created. Check your email to confirm the account, then sign in.";
-      if (data.session) window.setTimeout(() => window.location.assign("index.html"), 1200);
+      if (data.session) window.setTimeout(() => window.location.assign("profile.html"), 1200);
     } catch (error) {
       status.textContent = error.message || "Account request failed. Please try again.";
       console.error("ParkSmart account request failed.", error);
@@ -332,6 +332,7 @@ function initializeProfilePanel() {
   const addCarColor = document.querySelector("#additional-car-color");
   const profileMessage = document.querySelector("#profile-message");
   const signOutButton = document.querySelector("#sign-out-button");
+  const signInLink = document.querySelector("#profile-sign-in");
   const addCarButton = addCarForm.querySelector('button[type="submit"]');
 
   async function loadProfile() {
@@ -347,6 +348,7 @@ function initializeProfilePanel() {
     }
     if (!result.user) {
       status.textContent = "Sign in to see your profile and saved vehicles.";
+      if (signInLink) signInLink.hidden = false;
       return;
     }
     if (!result.profile) {
@@ -358,7 +360,7 @@ function initializeProfilePanel() {
     details.hidden = false;
     details.replaceChildren(
       createTextElement("h3", result.profile.full_name),
-      createTextElement("p", `${roleLabel}${result.profile.campus_id ? ` · ${result.profile.campus_id}` : ""}`),
+      createTextElement("p", `${roleLabel}${result.profile.campus_id ? ` | ${result.profile.campus_id}` : ""}`),
       createTextElement("h3", "Your registered vehicles")
     );
     if (result.vehicles.length) {
@@ -371,7 +373,7 @@ function initializeProfilePanel() {
         swatch.className = "vehicle-color-swatch";
         swatch.style.backgroundColor = color.color;
         swatch.setAttribute("aria-label", `${color.label} car`);
-        item.append(swatch, createTextElement("span", `${vehicle.plate_number} · ${color.label}`));
+        item.append(swatch, createTextElement("span", `${vehicle.plate_number} | ${color.label}`));
         list.append(item);
       });
       details.append(list);
@@ -380,6 +382,7 @@ function initializeProfilePanel() {
     }
     addCarForm.hidden = false;
     signOutButton.hidden = false;
+    if (signInLink) signInLink.hidden = true;
   }
 
   addCarForm.addEventListener("submit", async (event) => {
